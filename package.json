@@ -1,0 +1,19 @@
+{
+  "name": "peer-tutoring-app",
+  "version": "1.0.0",
+  "description": "Peer tutoring app to match tutors with tutees",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pierreTklein/peer-tutoring-app.git"
+  },
+  "author": "Pierre Theo Klein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pierreTklein/peer-tutoring-app/issues"
+  },
+  "homepage": "https://github.com/pierreTklein/peer-tutoring-app#readme"
+}
