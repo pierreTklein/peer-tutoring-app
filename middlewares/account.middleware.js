@@ -1,5 +1,6 @@
 "use strict";
 
+const _ = require("lodash");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const Services = {
@@ -8,7 +9,6 @@ const Services = {
     Invite: require("../services/invite.service"),
     Email: require("../services/email.service"),
     Env: require("../services/env.service"),
-    Util: require("../services/util.service")
 };
 
 const Middleware = {
@@ -37,7 +37,7 @@ function parsePatch(req, res, next) {
         accountType: req.body.accountType,
         courses: req.body.courses,
     };
-    accountDetails = Services.Util.removeByValue(accountDetails, undefined);
+    accountDetails = _.omitBy(accountDetails, _.isUndefined);
     return next();
 }
 

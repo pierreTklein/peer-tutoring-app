@@ -1,11 +1,12 @@
 "use strict";
 
+const _ = require("lodash");
+
 const Constants = {
     Error: require("../constants/error.constant")
 };
 
 const Services = {
-    Util: require("../services/util.service"),
     Ticket: require("../services/ticket.service"),
     Env: require("../services/env.service")
 };
@@ -33,7 +34,7 @@ async function failIfUserHasOpenTicket(req, res, next) {
         }
     };
     const tickets = await Services.Ticket.find(query);
-    if (tickets) {
+    if (tickets.length > 0) {
         return next({
             status: 422,
             message: Constants.Error.TICKET_422_MESSAGE
@@ -45,25 +46,25 @@ async function failIfUserHasOpenTicket(req, res, next) {
 
 async function getByQuery(req, res, next) {
     let query = {
-        createdAt: {
+        createdAt: _.omitBy({
             $lte: req.body.createBefore,
             $gte: req.body.createAfter,
-        },
-        startedAt: {
+        }, _.isUndefined),
+        startedAt: _.omitBy({
             $exists: req.body.started,
             $lte: req.body.startBefore,
             $gte: req.body.startAfter,
-        },
-        endedAt: {
+        }, _.isUndefined),
+        endedAt: _.omitBy({
             $exists: req.body.ended,
             $lte: req.body.endBefore,
             $gte: req.body.endAfter,
-        },
+        }, _.isUndefined),
         tutorId: req.body.tutorId,
         studentId: req.body.studentId,
         courseId: req.body.courseId,
     };
-    query = Services.Util.removeByValue(query, undefined);
+    query = _.omitBy(query, (value) => _.isEmpty(value));
     const tickets = await Services.Ticket.find(query);
     req.body.tickets = tickets;
     next();

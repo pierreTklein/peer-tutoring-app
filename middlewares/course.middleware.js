@@ -5,7 +5,6 @@ const Constants = {
 };
 
 const Services = {
-    Util: require("../services/util.service"),
     Course: require("../services/course.service"),
     Env: require("../services/env.service")
 };
