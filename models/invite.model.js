@@ -4,12 +4,7 @@ const Constants = {
     General: require("../constants/general.constant"),
 };
 
-const AccountConfirmationSchema = new mongoose.Schema({
-    accountId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Account",
-        required: false
-    },
+const inviteSchema = new mongoose.Schema({
     accountType: {
         type: String,
         enum: Constants.General.USER_TYPES,
@@ -21,7 +16,7 @@ const AccountConfirmationSchema = new mongoose.Schema({
     }
 });
 
-AccountConfirmationSchema.methods.toJSON = function () {
+inviteSchema.methods.toJSON = function () {
     const o = this.toObject();
     delete o.__v;
     o.id = o._id;
@@ -29,4 +24,4 @@ AccountConfirmationSchema.methods.toJSON = function () {
     return o;
 };
 
-module.exports = mongoose.model("AccountConfirmationToken", AccountConfirmationSchema);
+module.exports = mongoose.model("Invite", inviteSchema);

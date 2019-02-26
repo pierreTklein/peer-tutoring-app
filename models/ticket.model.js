@@ -8,13 +8,21 @@ const TicketSchema = new mongoose.Schema({
     studentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
+        required: true
     },
     courseId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
+        required: true
     },
     question: String,
-    startedAt: Date,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    startedAt: {
+        type: Date,
+    },
     endedAt: Date,
     rating: Number
 });

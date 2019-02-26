@@ -11,9 +11,10 @@ const Constants = {
  * @description Returns the JSON of account object located in req.body.account
  */
 function showAccount(req, res) {
+    const acc = req.body.account;
     return res.status(200).json({
         message: Constants.Success.ACCOUNT_READ,
-        data: req.body.account.toStrippedJSON()
+        data: acc.toStrippedJSON()
     });
 }
 

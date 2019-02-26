@@ -1,12 +1,14 @@
 "use strict";
 
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const Services = {
     Logger: require("../services/logger.service"),
     Account: require("../services/account.service"),
-    AccountConfirmation: require("../services/accountConfirmation.service"),
+    Invite: require("../services/invite.service"),
     Email: require("../services/email.service"),
-    Env: require("../services/env.service")
+    Env: require("../services/env.service"),
+    Util: require("../services/util.service")
 };
 
 const Middleware = {
@@ -15,6 +17,7 @@ const Middleware = {
 
 const Constants = {
     Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant")
 };
 
 /**
@@ -26,46 +29,47 @@ const Constants = {
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
-    delete req.body.id;
+    let accountDetails = {
+        _id: req.body.id,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        accountType: req.body.accountType,
+        courses: req.body.courses,
+    };
+    accountDetails = Services.Util.removeByValue(accountDetails, undefined);
     return next();
 }
 
 /**
  * @function parseAccount
- * @param {{body: {firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}} req
+ * @param {{body: Account}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
- * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
  * Hashes the password.
- * Adds _id to accountDetails.
+ * Adds _id to account.
  */
 function parseAccount(req, res, next) {
-    const accountDetails = {
+    const account = {
         _id: mongoose.Types.ObjectId(),
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        pronoun: req.body.pronoun,
         email: req.body.email,
+        accountType: req.body.accountType,
+        courses: req.body.courses,
         password: Services.Account.hashPassword(req.body.password),
-        dietaryRestrictions: req.body.dietaryRestrictions,
-        shirtSize: req.body.shirtSize,
-        birthDate: req.body.birthDate,
-        phoneNumber: req.body.phoneNumber,
     };
 
     delete req.body.firstName;
     delete req.body.lastName;
-    delete req.body.pronoun;
     delete req.body.email;
     delete req.body.password;
-    delete req.body.dietaryRestrictions;
-    delete req.body.shirtSize;
-    delete req.body.birthDate;
-    delete req.body.phoneNumber;
+    delete req.body.accountType;
+    delete req.body.courses;
 
-    req.body.accountDetails = accountDetails;
+    req.body.account = account;
 
     return next();
 }
@@ -92,7 +96,8 @@ async function getById(req, res, next) {
     const acc = await Services.Account.findById(req.body.id);
 
     if (!acc) {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             data: {}
         });
@@ -113,13 +118,29 @@ async function getByEmail(req, res, next) {
     const acc = await Services.Account.findByEmail(req.user.email);
 
     if (!acc) {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             data: {}
         });
     }
 
     req.body.account = acc;
+    next();
+}
+
+async function failIfExists(req, res, next) {
+    const account = req.body.account;
+    const exists = await Services.Account.findByEmail(account.email);
+    if (exists) {
+        return next({
+            status: 422,
+            message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
+            error: {
+                route: req.path
+            }
+        });
+    }
     next();
 }
 
@@ -133,18 +154,7 @@ async function getByEmail(req, res, next) {
  * Creates account document after checking if it exists first
  */
 async function addAccount(req, res, next) {
-    const accountDetails = req.body.accountDetails;
-    //Check duplicate
-    const exists = await Services.Account.findByEmail(accountDetails.email);
-    if (exists) {
-        return next({
-            status: 422,
-            message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
-            error: {
-                route: req.path
-            }
-        });
-    }
+    const accountDetails = req.body.account;
     const account = await Services.Account.addOneAccount(accountDetails);
     req.body.account = account;
     return next();
@@ -157,7 +167,7 @@ async function addAccount(req, res, next) {
  * @param {*} next 
  */
 async function updateAccount(req, res, next) {
-    const account = await Services.Account.updateOne(req.params.id, req.body);
+    const account = await Services.Account.updateOne(req.body.id, req.body.accountDetails);
     if (account) {
         return next();
     } else {
@@ -165,7 +175,7 @@ async function updateAccount(req, res, next) {
             status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             data: {
-                id: req.params.id
+                id: req.body.id
             }
         });
     }
@@ -182,11 +192,12 @@ async function updateAccount(req, res, next) {
 async function inviteAccount(req, res, next) {
     const email = req.body.email;
     const accountType = req.body.accountType;
-    const confirmationObj = await Services.AccountConfirmation.create(accountType, email);
-    const confirmationToken = Services.AccountConfirmation.generateToken(confirmationObj.id);
-    const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
+    const invite = await Services.Invite.create(accountType, email);
+    const inviteToken = Services.Invite.generateToken(invite);
 
-    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(address, email, accountType, confirmationToken);
+    const address = Services.Env.frontendAddress();
+
+    const mailData = Services.Invite.generateInviteMailData(address, email, accountType, inviteToken);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
@@ -208,21 +219,100 @@ async function inviteAccount(req, res, next) {
  * @param {(err?)=>void} next 
  */
 async function getInvites(req, res, next) {
-    const invites = await Services.AccountConfirmation.find({});
+    const invites = await Services.Invite.find({});
     req.body.invites = invites;
     next();
+}
+
+
+/**
+ * Parses the invite token if it exists and places it inside of req.body.decodedToken
+ * @param {{body: {token?: string}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+function verifyInviteToken(req, res, next) {
+    if (req.body.token) {
+        try {
+            req.body.decodedToken = jwt.verify(req.body.token, process.env.JWT_INVITE_SECRET);
+        } catch (e) {
+            next(e);
+        }
+    }
+    next();
+}
+
+/**
+ * Gets the invite as defined by the decodedToken
+ * @param {{body: {decodedToken: {InviteId: string}}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function getInviteFromToken(req, res, next) {
+    const invite = await Services.Invite.findById(req.body.decodedToken.InviteId);
+    req.body.invite = invite;
+    next();
+}
+
+
+/**
+ * Returns the type of account based on the confirmation token
+ * @param {{body:{decodedToken:{InviteId:string, accountId:string}}}} req 
+ * @param {any} res 
+ * @param {(err?)=>void} next 
+ */
+async function getAccountTypeFromInvite(req, res, next) {
+    const confirmationObj = await Services.Invite.findById(req.body.decodedToken.InviteId);
+    if (confirmationObj) {
+        req.body.accountType = confirmationObj.accountType;
+        return next();
+    } else {
+        //Either the token was already used, it's invalid, or user does not exist.
+        return next({
+            status: 401,
+            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
+            error: {}
+        });
+    }
+}
+
+/**
+ * Attempts to parse the jwt token that is found in req.body.token using process.env.JWT_INVITE_SECRET as the key.
+ * Places the parsed object into req.body.decodedToken
+ * If the token does not exist it just continues flow
+ * @param {{body:{token:string}}} req 
+ * @param {any} res 
+ * @param {(err?)=>void} next 
+ */
+function parseInviteToken(req, res, next) {
+    if (!!req.body.token) {
+        jwt.verify(req.body.token, process.env.JWT_INVITE_SECRET, function (err, decoded) {
+            if (err) {
+                return next(err);
+            } else {
+                req.body.decodedToken = decoded;
+            }
+        });
+    }
+    return next();
 }
 
 module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
-    // untested
+    failIfExists: Middleware.Util.asyncMiddleware(failIfExists),
+
     getInvites: Middleware.Util.asyncMiddleware(getInvites),
     getByEmail: Middleware.Util.asyncMiddleware(getByEmail),
     getById: Middleware.Util.asyncMiddleware(getById),
-    // untested
+
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
+
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
     updateAccount: Middleware.Util.asyncMiddleware(updateAccount),
-    inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount)
+
+    verifyInviteToken: verifyInviteToken,
+    inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount),
+    parseInviteToken: parseInviteToken,
+    getAccountTypeFromInvite: Middleware.Util.asyncMiddleware(getAccountTypeFromInvite),
 };

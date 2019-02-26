@@ -19,6 +19,9 @@ module.exports = {
     },
     isTest: function () {
         return process.env.NODE_ENV === "test";
+    }, 
+    frontendAddress: function () {
+        return this.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV; 
     }
 };
 

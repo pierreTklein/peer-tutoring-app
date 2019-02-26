@@ -70,22 +70,19 @@ function findOne(query) {
 
 /**
  * @function addOneAccount
- * @param {{_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}} accountDetails
+ * @param {Account} accountDetails
  * @return {Promise<Account>} The promise will resolve to the account object if save is successful.
  * @description Adds a new account to database.
  */
 function addOneAccount(accountDetails) {
-    const TAG = `[Account Service # addOneAccount ]:`;
-
     const account = new Account(accountDetails);
-
     return account.save();
 }
 
 /**
  * @function updateOne
  * @param {ObjectId} id
- * @param {{_id?: ObjectId, firstName?: string, lastName?: string, email?: string, password?: string, dietaryRestrictions?: string, shirtSize?: string}} accountDetails 
+ * @param {Account} accountDetails 
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Changes account information to the specified information in accountDetails.
  */

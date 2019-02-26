@@ -15,6 +15,13 @@ const AUTH_RESET_PASSWORD = "Reset password successful.";
 const AUTH_CONFIRM_ACCOUNT = "Confirm account successful.";
 const AUTH_SEND_CONFIRMATION_EMAIL = "Send confirmation email successful.";
 
+const TICKET_CREATE = "Ticket creation successful.";
+const TICKET_END = "Ticket end successful.";
+const TICKET_RATE = "Ticket rate successful.";
+const TICKET_READ = "Ticket retrieval successful.";
+const TICKET_START = "Ticket start successful.";
+
+
 module.exports = {
     ACCOUNT_GET_BY_EMAIL: ACCOUNT_GET_BY_EMAIL,
     ACCOUNT_GET_BY_ID: ACCOUNT_GET_BY_ID,
@@ -29,4 +36,10 @@ module.exports = {
     AUTH_RESET_PASSWORD: AUTH_RESET_PASSWORD,
     AUTH_CONFIRM_ACCOUNT: AUTH_CONFIRM_ACCOUNT,
     AUTH_SEND_CONFIRMATION_EMAIL: AUTH_SEND_CONFIRMATION_EMAIL,
+
+    TICKET_CREATE: TICKET_CREATE,
+    TICKET_END: TICKET_END,
+    TICKET_RATE: TICKET_RATE,
+    TICKET_READ: TICKET_READ,
+    TICKET_START: TICKET_START,
 };

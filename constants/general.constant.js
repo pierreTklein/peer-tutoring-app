@@ -19,11 +19,10 @@ const USER_TYPES = [STAFF, TUTOR, STUDENT];
 
 const EMAIL_SUBJECTS = {};
 
-const CONFIRM_ACC_EMAIL_SUBJECT = `Please confirm your account.`;
-const CREATE_ACC_EMAIL_SUBJECTS = {};
-CREATE_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${SERVICE_NAME}`;
-CREATE_ACC_EMAIL_SUBJECTS[TUTOR] = `You've been invited to create a tutor account for ${SERVICE_NAME}`;
-CREATE_ACC_EMAIL_SUBJECTS[STUDENT] = `You've been invited to create a student account for ${SERVICE_NAME}`;
+const ACC_INVITE_EMAIL_SUBJECTS = {};
+ACC_INVITE_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${SERVICE_NAME}`;
+ACC_INVITE_EMAIL_SUBJECTS[TUTOR] = `You've been invited to create a tutor account for ${SERVICE_NAME}`;
+ACC_INVITE_EMAIL_SUBJECTS[STUDENT] = `You've been invited to create a student account for ${SERVICE_NAME}`;
 
 module.exports = {
     SERVICE_NAME: SERVICE_NAME,
@@ -32,8 +31,7 @@ module.exports = {
     USER_TYPES: USER_TYPES,
     URL_REGEX: URL_REGEX,
     EMAIL_SUBJECTS: EMAIL_SUBJECTS,
-    CREATE_ACC_EMAIL_SUBJECTS: CREATE_ACC_EMAIL_SUBJECTS,
-    CONFIRM_ACC_EMAIL_SUBJECT: CONFIRM_ACC_EMAIL_SUBJECT,
+    ACC_INVITE_EMAIL_SUBJECTS: ACC_INVITE_EMAIL_SUBJECTS,
     STAFF: STAFF,
     TUTOR: TUTOR,
     STUDENT: STUDENT

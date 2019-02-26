@@ -1,7 +1,6 @@
 "use strict";
 const LocalStrategy = require("passport-local").Strategy;
 const Account = require("../services/account.service");
-const logger = require("./logger.service");
 
 module.exports = {
     emailAndPassStrategy: new LocalStrategy({

@@ -20,35 +20,19 @@ const passport = require("passport");
 passport.use("emailAndPass", Services.auth.emailAndPassStrategy);
 
 /* Routes here */
-const indexRouter = require("./routes/index");
+const indexRouter = require("./routes/api/index");
 const accountRouter = require("./routes/api/account");
 const authRouter = require("./routes/api/auth");
-const hackerRouter = require("./routes/api/hacker");
-const teamRouter = require("./routes/api/team");
-const sponsorRouter = require("./routes/api/sponsor");
-const searchRouter = require("./routes/api/search");
-const volunteerRouter = require("./routes/api/volunteer");
-const roleRouter = require("./routes/api/role");
+const courseRouter = require("./routes/api/course");
+const ticketRouter = require("./routes/api/ticket");
 
 const app = express();
 Services.db.connect(app);
 
-let corsOptions = {};
-
-if (!Services.env.isProduction()) {
-    corsOptions = {
-        origin: [`http://${process.env.FRONTEND_ADDRESS_DEV}`],
-        credentials: true
-    };
-} else {
-    // TODO: change this when necessary
-    corsOptions = {
-        origin: [`https://${process.env.FRONTEND_ADDRESS_DEPLOY}`, `https://docs.mchacks.ca`],
-        credentials: true
-    };
-}
-
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: [Services.env.frontendAddress()],
+    credentials: true
+}));
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);
 app.use(express.json());
@@ -74,18 +58,10 @@ accountRouter.activate(apiRouter);
 Services.log.info("Account router activated");
 authRouter.activate(apiRouter);
 Services.log.info("Auth router activated");
-hackerRouter.activate(apiRouter);
-Services.log.info("Hacker router activated");
-teamRouter.activate(apiRouter);
-Services.log.info("Team router activated");
-sponsorRouter.activate(apiRouter);
-Services.log.info("Sponsor router activated");
-volunteerRouter.activate(apiRouter);
-Services.log.info("Volunteer router activated");
-searchRouter.activate(apiRouter);
-Services.log.info("Search router activated");
-roleRouter.activate(apiRouter);
-Services.log.info("Role router activated");
+courseRouter.activate(apiRouter);
+Services.log.info("Course router activated");
+ticketRouter.activate(apiRouter);
+Services.log.info("Ticket router activated");
 
 apiRouter.use("/", indexRouter);
 app.use("/", indexRouter);
