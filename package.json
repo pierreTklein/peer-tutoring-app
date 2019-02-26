@@ -2,11 +2,15 @@
   "name": "peer-tutoring-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./bin/www.js",
   "scripts": {
     "test": "DEBUG=peer-tutoring:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
     "start": "NODE_ENV=deployment node ./bin/www.js",
     "dev": "DEBUG=peer-tutoring:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pierreTklein/peer-tutoring-app.git"
   },
   "author": "",
   "license": "ISC",
@@ -44,5 +48,9 @@
     "jslint": "^0.12.1",
     "mocha": "^5.2.0",
     "nodemon": "^1.17.3"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/pierreTklein/peer-tutoring-app/issues"
+  },
+  "homepage": "https://github.com/pierreTklein/peer-tutoring-app#readme"
 }
