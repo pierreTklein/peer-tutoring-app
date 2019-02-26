@@ -1,0 +1,796 @@
+[{
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9f5",
+    "courseCode": 189,
+    "longName": "Computers and Society"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9f6",
+    "courseCode": 202,
+    "longName": "Foundations of Programming"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9f7",
+    "courseCode": 204,
+    "longName": "Comp. Programming for Life Sci"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9f8",
+    "courseCode": 206,
+    "longName": "Intro to Software Systems"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9f9",
+    "courseCode": 208,
+    "longName": "Computers in Engineering"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9fa",
+    "courseCode": 230,
+    "longName": "Logic and Computability"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9fb",
+    "courseCode": 250,
+    "longName": "Intro to Computer Science"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9fc",
+    "courseCode": 251,
+    "longName": "Algorithms and Data Structures"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9fd",
+    "courseCode": 252,
+    "longName": "Honours Algorithms&Data Struct"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9fe",
+    "courseCode": 273,
+    "longName": "Intro to Computer Systems"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9c9ff",
+    "courseCode": 302,
+    "longName": "Programming Lang & Paradigms"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca00",
+    "courseCode": 303,
+    "longName": "Software Design"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca01",
+    "courseCode": 307,
+    "longName": "Principles of Web Development"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca02",
+    "courseCode": 308,
+    "longName": "Computer Systems Lab"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca03",
+    "courseCode": 310,
+    "longName": "Operating Systems"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca04",
+    "courseCode": 321,
+    "longName": "Programming Challenges"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca05",
+    "courseCode": 322,
+    "longName": "Introduction to C++"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca06",
+    "courseCode": 330,
+    "longName": "Theory of Computation"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca07",
+    "courseCode": 350,
+    "longName": "Numerical Computing"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca08",
+    "courseCode": 360,
+    "longName": "Algorithm Design"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca09",
+    "courseCode": 361,
+    "longName": "Software Engineering Project"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca0a",
+    "courseCode": 362,
+    "longName": "Honours Algorithm Design"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca0b",
+    "courseCode": 396,
+    "longName": "Undergraduate Research Project"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca0c",
+    "courseCode": 400,
+    "longName": "Project in Computer Science"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca0d",
+    "courseCode": 401,
+    "longName": "Project in Biol. & Comp. Sci."
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca0e",
+    "courseCode": 402,
+    "longName": "Honours Project CS and Biology"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca0f",
+    "courseCode": 409,
+    "longName": "Concurrent Programming"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca10",
+    "courseCode": 417,
+    "longName": "Intro Robots&Intelligent Sys"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca11",
+    "courseCode": 421,
+    "longName": "Database Systems"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca12",
+    "courseCode": 462,
+    "longName": "Computational Biology Methods"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca13",
+    "courseCode": 424,
+    "longName": "Artificial Intelligence"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca14",
+    "courseCode": 480,
+    "longName": "Indep Studies in Comp Sci"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca15",
+    "courseCode": 520,
+    "longName": "Compiler Design"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca16",
+    "courseCode": 512,
+    "longName": "Distributed Systems"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca17",
+    "courseCode": 527,
+    "longName": "Logic and Computation"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca18",
+    "courseCode": 521,
+    "longName": "Modern Computer Games"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca19",
+    "courseCode": 529,
+    "longName": "Software Architecture"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca1a",
+    "courseCode": 533,
+    "longName": "Model-Driven Software Develop."
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca1b",
+    "courseCode": 531,
+    "longName": "Advanced Theory of Computation"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca1c",
+    "courseCode": 540,
+    "longName": "Matrix Computations"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca1d",
+    "courseCode": 535,
+    "longName": "Computer Networks"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca1e",
+    "courseCode": 550,
+    "longName": "Natural Language Processing"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca1f",
+    "courseCode": 546,
+    "longName": "Computational Perception"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca20",
+    "courseCode": 551,
+    "longName": "Applied Machine Learning"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca21",
+    "courseCode": 552,
+    "longName": "Combinatorial Optimization"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca22",
+    "courseCode": 559,
+    "longName": "Fund. Computer Animation"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca23",
+    "courseCode": 553,
+    "longName": "Algorithmic Game Theory"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca24",
+    "courseCode": 557,
+    "longName": "Fundamentals of Comp. Graphics"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca25",
+    "courseCode": 558,
+    "longName": "Fund. of Computer Vision"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca26",
+    "courseCode": 561,
+    "longName": "Comp. Biol. Methods & Research"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca27",
+    "courseCode": 564,
+    "longName": "Adv Comput'l Bio Meth&Research"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca28",
+    "courseCode": 598,
+    "longName": "Topics in Computer Science 1"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca29",
+    "courseCode": 601,
+    "longName": "Thesis Literature Review"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca2a",
+    "courseCode": 642,
+    "longName": "Numerical Estimation Methods"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca2b",
+    "courseCode": 652,
+    "longName": "Machine Learning"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca2c",
+    "courseCode": 690,
+    "longName": "Probabilistic Anal of Algor"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca2d",
+    "courseCode": 691,
+    "longName": "Thesis Research 1"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca2e",
+    "courseCode": 693,
+    "longName": "Research Project 1"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca2f",
+    "courseCode": 694,
+    "longName": "Research Project 2"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca30",
+    "courseCode": 695,
+    "longName": "Research Project 3"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca31",
+    "courseCode": 696,
+    "longName": "Thesis Research 2"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca32",
+    "courseCode": 697,
+    "longName": "Thesis Research 3"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca33",
+    "courseCode": 698,
+    "longName": "Thesis Research 4"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca34",
+    "courseCode": 699,
+    "longName": "Thesis Research 5"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca35",
+    "courseCode": 700,
+    "longName": "Ph.D.Comprehensive Examination"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca36",
+    "courseCode": 701,
+    "longName": "Thesis Proposal and Area Exam"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca37",
+    "courseCode": 765,
+    "longName": "Advanced Topics Systems 2"
+}, {
+    "dept": "COMP",
+    "id": "5ba6e1d844e481ec1ce9ca38",
+    "courseCode": 767,
+    "longName": "Adv Topics:Applications 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca39",
+    "courseCode": 200,
+    "longName": "Electric Circuits 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca3a",
+    "courseCode": 202,
+    "longName": "Intro to Software Development"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca3b",
+    "courseCode": 205,
+    "longName": "Prob and Stats for Engineers"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca3c",
+    "courseCode": 206,
+    "longName": "Intro to Signals and Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca3d",
+    "courseCode": 210,
+    "longName": "Electric Circuits 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca3e",
+    "courseCode": 211,
+    "longName": "Design Principles and Methods"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca3f",
+    "courseCode": 222,
+    "longName": "Digital Logic"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca40",
+    "courseCode": 251,
+    "longName": "Electric and Magnetic Fields"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca41",
+    "courseCode": 305,
+    "longName": "Probability & Random Signals 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca42",
+    "courseCode": 306,
+    "longName": "Fund. of Signals and Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca43",
+    "courseCode": 307,
+    "longName": "Linear Systems and Control"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca44",
+    "courseCode": 308,
+    "longName": "Intro to Commun Sys & Networks"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca45",
+    "courseCode": 309,
+    "longName": "Fund. of Comm Systems&Networks"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca46",
+    "courseCode": 321,
+    "longName": "Intro. to Software Engineering"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca47",
+    "courseCode": 324,
+    "longName": "Computer Organization"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca48",
+    "courseCode": 326,
+    "longName": "Software Requirements Engineer"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca49",
+    "courseCode": 330,
+    "longName": "Introduction to Electronics"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca4a",
+    "courseCode": 331,
+    "longName": "Electronics"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca4b",
+    "courseCode": 334,
+    "longName": "Intro. to Microelectronics"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca4c",
+    "courseCode": 335,
+    "longName": "Microelectronics"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca4d",
+    "courseCode": 351,
+    "longName": "Electromagnetic Fields"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca4e",
+    "courseCode": 352,
+    "longName": "Electromagnetic Waves"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca4f",
+    "courseCode": 353,
+    "longName": "Electromagnetic Fields&Waves"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca50",
+    "courseCode": 354,
+    "longName": "Electromag Wave Propagation"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca51",
+    "courseCode": 361,
+    "longName": "Power Engineering"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca52",
+    "courseCode": 362,
+    "longName": "Fundamentals of Power Eng"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca53",
+    "courseCode": 396,
+    "longName": "Honours Res Lab Rotation 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca54",
+    "courseCode": 397,
+    "longName": "Honours Res Lab Rotation 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca55",
+    "courseCode": 403,
+    "longName": "Control"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca56",
+    "courseCode": 404,
+    "longName": "Control Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca57",
+    "courseCode": 408,
+    "longName": "Communication Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca58",
+    "courseCode": 412,
+    "longName": "Discrete TimeSignal Processing"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca59",
+    "courseCode": 415,
+    "longName": "Intro to Computer Vision"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca5a",
+    "courseCode": 416,
+    "longName": "Telecommunication Networks"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca5b",
+    "courseCode": 420,
+    "longName": "Parallel Computing"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca5c",
+    "courseCode": 427,
+    "longName": "Operating Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca5d",
+    "courseCode": 429,
+    "longName": "Software Validation"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca5e",
+    "courseCode": 430,
+    "longName": "Photonic Devices and Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca5f",
+    "courseCode": 434,
+    "longName": "Microelectronics Laboratory"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca60",
+    "courseCode": 436,
+    "longName": "Signal Processing Hardware"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca61",
+    "courseCode": 437,
+    "longName": "Software Delivery"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca62",
+    "courseCode": 439,
+    "longName": "Software Language Engineering"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca63",
+    "courseCode": 444,
+    "longName": "Microprocessors"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca64",
+    "courseCode": 446,
+    "longName": "Realistic Image Synthesis"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca65",
+    "courseCode": 456,
+    "longName": "ECSE Design Project 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca66",
+    "courseCode": 457,
+    "longName": "ECSE Design Project 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca67",
+    "courseCode": 461,
+    "longName": "Electric Machinery"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca68",
+    "courseCode": 462,
+    "longName": "Electromech Energy Conversion"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca69",
+    "courseCode": 464,
+    "longName": "Power Systems Analysis"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca6a",
+    "courseCode": 465,
+    "longName": "Power Electronic Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca6b",
+    "courseCode": 470,
+    "longName": "Electromechanical Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca6c",
+    "courseCode": 472,
+    "longName": "Fund. of Cir. Sim. & Modelling"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca6d",
+    "courseCode": 489,
+    "longName": "Telecommunication Network Lab"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca6e",
+    "courseCode": 493,
+    "longName": "Control&Robotics Laboratory"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca6f",
+    "courseCode": 496,
+    "longName": "Honours Res Lab Rotation 3"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca70",
+    "courseCode": 497,
+    "longName": "Honours Res Lab Rotation 4"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca71",
+    "courseCode": 498,
+    "longName": "Honours Thesis 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca72",
+    "courseCode": 499,
+    "longName": "Honours Thesis 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca73",
+    "courseCode": 500,
+    "longName": "Math Found of Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca74",
+    "courseCode": 501,
+    "longName": "Linear Systems"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca75",
+    "courseCode": 509,
+    "longName": "Probability and Random Sig. 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca76",
+    "courseCode": 512,
+    "longName": "Digital Signal Processing 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca77",
+    "courseCode": 521,
+    "longName": "Digital Communications 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca78",
+    "courseCode": 539,
+    "longName": "Advanced Software Language Eng"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca79",
+    "courseCode": 540,
+    "longName": "Photonic Devices and App"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca7a",
+    "courseCode": 541,
+    "longName": "Des of Multiproc Sys-on-Chip"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca7b",
+    "courseCode": 543,
+    "longName": "Numerical Methods in Elec Eng"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca7c",
+    "courseCode": 544,
+    "longName": "Computational Photography"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca7d",
+    "courseCode": 546,
+    "longName": "Advanced Image Synthesis"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca7e",
+    "courseCode": 549,
+    "longName": "Expert Systems in Elec Design"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca7f",
+    "courseCode": 572,
+    "longName": "Nonlinear Optics"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca80",
+    "courseCode": 597,
+    "longName": "Circuit Simulation & Modelling"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca81",
+    "courseCode": 608,
+    "longName": "Machine Learning"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca82",
+    "courseCode": 651,
+    "longName": "M.Eng. Project 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca83",
+    "courseCode": 652,
+    "longName": "M.Eng. Project 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca84",
+    "courseCode": 653,
+    "longName": "M.Eng. Project 3"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca85",
+    "courseCode": 654,
+    "longName": "M.Eng. Project 4"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca86",
+    "courseCode": 655,
+    "longName": "M.Eng. Project 5"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca87",
+    "courseCode": 656,
+    "longName": "M.Eng. Project 6"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca88",
+    "courseCode": 682,
+    "longName": "Topics in Computers & Circuits"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca89",
+    "courseCode": 688,
+    "longName": "Recent Advances in Elect Eng 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca8a",
+    "courseCode": 691,
+    "longName": "Thesis Research 1"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca8b",
+    "courseCode": 692,
+    "longName": "Thesis Research 2"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca8c",
+    "courseCode": 693,
+    "longName": "Thesis Research 3"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca8d",
+    "courseCode": 694,
+    "longName": "Thesis Research 4"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca8e",
+    "courseCode": 695,
+    "longName": "Thesis Research 5"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca8f",
+    "courseCode": 696,
+    "longName": "Thesis Research 6"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca90",
+    "courseCode": 697,
+    "longName": "Thesis Research 7"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca91",
+    "courseCode": 701,
+    "longName": "Ph.D. Qualifying Examination"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca92",
+    "courseCode": 702,
+    "longName": "Ph.D. Research Plan Proposal"
+}, {
+    "dept": "ECSE",
+    "id": "5ba6e1d844e481ec1ce9ca93",
+    "courseCode": 703,
+    "longName": "Doctoral Research Seminar"
+}]

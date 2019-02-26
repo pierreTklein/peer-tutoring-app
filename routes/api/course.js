@@ -20,7 +20,8 @@ module.exports = {
         const courseRouter = express.Router();
         //get all courses
         courseRouter.route("/").get(
-            
+            Middleware.Course.getByQuery,
+            Controllers.Course.gotCourses,
         );
     
         //make new course
@@ -30,6 +31,9 @@ module.exports = {
         //get specific ticket
         courseRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
+            Middleware.Util.failIfNotValid,
+            Middleware.Course.getById,
+            Controllers.Course.gotCourse,
         );
 
         apiRouter.use("/course", courseRouter);

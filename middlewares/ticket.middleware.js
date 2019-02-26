@@ -83,11 +83,19 @@ async function getByUser(req, res, next) {
 
 async function getById(req, res, next) {
     const ticket = await Services.Ticket.findById(req.body.id);
+    if (!ticket) {
+        return next({
+            status: 404,
+            message: Constants.Error.TICKET_404_MESSAGE
+        });
+    }
     req.body.ticket = ticket;
     next();
 }
 
 async function createTicket(req, res, next) {
+    const ticketDetails = req.body.ticketDetails;
+    ticketDetails.studentId = ticketDetails.studentId || req.user.id;
     const ticket = await Services.Ticket.addOne(req.body.ticketDetails);
     req.body.ticket = ticket;
     next();

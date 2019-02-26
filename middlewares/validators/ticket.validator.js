@@ -19,8 +19,6 @@ module.exports = {
         VALIDATOR.mongoIdValidator("query", "courseId", true),
     ],
     PostTicketValidator: [
-        VALIDATOR.mongoIdValidator("body", "tutorId", true),
-        VALIDATOR.mongoIdValidator("body", "studentId", false),
         VALIDATOR.mongoIdValidator("body", "courseId", false),
         VALIDATOR.asciiValidator("body", "question", false),
     ],

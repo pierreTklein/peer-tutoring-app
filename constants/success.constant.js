@@ -15,6 +15,9 @@ const AUTH_RESET_PASSWORD = "Reset password successful.";
 const AUTH_CONFIRM_ACCOUNT = "Confirm account successful.";
 const AUTH_SEND_CONFIRMATION_EMAIL = "Send confirmation email successful.";
 
+const COURSE_CREATE = "Course created.";
+const COURSE_READ = "Course read.";
+
 const TICKET_CREATE = "Ticket creation successful.";
 const TICKET_END = "Ticket end successful.";
 const TICKET_RATE = "Ticket rate successful.";
@@ -36,6 +39,9 @@ module.exports = {
     AUTH_RESET_PASSWORD: AUTH_RESET_PASSWORD,
     AUTH_CONFIRM_ACCOUNT: AUTH_CONFIRM_ACCOUNT,
     AUTH_SEND_CONFIRMATION_EMAIL: AUTH_SEND_CONFIRMATION_EMAIL,
+
+    COURSE_CREATE: COURSE_CREATE,
+    COURSE_READ: COURSE_READ,
 
     TICKET_CREATE: TICKET_CREATE,
     TICKET_END: TICKET_END,

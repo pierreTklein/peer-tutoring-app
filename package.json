@@ -6,6 +6,7 @@
   "scripts": {
     "test": "DEBUG=peer-tutoring:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
     "start": "NODE_ENV=deployment node ./bin/www.js",
+    "seed": "NODE_ENV=development node ./seed/index.js",
     "dev": "DEBUG=peer-tutoring:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js"
   },
   "repository": {

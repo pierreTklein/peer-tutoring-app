@@ -67,6 +67,7 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
+            Middleware.Ticket.getById,
             Middleware.Ticket.startTicket,
             Controllers.Ticket.startedTicket            
         );
@@ -76,6 +77,7 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
+            Middleware.Ticket.getById,
             Middleware.Ticket.endTicket,
             Controllers.Ticket.endedTicket
         );
@@ -85,6 +87,7 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Validator.Ticket.rateValidator,
             Middleware.Util.failIfNotValid,
+            Middleware.Ticket.getById,
             Middleware.Ticket.rateTicket,
             Controllers.Ticket.ratedTicket
         );
