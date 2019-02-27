@@ -17,13 +17,17 @@ const Middleware = {
     Auth: require("../../middlewares/auth.middleware")
 };
 
+const Constants = {
+    General: require("../../constants/general.constant")
+};
+
 module.exports = {
     activate: function (apiRouter) {
         const accountRouter = express.Router();
 
         accountRouter.route("/").get(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthenticated(["Staff"]),
+            Middleware.Auth.ensureAuthenticated([Constants.General.STAFF]),
             Middleware.Validator.Account.searchAccountValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Account.getByQuery,
@@ -64,7 +68,7 @@ module.exports = {
 
         accountRouter.route("/invite").post(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(["Staff"]),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
             Middleware.Validator.Account.inviteAccountValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Account.inviteAccount,
@@ -73,7 +77,7 @@ module.exports = {
 
         accountRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(["Staff"]),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
 
@@ -85,7 +89,7 @@ module.exports = {
 
         accountRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(["Staff"]),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Account.getById,

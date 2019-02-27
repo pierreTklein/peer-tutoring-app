@@ -14,13 +14,18 @@ const Controllers = {
     Account: require("../../controllers/account.controller")
 };
 
+const Constants = {
+    General: require("../../constants/general.constant")
+};
+
+
 module.exports = {
     activate: function (apiRouter) {
         const tutorRouter = express.Router();
-        //patch tutor
+        //patch self tutor
         tutorRouter.route("/").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(["Tutor"]),
+            Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
             Middleware.Validator.Account.updateTutorValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Account.parsePatch,
@@ -29,10 +34,10 @@ module.exports = {
             Controllers.Account.updatedAccount
         );
 
-        //patch tutor
+        //patch any tutor
         tutorRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(["Staff"]),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateTutorValidator,
             Middleware.Util.failIfNotValid,

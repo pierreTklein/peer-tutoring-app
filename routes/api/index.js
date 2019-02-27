@@ -18,5 +18,11 @@ router.get("/", function (req, res) {
         version: VERSION
     });
 });
+router.get("*", function (req, res) {
+    res.status(404).send({
+        message: "404"
+    });
+});
+
 
 module.exports = router;
