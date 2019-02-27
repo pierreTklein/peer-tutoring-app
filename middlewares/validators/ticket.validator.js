@@ -14,7 +14,9 @@ module.exports = {
         VALIDATOR.dateValidator("query", "endBefore", true),
         VALIDATOR.dateValidator("query", "endAfter", true),
         
+        VALIDATOR.booleanValidator("query", "assigned", true),
         VALIDATOR.mongoIdValidator("query", "tutorId", true),
+
         VALIDATOR.mongoIdValidator("query", "studentId", true),
         VALIDATOR.mongoIdValidator("query", "courseId", true),
     ],

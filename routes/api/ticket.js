@@ -1,5 +1,10 @@
 "use strict";
 const express = require("express");
+
+const Constants = {
+    General: require("../../constants/general.constant")
+}
+
 const Model = {
     Ticket: require("../../models/ticket.model")
 };
@@ -23,6 +28,7 @@ module.exports = {
         //get all tickets according to query
         ticketRouter.route("/").get(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
             Middleware.Validator.Ticket.SearchTicketValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getByQuery,
@@ -32,6 +38,7 @@ module.exports = {
         //make new ticket
         ticketRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.STUDENT]),
             Middleware.Validator.Ticket.PostTicketValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Util.parseByModel("ticketDetails", Model.Ticket),
@@ -41,8 +48,9 @@ module.exports = {
         );
 
         //get all tickets associated with current user.
-        ticketRouter.route("/mine").get(
+        ticketRouter.route("/me").get(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.TUTOR, Constants.General.STUDENT]),
             Middleware.Ticket.getByUser,
             Controllers.Ticket.gotTickets
         );
@@ -50,12 +58,17 @@ module.exports = {
         //assign new ticket to tutor.
         ticketRouter.route("/assign").patch(
             Middleware.Auth.ensureAuthenticated(),
-            // TODO
+            Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
+            Middleware.Ticket.getByUser,
+            Middleware.Ticket.getNewTicketFIFO,
+            Middleware.Ticket.assignTicket,
+            Controllers.Ticket.assignedTicket,
         );
     
         //get specific ticket
         ticketRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF, Constants.General.TUTOR]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
@@ -65,9 +78,12 @@ module.exports = {
         //start a ticket
         ticketRouter.route("/:id/start").patch(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.TUTOR, Constants.General.STAFF]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
+            Middleware.Ticket.failIfNotAssigned,
+            Middleware.Ticket.failIfStarted,
             Middleware.Ticket.startTicket,
             Controllers.Ticket.startedTicket            
         );
@@ -75,9 +91,12 @@ module.exports = {
         //end a ticket
         ticketRouter.route("/:id/end").patch(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.TUTOR, Constants.General.STAFF, Constants.General.STUDENT]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
+            Middleware.Ticket.failIfNotAssigned,
+            Middleware.Ticket.failIfEnded,
             Middleware.Ticket.endTicket,
             Controllers.Ticket.endedTicket
         );
@@ -85,6 +104,7 @@ module.exports = {
         //add rating
         ticketRouter.route("/:id/rate").patch(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF, Constants.General.STUDENT]),
             Middleware.Validator.Ticket.rateValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,

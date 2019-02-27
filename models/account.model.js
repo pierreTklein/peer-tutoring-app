@@ -35,6 +35,7 @@ const AccountSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Course",
         }],
+        isOnDuty: Boolean
     },
 });
 

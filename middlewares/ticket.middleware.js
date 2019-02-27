@@ -60,7 +60,10 @@ async function getByQuery(req, res, next) {
             $lte: req.body.endBefore,
             $gte: req.body.endAfter,
         }, _.isUndefined),
-        tutorId: req.body.tutorId,
+        tutorId: _.omitBy({
+            $exists: req.body.assigned,
+            $eq: req.body.tutorId
+        }),
         studentId: req.body.studentId,
         courseId: req.body.courseId,
     };
@@ -102,6 +105,64 @@ async function createTicket(req, res, next) {
     next();
 }
 
+async function failIfNotAssigned(req, res, next) {
+    const ticket = req.body.ticket;
+    if (!ticket.tutorId) {
+        return next({
+            status: 403,
+            message: Constants.Error.TICKET_403_MESSAGE
+        });
+    }
+    next();
+}
+
+
+async function failIfStarted(req, res, next) {
+    const ticket = req.body.ticket;
+    if (ticket.startedAt) {
+        return next({
+            status: 403,
+            message: Constants.Error.TICKET_403_MESSAGE
+        });
+    }
+    next();
+}
+
+async function failIfNotStarted(req, res, next) {
+    const ticket = req.body.ticket;
+    if (!ticket.startedAt) {
+        return next({
+            status: 403,
+            message: Constants.Error.TICKET_403_MESSAGE
+        });
+    }
+    next();
+}
+
+
+async function failIfEnded(req, res, next) {
+    const ticket = req.body.ticket;
+    if (ticket.endedAt) {
+        return next({
+            status: 403,
+            message: Constants.Error.TICKET_403_MESSAGE
+        });
+    }
+    next();
+}
+
+async function failIfNotEnded(req, res, next) {
+    const ticket = req.body.ticket;
+    if (!ticket.endedAt) {
+        return next({
+            status: 403,
+            message: Constants.Error.TICKET_403_MESSAGE
+        });
+    }
+    next();
+}
+
+
 async function startTicket(req, res, next) {
     const updatedValue = {
         startedAt: Date.now()
@@ -129,14 +190,46 @@ async function rateTicket(req, res, next) {
     next();
 }
 
+async function getNewTicketFIFO(req, res, next) {
+    const tutor = req.user.tutor;
+    const ticket = await Services.Ticket.getNewTicketFIFO(tutor.courses);
+    if (!ticket) {
+        return next({
+            status: 400,
+            message: Constants.Error.TICKET_ASSIGN_400_MESSAGE
+        });
+    }
+    req.body.ticket = ticket;
+    next();
+}
+
+async function getNewTicketOptimized(req, res, next) {
+    const tutor = req.user.tutor;
+    const ticket = await Services.Ticket.getNewTicketOptimized(tutor.courses);
+    req.body.ticket = ticket;
+    next();
+}
+
+async function assignTicket(req, res, next) {
+    req.body.ticket = await Services.Ticket.updateOne(req.body.ticket.id, { tutorId: req.user.id });
+    next();
+}
 
 module.exports = {
     getByQuery: Middleware.Util.asyncMiddleware(getByQuery),
     createTicket: Middleware.Util.asyncMiddleware(createTicket),
     getById: Middleware.Util.asyncMiddleware(getById),
     getByUser: Middleware.Util.asyncMiddleware(getByUser),
+    getNewTicketFIFO: Middleware.Util.asyncMiddleware(getNewTicketFIFO),
+    getNewTicketOptimized: Middleware.Util.asyncMiddleware(getNewTicketOptimized),
+    assignTicket: Middleware.Util.asyncMiddleware(assignTicket),
     startTicket: Middleware.Util.asyncMiddleware(startTicket),
     endTicket: Middleware.Util.asyncMiddleware(endTicket),
     rateTicket: Middleware.Util.asyncMiddleware(rateTicket),
     failIfUserHasOpenTicket: Middleware.Util.asyncMiddleware(failIfUserHasOpenTicket),
+    failIfStarted: failIfStarted,
+    failIfNotStarted: failIfNotStarted,
+    failIfEnded: failIfEnded,
+    failIfNotEnded: failIfNotEnded,
+    failIfNotAssigned: failIfNotAssigned,
 };

@@ -23,8 +23,11 @@ module.exports = {
 
         accountRouter.route("/").get(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Account.getByEmail,
-            Controllers.Account.showAccount
+            Middleware.Auth.ensureAuthenticated(["Staff"]),
+            Middleware.Validator.Account.searchAccountValidator,
+            Middleware.Util.failIfNotValid,
+            Middleware.Account.getByQuery,
+            Controllers.Account.gotAccounts
         );
         accountRouter.route("/").post(
             Middleware.Validator.Account.newAccountValidator,
@@ -35,6 +38,23 @@ module.exports = {
             Controllers.Account.addedAccount
         );
 
+        accountRouter.route("/").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Validator.Account.updateAccountValidator,
+            Middleware.Util.failIfNotValid,
+            Middleware.Account.parsePatch,
+            Middleware.Util.putUserIdInBody,
+            Middleware.Account.updateAccount,
+            Controllers.Account.updatedAccount
+        );
+
+        accountRouter.route("/me").get(            
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Util.putUserIdInBody,
+            Middleware.Account.getById,
+            Controllers.Account.showAccount
+        );
+    
         accountRouter.route("/invite").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Util.failIfNotValid,
@@ -44,6 +64,7 @@ module.exports = {
 
         accountRouter.route("/invite").post(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(["Staff"]),
             Middleware.Validator.Account.inviteAccountValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Account.inviteAccount,
@@ -52,6 +73,7 @@ module.exports = {
 
         accountRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(["Staff"]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
 
@@ -63,6 +85,7 @@ module.exports = {
 
         accountRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(["Staff"]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Account.getById,

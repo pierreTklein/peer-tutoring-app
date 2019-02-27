@@ -25,6 +25,7 @@ const accountRouter = require("./routes/api/account");
 const authRouter = require("./routes/api/auth");
 const courseRouter = require("./routes/api/course");
 const ticketRouter = require("./routes/api/ticket");
+const tutorRouter = require("./routes/api/tutor");
 
 const app = express();
 Services.db.connect(app);
@@ -61,6 +62,8 @@ Services.log.info("Auth router activated");
 courseRouter.activate(apiRouter);
 Services.log.info("Course router activated");
 ticketRouter.activate(apiRouter);
+Services.log.info("Ticket router activated");
+tutorRouter.activate(apiRouter);
 Services.log.info("Ticket router activated");
 
 apiRouter.use("/", indexRouter);

@@ -18,8 +18,10 @@ const EMAIL_500_MESSAGE = "Error while generating email";
 const GENERIC_500_MESSAGE = "Internal error";
 const LOGIN_500_MESSAGE = "Error while logging in";
 
+const TICKET_ASSIGN_400_MESSAGE = "No tickets available";
 const TICKET_422_MESSAGE = "Duplicate ticket";
-const TICKET_404_MESSAGE = "Tickent not found";
+const TICKET_404_MESSAGE = "Ticket not found";
+const TICKET_403_MESSAGE = "Unable to process ticket update";
 
 const COURSE_404_MESSAGE = "Course not found";
 
@@ -36,7 +38,9 @@ module.exports = {
     GENERIC_500_MESSAGE: GENERIC_500_MESSAGE,
     ACCOUNT_DUPLICATE_422_MESSAGE: ACCOUNT_DUPLICATE_422_MESSAGE,
     LOGIN_500_MESSAGE: LOGIN_500_MESSAGE,
+    TICKET_ASSIGN_400_MESSAGE: TICKET_ASSIGN_400_MESSAGE,
     TICKET_422_MESSAGE: TICKET_422_MESSAGE,
+    TICKET_403_MESSAGE: TICKET_403_MESSAGE,
     TICKET_404_MESSAGE: TICKET_404_MESSAGE,
     COURSE_404_MESSAGE: COURSE_404_MESSAGE,
 };

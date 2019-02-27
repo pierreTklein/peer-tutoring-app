@@ -69,6 +69,30 @@ function updateOne(id, ticketDetails) {
     return Ticket.findOneAndUpdate(query, ticketDetails, logger.updateCallbackFactory(TAG, "Ticket"));
 }
 
+async function getNewTicketFIFO(courseIds) {
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0); // last midnight
+    const tickets = await Ticket.find({
+        createdAt: {
+            $gte: midnight
+        },
+        startedAt: {
+            $exists: false
+        },
+        courseId: {
+            $in: courseIds
+        }
+    }).sort({
+        createdAt: 1
+    });
+    
+    return tickets.length > 0 ? tickets[0] : null;
+}
+
+async function getNewTicketOptimized(courseIds) {
+    // TODO: Implement this
+    return getNewTicketFIFO(courseIds);
+}
 
 module.exports = {
     find: find,
@@ -76,4 +100,6 @@ module.exports = {
     findOne: findOne,
     findById: findById,
     updateOne: updateOne,
+    getNewTicketFIFO: getNewTicketFIFO,
+    getNewTicketOptimized: getNewTicketOptimized,
 };

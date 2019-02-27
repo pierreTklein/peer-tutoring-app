@@ -18,6 +18,7 @@ const AUTH_SEND_CONFIRMATION_EMAIL = "Send confirmation email successful.";
 const COURSE_CREATE = "Course created.";
 const COURSE_READ = "Course read.";
 
+const TICKET_ASSIGNED = "Ticket assignment successful.";
 const TICKET_CREATE = "Ticket creation successful.";
 const TICKET_END = "Ticket end successful.";
 const TICKET_RATE = "Ticket rate successful.";
@@ -43,6 +44,7 @@ module.exports = {
     COURSE_CREATE: COURSE_CREATE,
     COURSE_READ: COURSE_READ,
 
+    TICKET_ASSIGNED: TICKET_ASSIGNED,
     TICKET_CREATE: TICKET_CREATE,
     TICKET_END: TICKET_END,
     TICKET_RATE: TICKET_RATE,

@@ -1,6 +1,7 @@
 "use strict";
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const _ = require("lodash");
 
 const Services = {
     Auth: require("../services/auth.service"),
@@ -78,30 +79,20 @@ function ensureAuthenticated() {
 }
 
 /**
- * @param {((paramId) => {Account})[]} findByIdFns the request object
+ * @param {String[]} accountType the valid user types.
  * @returns {Fn} the middleware that will check that the user is properly authorized.
  * Calls next() if the user is properly authorized.
  */
-function ensureAuthorized(findByIdFns) {
+function ensureAuthorized(accountType) {
     return function (req, res, next) {
-        Services.Auth.ensureAuthorized(req, findByIdFns).then(
-            (auth) => {
-                if (!auth) {
-                    return next({
-                        status: 403,
-                        message: Constants.Error.AUTH_403_MESSAGE,
-                        error: {
-                            route: req.path
-                        }
-                    });
-                } else {
-                    return next();
-                }
-            },
-            (err) => {
-                return next(err);
-            }
-        );
+        const isAuthorized = _.intersection(req.user.accountType, accountType).length > 0;
+        if (!isAuthorized) {
+            return next({
+                status: 403,
+                message: Constants.Error.AUTH_403_MESSAGE
+            });
+        }
+        next();
     };
 }
 

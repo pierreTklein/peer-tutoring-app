@@ -31,7 +31,7 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
                 return value >= lowerBound && value <= upperBound;
             }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
     } else {
-        return value.exists().withMessage("tier must exist")
+        return value.exists().withMessage(`${fieldname} must exist`)
             .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
@@ -365,6 +365,54 @@ function enumValidator(fieldLocation, fieldname, enums, optional = true) {
 }
 
 /**
+ * Validates that field must be a value within the enum passed in through parameter 'enums'
+ * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
+ * @param {string} fieldname The name of the field that needs to be validated.
+ * @param {Object} enums The enum object that the field must be part of. 
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function enumArrayValidator(fieldLocation, fieldname, enums, optional = true) {
+    const enumValue = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid enums");
+
+    if (optional) {
+        return enumValue
+            .optional({
+                checkFalsy: true
+            })
+            .custom((valArr) => {
+                const isValid = true;
+                if (!Array.isArray(valArr)) {
+                    isValid = false;
+                } else {
+                    for (const val of valArr) {
+                        if (!checkEnum(val, enums)) {
+                            isValid = false;
+                        }
+                    }
+                }
+                return isValid;
+            }).withMessage("The values must be part of the enum");
+    } else {
+        return enumValue
+            .exists()
+            .withMessage("The values being checked agains the enums must exist.")
+            .custom((valArr) => {
+                const isValid = true;
+                if (!Array.isArray(valArr)) {
+                    isValid = false;
+                } else {
+                    for (const val of valArr) {
+                        if (!checkEnum(val, enums)) {
+                            isValid = false;
+                        }
+                    }
+                }
+                return isValid;
+            }).withMessage("The values must be part of the enum");
+    }
+}
+
+/**
  * Checks that 'value' is part of 'enums'. 'enums' should be an enum dict.
  * @param {*} value Should be of the same type as the values of the enum
  * @param {Object} enums An object that represents an enum. They keys are the keys of the enum, and the values are the enum values. 
@@ -422,5 +470,6 @@ module.exports = {
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
     enumValidator: enumValidator,
+    enumArrayValidator: enumArrayValidator,
     stringValidator: stringValidator
 };

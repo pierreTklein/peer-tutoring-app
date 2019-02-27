@@ -86,12 +86,27 @@ function ratedTicket(req, res) {
     });
 }
 
+/**
+ * Assigned ticket.
+ * @param {*} req 
+ * @param {*} res 
+ */
+function assignedTicket(req, res) {
+    res.status(200).json({
+        message: Success.TICKET_ASSIGNED,
+        data: {
+            ticket: req.body.ticket
+        }
+    });
+}
+
 
 module.exports = {
+    assignedTicket: assignedTicket,
     gotTickets: gotTickets,
     gotTicket: gotTicket,
     createdTicket: createdTicket,
     startedTicket: startedTicket,
     endedTicket: endedTicket,
-    ratedTicket: ratedTicket
+    ratedTicket: ratedTicket,
 };

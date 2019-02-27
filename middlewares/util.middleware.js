@@ -57,8 +57,14 @@ function parseByModel(attribute, model) {
     };
 }
 
+function putUserIdInBody(req, res, next) {
+    req.body.id = req.user.id;
+    next();
+}
+
 module.exports = {
     asyncMiddleware: asyncMiddleware,
     failIfNotValid: failIfNotValid,
     parseByModel: parseByModel,
+    putUserIdInBody: putUserIdInBody,
 };

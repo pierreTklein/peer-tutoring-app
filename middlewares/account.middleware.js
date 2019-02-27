@@ -20,24 +20,41 @@ const Constants = {
     General: require("../constants/general.constant")
 };
 
+async function getByQuery(req, res, next) {
+    let query = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        accountType: req.body.accountType,
+        tutor: _.omitBy({
+            courses: req.body.courses,
+            isOnDuty: req.body.isOnDuty
+        }, _.isUndefined)
+    };
+    query = _.omitBy(query, (value) => _.isEmpty(value));
+    const accounts = await Services.Account.find(query);
+    req.body.accounts = accounts;
+    next();
+}
+
 /**
  * @function parsePatch
  * @param {body: {id: ObjectId}} req 
  * @param {*} res 
  * @param {(err?) => void} next 
  * @return {void}
- * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
     let accountDetails = {
-        _id: req.body.id,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        email: req.body.email,
-        accountType: req.body.accountType,
-        courses: req.body.courses,
+        tutor: _.omitBy({
+            courses: req.body.courses,
+            isOnDuty: req.body.isOnDuty
+        }, _.isUndefined)
     };
-    accountDetails = _.omitBy(accountDetails, _.isUndefined);
+    req.body.accountDetails = _.omitBy(accountDetails, (value) => _.isEmpty(value));
+    console.log(req.body.accountDetails);
     return next();
 }
 
@@ -167,8 +184,8 @@ async function addAccount(req, res, next) {
  * @param {*} next 
  */
 async function updateAccount(req, res, next) {
-    const account = await Services.Account.updateOne(req.body.id, req.body.accountDetails);
-    if (account) {
+    req.body.account = await Services.Account.updateOne(req.body.id, req.body.accountDetails);
+    if (req.body.account) {
         return next();
     } else {
         return next({
@@ -305,6 +322,7 @@ module.exports = {
     getInvites: Middleware.Util.asyncMiddleware(getInvites),
     getByEmail: Middleware.Util.asyncMiddleware(getByEmail),
     getById: Middleware.Util.asyncMiddleware(getById),
+    getByQuery: Middleware.Util.asyncMiddleware(getByQuery),
 
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
 
