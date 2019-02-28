@@ -51,7 +51,7 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session()); //persistent login session
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 var apiRouter = express.Router();
 
@@ -70,12 +70,16 @@ apiRouter.use("/", indexRouter);
 
 app.use("/api", apiRouter);
 
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
+
 //Custom error handler
 app.use((err, req, res, next) => {
     // log the error...
     const status = (err.status) ? err.status : 500;
     const message = (err.message) ? err.message : "Internal Server Error";
-    //Only show bad error when we're not in deployment
+    //Only show bad error when we're not in production
     let errorContents;
     if (status === 500 && Services.env.isProduction) {
         errorContents = {};

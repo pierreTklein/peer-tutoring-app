@@ -15,7 +15,7 @@ function getAddressFromEnvironment() {
     return (env.isDevelopment()) ?
         process.env.DB_ADDRESS_DEV :
         (env.isProduction()) ?
-        process.env.DB_ADDRESS_DEPLOY :
+        process.env.DB_ADDRESS_PROD :
         process.env.DB_ADDRESS_TEST;
 }
 
@@ -23,15 +23,15 @@ function getUserFromEnvironment() {
     return (env.isDevelopment()) ?
         process.env.DB_USER_DEV :
         (env.isProduction()) ?
-        process.env.DB_USER_DEPLOY :
+        process.env.DB_USER_PROD :
         process.env.DB_USER_TEST;
 }
 
 function getPassFromEnvironment() {
     return (process.env.NODE_ENV === "development") ?
         process.env.DB_PASS_DEV :
-        (process.env.NODE_ENV === "deployment") ?
-        process.env.DB_PASS_DEPLOY :
+        (process.env.NODE_ENV === "production") ?
+        process.env.DB_PASS_PROD :
         process.env.DB_PASS_TEST;
 }
 

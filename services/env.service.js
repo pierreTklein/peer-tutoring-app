@@ -15,13 +15,13 @@ module.exports = {
         return process.env.NODE_ENV === "development";
     },
     isProduction: function () {
-        return process.env.NODE_ENV === "deployment";
+        return process.env.NODE_ENV === "production";
     },
     isTest: function () {
         return process.env.NODE_ENV === "test";
     }, 
     frontendAddress: function () {
-        return this.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV; 
+        return this.isProduction() ? process.env.FRONTEND_ADDRESS_PROD : process.env.FRONTEND_ADDRESS_DEV; 
     }
 };
 

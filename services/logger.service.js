@@ -2,7 +2,7 @@
 const winston = require("winston");
 const expressWinston = require("express-winston");
 
-const colorize = process.env.NODE_ENV !== "deployment";
+const colorize = process.env.NODE_ENV !== "production";
 
 const errorLogger = expressWinston.errorLogger({
     transports: [
