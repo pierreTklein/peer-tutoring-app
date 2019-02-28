@@ -6,8 +6,11 @@
   "scripts": {
     "test": "DEBUG=peer-tutoring:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
     "start": "NODE_ENV=production node ./bin/www.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "seed": "NODE_ENV=development node ./seed/index.js",
-    "dev": "DEBUG=peer-tutoring:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js"
+    "dev": "concurrently --kill-others-on-fail \"npm run dev-server\" \"npm run dev-client\"",
+    "dev-server": "DEBUG=peer-tutoring:* NODE_ENV=development nodemon ./bin/www.js",
+    "dev-client":"cd client && npm run start"
   },
   "repository": {
     "type": "git",
@@ -19,6 +22,7 @@
     "@sendgrid/mail": "^6.3.1",
     "@types/lodash": "^4.14.121",
     "bcrypt": "^3.0.4",
+    "concurrently": "^4.1.0",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-beta.3",
     "cors": "^2.8.5",
