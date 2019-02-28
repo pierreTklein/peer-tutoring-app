@@ -132,7 +132,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
         const ResetPasswordTokenModel = await Services.ResetPasswordToken.findByAccountId(user.id);
         //generate email
         const token = Services.ResetPasswordToken.generateToken(ResetPasswordTokenModel.id, user.id);
-        const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
+        const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_PROD : process.env.FRONTEND_ADDRESS_DEV;
         const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(address, req.body.email, token);
         if (mailData !== undefined) {
             Services.Email.send(mailData, (err) => {
