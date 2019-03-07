@@ -1,0 +1,82 @@
+{
+    "name": "Peer-tutoring",
+    "description": "Application for managing peer-tutoring services",
+    "env": {
+        "PORT": {
+            "description": "The port on which to run the server",
+            "value": "3000"
+        },
+        "ADDRESS": {
+            "description": "The address on which the server is being run",
+            "value": "localhost"
+        },
+        "FRONTEND_ADDRESS_DEV": {
+            "description": "The development frontend address",
+            "value": "localhost:1337"
+        },
+        "FRONTEND_ADDRESS_DEPLOY": {
+            "description": "The deployment frontend address",
+            "value": "app.mchacks.ca"
+        },
+        "DB_ADDRESS_DEPLOY": {
+            "description": "The mongodb connection string for the deployment database",
+            "value": ""
+        },
+        "DB_USER_DEPLOY": {
+            "description": "",
+            "value": ""
+        },
+        "DB_PASS_DEPLOY": {
+            "description": "",
+            "value": ""
+        },
+        "DB_ADDRESS_DEV": {
+            "description": "The mongodb connection string for the deployment database",
+            "value": ""
+        },
+        "DB_USER_DEV": {
+            "description": "",
+            "value": ""
+        },
+        "DB_PASS_DEV": {
+            "description": "",
+            "value": ""
+        },
+        "DB_ADDRESS_TEST": {
+            "description": "The mongodb connection string for the deployment database",
+            "value": ""
+        },
+        "DB_USER_TEST": {
+            "description": "",
+            "value": ""
+        },
+        "DB_PASS_TEST": {
+            "description": "",
+            "value": ""
+        },
+        "COOKIE_SECRET": {
+            "description": "The cookie secret for your application",
+            "generator": "secret"
+        },
+        "JWT_RESET_PWD_SECRET": {
+            "description": "The reset password secret for your application",
+            "generator": "secret"
+        },
+        "JWT_INVITE_SECRET": {
+            "description": "The invite secret for your application",
+            "generator": "secret"
+        },
+        "SENDGRID_API_KEY": {
+            "description": "The sendgrid api key for your application",
+            "value": ""
+        },
+        "NO_REPLY_EMAIL": {
+            "description": "The email you want your emails to be sent from",
+            "value": ""
+        }
+    },
+    "addons": [
+        "mongolab"
+    ],
+    "keywords": ["peer-tutoring", "node", "express", "mongo"]
+}
