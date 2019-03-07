@@ -1,17 +1,18 @@
-import { Box, Flex } from '@rebass/grid';
-import { AxiosResponse } from 'axios';
-import * as React from 'react';
-import Helmet from 'react-helmet';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { Box, Flex } from "@rebass/grid";
+import { AxiosResponse } from "axios";
+import * as React from "react";
+import Helmet from "react-helmet";
+import { RouteComponentProps, withRouter } from "react-router";
 
-import { APIResponse, Auth } from '../api';
-import Key from '../assets/images/key.svg';
-import { EMAIL_LABEL } from '../config';
-import { Button, H1, Image, MaxWidthBox, Paragraph } from '../shared/Elements';
-import { EmailInput, Form } from '../shared/Form/';
-import validationErrorGenerator from '../shared/Form/validationErrorGenerator';
-import WithToasterContainer from '../shared/HOC/withToaster';
-import PasswordResetEmailConfirmationContainer from './PasswordForgotConfirmation';
+import Email from "@material-ui/icons/EmailRounded";
+
+import { APIResponse, Auth } from "../api";
+import { EMAIL_LABEL } from "../config";
+import { Button, H1, Image, MaxWidthBox, Paragraph } from "../shared/Elements";
+import { EmailInput, Form } from "../shared/Form";
+import validationErrorGenerator from "../shared/Form/validationErrorGenerator";
+import WithToasterContainer from "../shared/HOC/withToaster";
+import ResetPasswordEmailSentContainer from "./ResetPasswordEmailSentContainer";
 
 export interface IForgotState {
   email: string;
@@ -30,50 +31,47 @@ class ForgotPasswordContainer extends React.Component<
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onEmailChanged = this.onEmailChanged.bind(this);
     this.state = {
-      email: '',
-      sentEmail: false,
+      email: "",
+      sentEmail: false
     };
   }
   public render() {
     if (this.state.sentEmail) {
-      return <PasswordResetEmailConfirmationContainer />;
+      return <ResetPasswordEmailSentContainer />;
     } else {
       return (
         <Flex
-          flexWrap={'wrap'}
-          justifyContent={'center'}
-          alignItems={'center'}
-          flexDirection={'column'}
+          flexWrap={"wrap"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          flexDirection={"column"}
           px={2}
         >
           <Helmet>
-            <title>Forgot your password? | McHacks 6</title>
+            <title>Forgot your password? | CSUS Helpdesk</title>
           </Helmet>
-          <Box>
-            <Image src={Key} imgHeight={'4rem'} padding={'0rem'} />
-          </Box>
           <Box>
             <H1>Password Reset</H1>
           </Box>
           <MaxWidthBox fontSize={[2, 3, 4]}>
-            <Paragraph paddingBottom={'20px'} textAlign={'center'}>
+            <Paragraph paddingBottom={"20px"} textAlign={"center"}>
               Enter your email and we will send you a link to reset your
               password
             </Paragraph>
           </MaxWidthBox>
-          <Box width={'100%'}>
+          <Box width={"100%"}>
             <Form onSubmit={this.formSubmitHandler}>
               <Flex
-                justifyContent={'center'}
-                alignItems={'center'}
-                flexDirection={'column'}
+                justifyContent={"center"}
+                alignItems={"center"}
+                flexDirection={"column"}
               >
-                <MaxWidthBox width={'80%'}>
+                <MaxWidthBox width={"80%"}>
                   <EmailInput
                     label={EMAIL_LABEL}
                     required={true}
                     onEmailChanged={this.onEmailChanged}
-                    placeholder={'foo@bar.ca'}
+                    placeholder={"foo@bar.ca"}
                   />
                 </MaxWidthBox>
                 <Box>
@@ -101,17 +99,17 @@ class ForgotPasswordContainer extends React.Component<
       .then((value: AxiosResponse) => {
         // Good response
         if (value.status === 200) {
-          console.log('reset password');
+          console.log("reset password");
           // Log them out, in case they were already logged in.
           Auth.logout()
             .then(() => {
               // Redirect to confirmation page that we sent an email
               this.setState({
-                sentEmail: true,
+                sentEmail: true
               });
             })
-            .catch((error) => {
-              console.error('Could not log out', error);
+            .catch(error => {
+              console.error("Could not log out", error);
             });
         } else {
           console.error(value);

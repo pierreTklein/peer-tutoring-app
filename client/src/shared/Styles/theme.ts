@@ -1,19 +1,20 @@
 const theme = {
   colors: {
-    greyLighter: '#F4F4F4',
-    greyLight: '#BCBCBC',
-    grey: '#797979',
-    greyDark: '#4D4D4D',
-    primaryLight: '#F89790',
-    primary: '#F2463A',
-    white: '#FFFFFF',
+    greyLighter: "#F4F4F4",
+    greyLight: "#BCBCBC",
+    grey: "#939598",
+    greyDark: "#4D4D4D",
+    primaryLight: "#80c2dd",
+    primary: "#25AAE1",
+    primaryDark: "#008cba",
+    white: "#FFFFFF"
   },
-  inputBorderRadius: '20px',
+  inputBorderRadius: "20px",
   fonts: {
-    header: 'Museo, -apple-system, system-ui, BlinkMacSystemFont, sans-serif',
+    header: "Museo, -apple-system, system-ui, BlinkMacSystemFont, sans-serif",
     body:
-      'Hind Siliguri, -apple-system, system-ui, BlinkMacSystemFont, sans-serif;',
-  },
+      "Avenir, Hind Siliguri, -apple-system, system-ui, BlinkMacSystemFont, sans-serif;"
+  }
 };
 
 export interface ITheme {
@@ -24,6 +25,7 @@ export interface ITheme {
     greyDark: string;
     primaryLight: string;
     primary: string;
+    primaryDark: string;
     white: string;
   };
   fonts: {

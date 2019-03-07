@@ -52,13 +52,13 @@ module.exports = {
             Controllers.Account.updatedAccount
         );
 
-        accountRouter.route("/me").get(            
+        accountRouter.route("/self").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Util.putUserIdInBody,
             Middleware.Account.getById,
             Controllers.Account.showAccount
         );
-    
+
         accountRouter.route("/invite").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Util.failIfNotValid,

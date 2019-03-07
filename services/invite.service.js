@@ -71,12 +71,11 @@ function generateInviteTokenLink(httpOrHttps, domain, token) {
     return link;
 }
 /**
- * Generates the mailData for the account confirmation Email. This really only applies to
- * hackers as all other accounts are intrinsically confirmed via the email they recieve to invite them
+ * Generates the mailData for the account invite Email.
  * @param {string} address The hostname that this service is running on
  * @param {string} receiverEmail The receiver of the email
  * @param {string} accountType the user type
- * @param {string} token The account confirmation token
+ * @param {string} token The account invite token
  */
 function generateInviteMailData(address, receiverEmail, accountType, token) {
     const httpOrHttps = (address.includes("localhost")) ? "http" : "https";

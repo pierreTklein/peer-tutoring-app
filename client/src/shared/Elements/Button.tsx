@@ -1,4 +1,4 @@
-import styled from '../Styles/styled-components';
+import styled from "../Styles/styled-components";
 
 export interface IButtonProps {
   secondary?: boolean;
@@ -8,22 +8,22 @@ export interface IButtonProps {
 }
 
 export const Button = styled.button<IButtonProps>`
-  background-color: ${(props) =>
+  background-color: ${props =>
     props.secondary ? props.theme.colors.grey : props.theme.colors.primary};
   font-size: 14px;
-  font-family: ${(props) => props.theme.fonts.header};
+  font-family: ${props => props.theme.fonts.header};
   color: white;
   padding: 10px 15px;
   margin: 5px;
   border: none;
   border-radius: 4px;
-  min-width: ${(props) => (!props.isNarrow ? '100px' : 'initial')};
+  min-width: ${props => (!props.isNarrow ? "100px" : "initial")};
   cursor: pointer;
   transition: 0.15s linear all;
   font-weight: bold;
   position: relative;
 
-  ${(props) =>
+  ${props =>
     props.disabled
       ? `
         cursor: not-allowed;
@@ -33,8 +33,8 @@ export const Button = styled.button<IButtonProps>`
       : `&:hover {
           background-color: ${
             props.secondary
-              ? props.theme.colors.primary
-              : props.theme.colors.primaryLight
+              ? props.theme.colors.greyDark
+              : props.theme.colors.primaryDark
           };
         }
     `}
@@ -45,7 +45,7 @@ export const Button = styled.button<IButtonProps>`
     }
   }
 
-  ${(props) =>
+  ${props =>
     props.isLoading &&
     `
     color: ${
@@ -54,7 +54,7 @@ export const Button = styled.button<IButtonProps>`
     &:hover {
       color: ${
         props.secondary
-          ? props.theme.colors.primary
+          ? props.theme.colors.greyLight
           : props.theme.colors.primaryLight
       };
     }

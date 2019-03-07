@@ -2,7 +2,7 @@
 const express = require("express");
 const versionService = require("../../services/version.service");
 const router = new express.Router();
-
+const Logger = require("../../services/logger.service");
 /* GET home page. */
 /**
  * @api {get} / version
@@ -12,9 +12,10 @@ const router = new express.Router();
  * @apiPermission public
  */
 router.get("/", function (req, res) {
+    Logger.info("hello");
     const VERSION = versionService.get();
     res.status(200).send({
-        name: "hackerAPI",
+        name: "tutoringAPI",
         version: VERSION
     });
 });

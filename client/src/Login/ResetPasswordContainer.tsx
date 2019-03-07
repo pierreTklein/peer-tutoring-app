@@ -1,18 +1,18 @@
-import { Box, Flex } from '@rebass/grid';
-import { AxiosResponse } from 'axios';
-import * as React from 'react';
-import Helmet from 'react-helmet';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Box, Flex } from "@rebass/grid";
+import { AxiosResponse } from "axios";
+import * as React from "react";
+import Helmet from "react-helmet";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import ValidationErrorGenerator from '../shared/Form/validationErrorGenerator';
+import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 
-import { APIResponse, Auth } from '../api';
+import { APIResponse, Auth } from "../api";
 
-import { FrontendRoute, getTokenFromQuery } from '../config';
-import { Button, H1, MaxWidthBox } from '../shared/Elements';
-import { Form, PasswordInput } from '../shared/Form';
+import { FrontendRoute, getTokenFromQuery } from "../config";
+import { Button, H1, MaxWidthBox } from "../shared/Elements";
+import { Form, PasswordInput } from "../shared/Form";
 
-import WithToasterContainer from '../shared/HOC/withToaster';
+import WithToasterContainer from "../shared/HOC/withToaster";
 
 export interface IResetPasswordContainerState {
   isValid: boolean;
@@ -35,43 +35,43 @@ class ResetPasswordContainer extends React.Component<
     this.state = {
       isValid: false,
       isSubmitted: false,
-      password: '',
+      password: ""
     };
   }
   public render() {
     return (
       <Flex
-        justifyContent={'center'}
-        alignItems={'center'}
-        flexDirection={'column'}
+        justifyContent={"center"}
+        alignItems={"center"}
+        flexDirection={"column"}
       >
         <Helmet>
-          <title>Reset Password | McHacks 6</title>
+          <title>Reset Password | CSUS Helpdesk</title>
         </Helmet>
-        <MaxWidthBox maxWidth={'500px'} width={1}>
+        <MaxWidthBox maxWidth={"500px"} width={1}>
           <H1>Reset your password</H1>
           <Form>
             <Flex
-              justifyContent={'center'}
-              alignItems={'center'}
-              flexDirection={'column'}
+              justifyContent={"center"}
+              alignItems={"center"}
+              flexDirection={"column"}
             >
               <Box width={7 / 8}>
                 <PasswordInput
                   onPasswordChanged={this.onPasswordChanged}
-                  label={'New password'}
-                  id={'new-password'}
+                  label={"New password"}
+                  id={"new-password"}
                 />
               </Box>
               <Box width={7 / 8}>
                 <PasswordInput
                   onPasswordChanged={this.onConfirmationChanged}
-                  label={'Confirm password'}
-                  id={'confirm-password'}
+                  label={"Confirm password"}
+                  id={"confirm-password"}
                 />
                 {!this.state.isValid &&
                   this.state.isSubmitted &&
-                  'Passwords must match!'}
+                  "Passwords must match!"}
               </Box>
               <Box>
                 <Button type="button" onClick={this.handleSubmit}>
@@ -99,7 +99,7 @@ class ResetPasswordContainer extends React.Component<
         .then((value: AxiosResponse) => {
           // Good response
           if (value.status === 200) {
-            console.log('Reset password');
+            console.log("Reset password");
             // Redirect to login page
             this.props.history.push(FrontendRoute.LOGIN_PAGE);
           }
@@ -126,8 +126,8 @@ class ResetPasswordContainer extends React.Component<
    * @param password The updated password
    */
   private onConfirmationChanged(confirmation: string) {
-    this.setState((state) => ({
-      isValid: state.password === confirmation && state.password.length > 0,
+    this.setState(state => ({
+      isValid: state.password === confirmation && state.password.length > 0
     }));
   }
 }

@@ -1,28 +1,21 @@
-import { Box, Flex } from '@rebass/grid';
-import { AxiosResponse } from 'axios';
-import * as QueryString from 'query-string';
-import * as React from 'react';
-import Helmet from 'react-helmet';
-import MediaQuery from 'react-responsive';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Box, Flex } from "@rebass/grid";
+import { AxiosResponse } from "axios";
+import * as QueryString from "query-string";
+import * as React from "react";
+import Helmet from "react-helmet";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
-import ValidationErrorGenerator from '../shared/Form/validationErrorGenerator';
-import ForgotPasswordLinkComponent from './ForgotPasswordLink';
+import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
+import ForgotPasswordLinkComponent from "./ForgotPasswordLink";
 
-import {
-  BackgroundImage,
-  Button,
-  H1,
-  LeftContainer,
-  MaxWidthBox,
-} from '../shared/Elements';
-import { EmailInput, Form, PasswordInput } from '../shared/Form';
+import { Button, H1, MaxWidthBox, Panel } from "../shared/Elements";
+import { EmailInput, Form, PasswordInput } from "../shared/Form";
 
-import WithToasterContainer from '../shared/HOC/withToaster';
+import WithToasterContainer from "../shared/HOC/withToaster";
 
-import { APIResponse, Auth } from '../api';
+import { APIResponse, Auth } from "../api";
 
-import { EMAIL_LABEL, FrontendRoute, PASSWORD_LABEL } from '../config';
+import { EMAIL_LABEL, FrontendRoute, PASSWORD_LABEL } from "../config";
 
 export interface ILoginState {
   email: string;
@@ -36,8 +29,8 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
   constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onPasswordChanged = this.onPasswordChanged.bind(this);
@@ -45,32 +38,14 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
   }
   public render() {
     return (
-      <MediaQuery minWidth={1224}>
-        {(matches) =>
-          matches ? (
-            <LeftContainer>
-              {this.renderForm()}
-            </LeftContainer>
-          ) : (
-            <div>
-              {this.renderForm()}
-            </div>
-          )
-        }
-      </MediaQuery>
-    );
-  }
-
-  private renderForm() {
-    return (
-      <MaxWidthBox maxWidth={'600px'} pl={'50px'} pr={'50px'}>
+      <MaxWidthBox maxWidth={"600px"} pl={"50px"}>
         <Helmet>
-          <title>Login | McHacks 6</title>
+          <title>Login | CSUS Helpdesk</title>
         </Helmet>
         <Form>
-          <Flex alignItems={'center'} flexDirection={'column'}>
-            <Box alignSelf={'flex-start'}>
-              <H1 fontSize={'24px'}>Sign in / Register</H1>
+          <Panel alignItems={"center"} flexDirection={"column"}>
+            <Box alignSelf={"flex-start"}>
+              <H1 fontSize={"24px"}>Sign in / Register</H1>
             </Box>
             <EmailInput
               label={EMAIL_LABEL}
@@ -84,20 +59,20 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
               value={this.state.password}
               isTight={true}
             />
-            <Box alignSelf={'flex-end'} mb={'30px'} pr={'10px'}>
+            <Box alignSelf={"flex-end"} mb={"30px"} pr={"10px"}>
               <ForgotPasswordLinkComponent />
             </Box>
             <Flex>
-              <Box pr={'5px'}>
+              <Box pr={"5px"}>
                 <Button type="button" onClick={this.handleSubmit}>
                   Sign in
                 </Button>
               </Box>
-              <Box pl={'5px'}>
+              <Box pl={"5px"}>
                 <Link
                   to={{
                     pathname: FrontendRoute.CREATE_ACCOUNT_PAGE,
-                    state: { ...this.state },
+                    state: { ...this.state }
                   }}
                 >
                   <Button type="button" secondary={true}>
@@ -106,7 +81,7 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
                 </Link>
               </Box>
             </Flex>
-          </Flex>
+          </Panel>
         </Form>
       </MaxWidthBox>
     );
@@ -121,7 +96,7 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
         // Good response
         if (value.status === 200) {
           // Probably want to redirect to login page or something
-          console.log('Logged in');
+          console.log("Logged in");
           const redir = this.getRedirectLink();
           if (redir) {
             this.props.history.push(redir);

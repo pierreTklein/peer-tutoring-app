@@ -69,6 +69,18 @@ function findOne(query) {
 }
 
 /**
+ * @function find
+ * @param {*} query
+ * @return {DocumentQuery} The document query will resolve to either account or null.
+ * @description Finds an account by some query.
+ */
+function find(query) {
+    const TAG = `[Account Service # findOne ]:`;
+
+    return Account.find(query, logger.queryCallbackFactory(TAG, "account", query));
+}
+
+/**
  * @function addOneAccount
  * @param {Account} accountDetails
  * @return {Promise<Account>} The promise will resolve to the account object if save is successful.
@@ -110,6 +122,7 @@ function updatePassword(id, newPassword) {
 
 
 module.exports = {
+    find: find,
     findOne: findOne,
     findById: findById,
     findByEmail: findByEmail,
