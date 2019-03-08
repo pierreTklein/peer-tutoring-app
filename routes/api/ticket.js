@@ -29,6 +29,7 @@ module.exports = {
         ticketRouter.route("/").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
+            Middleware.Validator.Ticket.TicketExpansionValidator,
             Middleware.Validator.Ticket.SearchTicketValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getByQuery,
@@ -51,10 +52,12 @@ module.exports = {
         ticketRouter.route("/me").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR, Constants.General.STUDENT]),
+            Middleware.Validator.Ticket.TicketExpansionValidator,
+            Middleware.Util.failIfNotValid,
             Middleware.Ticket.getByUser,
             Controllers.Ticket.gotTickets
         );
-        
+
         //assign new ticket to tutor.
         ticketRouter.route("/assign").patch(
             Middleware.Auth.ensureAuthenticated(),
@@ -64,7 +67,7 @@ module.exports = {
             Middleware.Ticket.assignTicket,
             Controllers.Ticket.assignedTicket,
         );
-    
+
         //get specific ticket
         ticketRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
@@ -85,9 +88,9 @@ module.exports = {
             Middleware.Ticket.failIfNotAssigned,
             Middleware.Ticket.failIfStarted,
             Middleware.Ticket.startTicket,
-            Controllers.Ticket.startedTicket            
+            Controllers.Ticket.startedTicket
         );
-        
+
         //end a ticket
         ticketRouter.route("/:id/end").patch(
             Middleware.Auth.ensureAuthenticated(),
@@ -111,7 +114,7 @@ module.exports = {
             Middleware.Ticket.rateTicket,
             Controllers.Ticket.ratedTicket
         );
-        
+
         apiRouter.use("/ticket", ticketRouter);
     }
 };

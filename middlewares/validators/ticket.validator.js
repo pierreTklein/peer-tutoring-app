@@ -2,6 +2,12 @@
 const VALIDATOR = require("./util.validator");
 
 module.exports = {
+    TicketExpansionValidator: [
+        VALIDATOR.booleanValidator("query", "expandTutor", true),
+        VALIDATOR.booleanValidator("query", "expandCourse", true),
+        VALIDATOR.booleanValidator("query", "expandStudent", true),
+    ],
+
     SearchTicketValidator: [
         VALIDATOR.dateValidator("query", "createBefore", true),
         VALIDATOR.dateValidator("query", "createAfter", true),
@@ -13,7 +19,7 @@ module.exports = {
         VALIDATOR.booleanValidator("query", "ended", true),
         VALIDATOR.dateValidator("query", "endBefore", true),
         VALIDATOR.dateValidator("query", "endAfter", true),
-        
+
         VALIDATOR.booleanValidator("query", "assigned", true),
         VALIDATOR.mongoIdValidator("query", "tutorId", true),
 
@@ -31,7 +37,7 @@ module.exports = {
         VALIDATOR.asciiValidator("body", "question", true),
     ],
     rateValidator: [
-        VALIDATOR.mongoIdValidator("param","id",false),
+        VALIDATOR.mongoIdValidator("param", "id", false),
         VALIDATOR.integerValidator("body", "rating", false, 0, 5)
-    ],    
+    ],
 };

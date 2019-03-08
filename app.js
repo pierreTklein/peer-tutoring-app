@@ -71,7 +71,7 @@ Services.log.info("Ticket router activated");
 tutorRouter.activate(apiRouter);
 Services.log.info("Ticket router activated");
 
-apiRouter.use("/index", indexRouter);
+apiRouter.use("/", indexRouter);
 
 app.use("/api", apiRouter);
 

@@ -63,30 +63,34 @@ async function getByQuery(req, res, next) {
         tutorId: _.omitBy({
             $exists: req.body.assigned,
             $eq: req.body.tutorId
-        }),
+        }, _.isUndefined),
         studentId: req.body.studentId,
         courseId: req.body.courseId,
     };
     query = _.omitBy(query, (value) => _.isEmpty(value));
-    const tickets = await Services.Ticket.find(query);
+    console.log(query);
+    const tickets = await Services.Ticket.find(query, req.body.expandTutor, req.body.expandStudent, req.body.expandCourse);
     req.body.tickets = tickets;
     next();
 }
 
 async function getByUser(req, res, next) {
     let query = {
-        $or: [
-            { tutorId: req.user.id },
-            { studentId: req.user.id }
+        $or: [{
+                tutorId: req.user.id
+            },
+            {
+                studentId: req.user.id
+            }
         ]
     };
-    const tickets = await Services.Ticket.find(query);
+    const tickets = await Services.Ticket.find(query, req.body.expandTutor, req.body.expandStudent, req.body.expandCourse);
     req.body.tickets = tickets;
     next();
 }
 
 async function getById(req, res, next) {
-    const ticket = await Services.Ticket.findById(req.body.id);
+    const ticket = await Services.Ticket.findById(req.body.id, req.body.expandTutor, req.body.expandStudent, req.body.expandCourse);
     if (!ticket) {
         return next({
             status: 404,
@@ -211,7 +215,9 @@ async function getNewTicketOptimized(req, res, next) {
 }
 
 async function assignTicket(req, res, next) {
-    req.body.ticket = await Services.Ticket.updateOne(req.body.ticket.id, { tutorId: req.user.id });
+    req.body.ticket = await Services.Ticket.updateOne(req.body.ticket.id, {
+        tutorId: req.user.id
+    });
     next();
 }
 
