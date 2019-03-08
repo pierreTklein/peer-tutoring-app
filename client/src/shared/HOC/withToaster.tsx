@@ -1,6 +1,6 @@
-import { Box } from '@rebass/grid';
-import * as React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { Box } from "@rebass/grid";
+import * as React from "react";
+import { ToastContainer } from "react-toastify";
 
 const WithToasterContainer = <P extends {}>(
   Component: React.ComponentType<P>
@@ -12,10 +12,10 @@ const WithToasterContainer = <P extends {}>(
 
     public render() {
       return (
-        <Box mt={'50px'}>
+        <React.Fragment>
           <Component {...this.props} />
           <ToastContainer toastClassName="toast-notification" />
-        </Box>
+        </React.Fragment>
       );
     }
   };

@@ -1,10 +1,10 @@
-import { AxiosResponse } from 'axios';
-import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { APIResponse, Auth } from '../api';
-import { FrontendRoute, IValidationError } from '../config';
-import Button from '../shared/Elements/Button';
-import ValidationErrorGenerator from '../shared/Form/validationErrorGenerator';
+import { AxiosResponse } from "axios";
+import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { APIResponse, Auth } from "../api";
+import { FrontendRoute, IValidationError } from "../config";
+import Button from "../shared/Elements/Button";
+import ToastError from "../shared/Form/validationErrorGenerator";
 
 const LogoutBtn: React.StatelessComponent<RouteComponentProps> = (
   props: RouteComponentProps
@@ -20,7 +20,7 @@ function handleLogout(props: RouteComponentProps): () => void {
       })
       .catch((response: AxiosResponse<APIResponse<IValidationError>>) => {
         if (response && response.data) {
-          ValidationErrorGenerator(response.data);
+          ToastError(response.data);
         }
       });
   };

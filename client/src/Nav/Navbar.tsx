@@ -1,12 +1,13 @@
-import { Box, Flex } from '@rebass/grid';
-import * as React from 'react';
+import { Box, Flex } from "@rebass/grid";
+import * as React from "react";
 
-import Logo from '../assets/images/logo/logo_full_color.svg';
-import { FrontendRoute } from '../config/frontendRoutes';
-import { Image } from '../shared/Elements';
-import { isLoggedIn } from '../util/UserInfoHelperFunctions';
-import LogoutBtn from './LogoutButton';
-import Nav from './Nav';
+import Logo from "../assets/images/logo/logo_full_color.svg";
+import { FrontendRoute } from "../config/frontendRoutes";
+import { Image } from "../shared/Elements";
+import { isLoggedIn } from "../util/UserInfoHelperFunctions";
+import LogoutBtn from "./LogoutButton";
+import Nav from "./Nav";
+import { Link } from "react-router-dom";
 
 interface INavbarState {
   loggedIn: boolean;
@@ -22,29 +23,36 @@ export default class Navbar extends React.Component<
   constructor(props: INavbarProps) {
     super(props);
     this.state = {
-      loggedIn: false,
+      loggedIn: false
     };
     this.checkLoggedIn();
   }
   public render() {
-    const logoutBtn = this.state.loggedIn ? <LogoutBtn /> : '';
+    const logoutBtn = this.state.loggedIn ? <LogoutBtn /> : "";
     return (
-      <Nav borderThickness={this.props.showDivider ? '1px' : '0px'}>
-        <Flex flexDirection={'row'} justifyContent={'space-between'} p={'1rem'}>
-          <Box>
-            <a href={FrontendRoute.HOME_PAGE}>
-              <Image src={Logo} padding={'0rem'} />
-            </a>
+      <Nav borderThickness={this.props.showDivider ? "1px" : "0px"}>
+        <Flex
+          flexDirection={"row"}
+          justifyContent={"space-between"}
+          p={"1rem"}
+          alignItems={"stretch"}
+        >
+          <Box alignSelf={"center"} my={"auto"}>
+            <Link to={FrontendRoute.HOME_PAGE}>
+              <Image src={Logo} imgHeight={"50px"} />
+            </Link>
           </Box>
-          <Box alignSelf={'center'}>{logoutBtn}</Box>
+          <Box alignSelf={"center"} my={"auto"}>
+            {logoutBtn}
+          </Box>
         </Flex>
       </Nav>
     );
   }
   private checkLoggedIn() {
-    isLoggedIn().then((result) => {
+    isLoggedIn().then(result => {
       this.setState({
-        loggedIn: result,
+        loggedIn: result
       });
     });
   }

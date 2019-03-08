@@ -10,6 +10,7 @@ import withThemeProvider from "./shared/HOC/withThemeProvider";
 import ResetPasswordContainer from "./Login/ResetPasswordContainer";
 import withTokenRedirect from "./shared/HOC/withTokenRedirect";
 import ForgotPasswordContainer from "./Login/ForgotPasswordContainer";
+import WithToasterContainer from "./shared/HOC/withToaster";
 
 class App extends Component {
   render() {
@@ -46,4 +47,4 @@ class App extends Component {
   }
 }
 
-export default withThemeProvider(App);
+export default WithToasterContainer(withThemeProvider(App));

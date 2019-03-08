@@ -5,13 +5,11 @@ import * as React from "react";
 import Helmet from "react-helmet";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
-import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
+import ToastError from "../shared/Form/validationErrorGenerator";
 import ForgotPasswordLinkComponent from "./ForgotPasswordLink";
 
 import { Button, H1, MaxWidthBox, Panel } from "../shared/Elements";
 import { EmailInput, Form, PasswordInput } from "../shared/Form";
-
-import WithToasterContainer from "../shared/HOC/withToaster";
 
 import { APIResponse, Auth } from "../api";
 
@@ -38,7 +36,7 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
   }
   public render() {
     return (
-      <MaxWidthBox maxWidth={"600px"} pl={"50px"}>
+      <MaxWidthBox m={"auto"} alignSelf={"center"}>
         <Helmet>
           <title>Login | CSUS Helpdesk</title>
         </Helmet>
@@ -109,7 +107,7 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
       })
       .catch((response: AxiosResponse<APIResponse<any>> | undefined) => {
         if (response && response.data) {
-          ValidationErrorGenerator(response.data);
+          ToastError(response.data);
         }
       });
   }
@@ -139,6 +137,4 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
     }
   }
 }
-export default WithToasterContainer(
-  withRouter<RouteComponentProps>(LoginContainer)
-);
+export default withRouter<RouteComponentProps>(LoginContainer);

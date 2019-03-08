@@ -4,15 +4,13 @@ import * as React from "react";
 import Helmet from "react-helmet";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
+import ToastError from "../shared/Form/validationErrorGenerator";
 
 import { APIResponse, Auth } from "../api";
 
 import { FrontendRoute, getTokenFromQuery } from "../config";
 import { Button, H1, MaxWidthBox } from "../shared/Elements";
 import { Form, PasswordInput } from "../shared/Form";
-
-import WithToasterContainer from "../shared/HOC/withToaster";
 
 export interface IResetPasswordContainerState {
   isValid: boolean;
@@ -106,7 +104,7 @@ class ResetPasswordContainer extends React.Component<
         })
         .catch((response: AxiosResponse<APIResponse<any>> | undefined) => {
           if (response && response.data) {
-            ValidationErrorGenerator(response.data);
+            ToastError(response.data);
           }
         });
     } catch (error) {
@@ -132,6 +130,4 @@ class ResetPasswordContainer extends React.Component<
   }
 }
 
-export default withRouter<RouteComponentProps>(
-  WithToasterContainer(ResetPasswordContainer)
-);
+export default withRouter<RouteComponentProps>(ResetPasswordContainer);

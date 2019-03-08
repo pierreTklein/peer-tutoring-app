@@ -1,13 +1,13 @@
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { APIResponse } from '../../api';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { APIResponse } from "../../api";
 import {
   instanceOfIValidationErrorItem,
   IValidationError,
-  IValidationErrorItem,
-} from '../../config';
+  IValidationErrorItem
+} from "../../config";
 
-export default function ValidationErrorGenerator(
+export default function ToastError(
   response: APIResponse<IValidationError>,
   autoClose: boolean = true
 ) {
@@ -17,7 +17,7 @@ export default function ValidationErrorGenerator(
   const errors: any = response.data;
   toast.error(response.message, {
     position: toast.POSITION.TOP_RIGHT,
-    autoClose: autoClose ? 5000 : false,
+    autoClose: autoClose ? 5000 : false
   });
 
   for (const key in errors) {
@@ -28,7 +28,7 @@ export default function ValidationErrorGenerator(
     ) {
       toast.error(validationErrorItem(key, errors[key]), {
         position: toast.POSITION.TOP_RIGHT,
-        autoClose: false,
+        autoClose: false
       });
     }
   }

@@ -1,4 +1,4 @@
-import styled from '../shared/Styles/styled-components';
+import styled from "../shared/Styles/styled-components";
 
 interface INavProps {
   borderThickness: string;
@@ -6,12 +6,13 @@ interface INavProps {
 
 export const Nav = styled.nav<INavProps>`
   z-index: 11;
-  background: ${(props) => props.theme.colors.white};
+  background: ${props => props.theme.colors.white};
   position: sticky;
   top: 0;
   width: 100%;
-  border-bottom: ${(props) => props.borderThickness || '1px'} solid
-    ${(props) => props.theme.colors.greyLighter};
+  border-bottom: ${props => props.borderThickness || "1px"} solid
+    ${props => props.theme.colors.greyLighter};
+  margin-bottom: 10px;
 `;
 
 export default Nav;
