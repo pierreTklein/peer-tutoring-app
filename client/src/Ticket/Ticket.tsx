@@ -13,7 +13,7 @@ export const Ticket: React.FunctionComponent<ITicketProps> = ({ ticket }) => {
   const tutorDescription = parseTutor(ticket.tutorId);
   const { question, createdAt, startedAt, endedAt, rating } = ticket;
   return (
-    <Panel flexDirection={"column"} alignItems={"left"}>
+    <Panel flexDirection={"column"} alignItems={"left"} m={"2%"}>
       <Box>
         <H2 marginLeft="0px">{courseDescription}</H2>
       </Box>

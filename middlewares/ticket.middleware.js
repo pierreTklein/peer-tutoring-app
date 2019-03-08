@@ -68,7 +68,6 @@ async function getByQuery(req, res, next) {
         courseId: req.body.courseId,
     };
     query = _.omitBy(query, (value) => _.isEmpty(value));
-    console.log(query);
     const tickets = await Services.Ticket.find(query, req.body.expandTutor, req.body.expandStudent, req.body.expandCourse);
     req.body.tickets = tickets;
     next();
