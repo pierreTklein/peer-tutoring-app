@@ -5,7 +5,6 @@ export const Panel = styled(Flex)`
   background: white;
   border-radius: 9px;
   box-shadow: rgba(0, 0, 0, 0.1) 0 10px 34px;
-  padding: 5%;
 `;
 
 export default Panel;

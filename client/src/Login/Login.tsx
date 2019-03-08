@@ -41,7 +41,7 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
           <title>Login | CSUS Helpdesk</title>
         </Helmet>
         <Form>
-          <Panel alignItems={"center"} flexDirection={"column"}>
+          <Panel alignItems={"center"} flexDirection={"column"} p={"5%"}>
             <Box alignSelf={"flex-start"}>
               <H1 fontSize={"24px"}>Sign in / Register</H1>
             </Box>
