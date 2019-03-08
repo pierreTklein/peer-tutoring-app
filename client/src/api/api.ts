@@ -1,5 +1,5 @@
-import { LOCAL_API_URL, PROD_API_URL } from '../config';
-import Endpoint from './endpoint';
+import { LOCAL_API_URL, PROD_API_URL } from "../config";
+import Endpoint from "./endpoint";
 /**
  * Inspired by https://github.com/FrancescoSaverioZuppichini/API-Class
  */
@@ -16,15 +16,21 @@ class API {
    * Create and store a single entity's endpoints
    * @param {string} name name of the resource
    */
-  public createEntity(name: string): void {
-    this.endpoints[name] = this.createBasicCRUDEndpoints(name);
+  public createEntity(name: string, resourceKey?: string): void {
+    this.endpoints[name] = this.createBasicCRUDEndpoints(name, resourceKey);
   }
   /**
    * Create and store multiple entities' endpoints.
    * @param arrayOfEntity names of the resources.
    */
-  public createEntities(arrayOfEntity: string[]): void {
-    arrayOfEntity.forEach(this.createEntity.bind(this));
+  public createEntities(arrayOfEntity: string[], resourceKey?: string[]): void {
+    if (resourceKey) {
+      arrayOfEntity.forEach((value, index) =>
+        this.createEntity(value, resourceKey[index])
+      );
+    } else {
+      arrayOfEntity.forEach(value => this.createEntity(value));
+    }
   }
   /**
    * Get the endpoint object as created by the name
@@ -36,17 +42,20 @@ class API {
   /**
    * Create the basic endpoints handlers for CRUD operations
    */
-  private createBasicCRUDEndpoints(name: string): Endpoint {
-    const endpoints = new Endpoint(name, `${this.url}/${name}`);
+  private createBasicCRUDEndpoints(
+    name: string,
+    resourceKey?: string
+  ): Endpoint {
+    const endpoints = new Endpoint(name, `${this.url}/${name}`, resourceKey);
     return endpoints;
   }
 }
 
 let API_URL;
 if (
-  location.hostname === 'localhost' ||
-  location.hostname === '127.0.0.1' ||
-  location.hostname === ''
+  location.hostname === "localhost" ||
+  location.hostname === "127.0.0.1" ||
+  location.hostname === ""
 ) {
   API_URL = LOCAL_API_URL;
 } else {

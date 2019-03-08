@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "@rebass/grid": "^6.0.0-7",
+    "@types/react-virtualized": "^9.18.12",
     "@types/styled-components": "^4.1.12",
     "axios": "^0.18.0",
     "clipboard": "^2.0.4",
@@ -24,6 +25,7 @@
     "react-select": "^2.3.0",
     "react-table": "^6.9.2",
     "react-toastify": "^4.5.2",
+    "react-virtualized": "^9.21.0",
     "styled-components": "^4.1.3"
   },
   "devDependencies": {
@@ -41,6 +43,8 @@
     "@types/react-table": "^6.7.22",
     "@types/rebass__grid": "^6.0.2",
     "barrelsby": "^1.0.2",
+    "react-cosmos": "^4.7.0",
+    "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-config-standard": "^8.0.1",
@@ -50,6 +54,7 @@
   },
   "proxy": "http://localhost:3000",
   "scripts": {
+    "cosmos": "cosmos --config ./__fixtures__/cosmos.config.js",
     "start": "PORT=1337 react-scripts start",
     "build": "PORT=1337 react-scripts build",
     "test": "PORT=1337 react-scripts test",

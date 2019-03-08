@@ -1,12 +1,12 @@
-import axios, { AxiosPromise } from 'axios';
-import { AxiosRequestConfig } from 'axios';
+import axios, { AxiosPromise } from "axios";
+import { AxiosRequestConfig } from "axios";
 axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(
-  (response) => {
+  response => {
     return response;
   },
-  (error) => {
+  error => {
     return Promise.reject(error.response);
   }
 );
@@ -14,10 +14,12 @@ axios.interceptors.response.use(
 export default class Endpoint {
   private resourceURL: string;
   private name: string;
+  private resourceKey: string;
 
-  constructor(name: string, resourceURL: string) {
-    this.resourceURL = resourceURL;
+  constructor(name: string, resourceURL: string, resourceKey?: string) {
     this.name = name;
+    this.resourceURL = resourceURL;
+    this.resourceKey = resourceKey || "";
   }
   /**
    * Get a specific resource
@@ -28,7 +30,7 @@ export default class Endpoint {
     { id }: { id: string },
     config: AxiosRequestConfig = {}
   ): AxiosPromise {
-    return axios.get(`${this.resourceURL}/${id}`, config);
+    return axios.get(this.generateResourceURL(id), config);
   }
   /**
    * Get all resources
@@ -64,7 +66,7 @@ export default class Endpoint {
     toUpdate: any,
     config: AxiosRequestConfig = {}
   ): AxiosPromise {
-    return axios.put(`${this.resourceURL}/${id}`, toUpdate, config);
+    return axios.put(this.generateResourceURL(id), toUpdate, config);
   }
   /**
    * Patch a specified resource by calling axios.patch
@@ -77,7 +79,7 @@ export default class Endpoint {
     toPatch: any,
     config: AxiosRequestConfig = {}
   ): AxiosPromise {
-    return axios.patch(`${this.resourceURL}/${id}`, toPatch, config);
+    return axios.patch(this.generateResourceURL(id), toPatch, config);
   }
   /**
    * Delete a specified resource by calling axios.delete
@@ -88,12 +90,20 @@ export default class Endpoint {
     { id }: { id: string },
     config: AxiosRequestConfig = {}
   ): AxiosPromise {
-    return axios.delete(`${this.resourceURL}/${id}`, config);
+    return axios.delete(this.generateResourceURL(id), config);
   }
   /**
    * Gets the name of api
    */
   public getName(): string {
     return this.name;
+  }
+
+  private generateResourceURL(id: string) {
+    if (this.resourceKey !== "") {
+      return this.resourceURL.replace(this.resourceKey, id);
+    } else {
+      return `${this.resourceURL}/${id}`;
+    }
   }
 }
