@@ -1,16 +1,16 @@
 "use strict";
 const Constants = {
-    Success: require("../constants/success.constant"),
+    Success: require("../constants/success.constant")
 };
 
 /**
- * @function showAccount
+ * @function gotAccount
  * @param {{body: {account: Object}}} req
  * @param {*} res
  * @return {JSON} Success status and account object
  * @description Returns the JSON of account object located in req.body.account
  */
-function showAccount(req, res) {
+function gotAccount(req, res) {
     const acc = req.body.account;
     return res.status(200).json({
         message: Constants.Success.ACCOUNT_READ,
@@ -19,7 +19,7 @@ function showAccount(req, res) {
 }
 
 /**
- * @function showAccount
+ * @function gotAccount
  * @param {{body: {accounts: Object[]}}} req
  * @param {*} res
  * @return {JSON} Success status and account objects
@@ -30,7 +30,7 @@ function gotAccounts(req, res) {
     const strippedAccs = [];
     for (const acc of accs) {
         strippedAccs.push(acc.toStrippedJSON());
-    };
+    }
     return res.status(200).json({
         message: Constants.Success.ACCOUNT_READ,
         data: strippedAccs
@@ -52,13 +52,12 @@ function addedAccount(req, res) {
     });
 }
 
-
 /**
  * @function updatedAccount
  * @param {{body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description 
+ * @description
  *      Returns a 200 status for an updated account.
  *      The new account information is located in req.body.
  *      The id is moved to req.body.id from req.params.id by validation.
@@ -92,6 +91,6 @@ module.exports = {
     gotInvites: gotInvites,
     updatedAccount: updatedAccount,
     invitedAccount: invitedAccount,
-    showAccount: showAccount,
+    gotAccount: gotAccount,
     gotAccounts: gotAccounts
 };

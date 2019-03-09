@@ -17,6 +17,9 @@ export enum APIRoute {
   TICKET_ASSIGN = "ticket/assign",
   TICKET_START = "ticket/:id/start",
   TICKET_END = "ticket/:id/end",
-  TICKET_RATE = "ticket/:id/rate"
+  TICKET_RATE = "ticket/:id/rate",
+
+  //Tutor routes
+  TUTOR = "tutor"
 }
 export default APIRoute;

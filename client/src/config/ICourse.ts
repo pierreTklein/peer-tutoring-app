@@ -1,5 +1,7 @@
 export interface ICourse {
-    dept: string;
-    code: number;
-    name: string;
+  dept: string;
+  code: number;
+  name: string;
+  _id?: string;
+  id?: string;
 }

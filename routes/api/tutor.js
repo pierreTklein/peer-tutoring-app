@@ -46,6 +46,16 @@ module.exports = {
             Controllers.Account.updatedAccount
         );
 
+        //get any tutor
+        tutorRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(Constants.General.USER_TYPES),
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Util.failIfNotValid,
+            Middleware.Account.getById,
+            Middleware.Account.failIfNotTutor,
+            Controllers.Account.gotAccount
+        );
         apiRouter.use("/tutor", tutorRouter);
     }
 };

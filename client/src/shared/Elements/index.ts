@@ -13,6 +13,7 @@ export * from "./LinkDuo";
 export * from "./MaxWidthBox";
 export * from "./Panel";
 export * from "./Paragraph";
+export * from "./Pillbox";
 export * from "./StyledModal";
 export * from "./Section";
 export * from "./Table";

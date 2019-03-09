@@ -43,22 +43,20 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     );
   }
   return (
-    <Flex>
-      <AutoSizer style={{ minHeight: "300px" }}>
-        {({ height, width }) => {
-          return (
-            <List
-              rowCount={tickets.length}
-              height={height}
-              width={width}
-              deferredMeasurementCache={cache}
-              rowHeight={cache.rowHeight}
-              rowRenderer={rowRenderer}
-            />
-          );
-        }}
-      </AutoSizer>
-    </Flex>
+    <AutoSizer>
+      {({ height, width }) => {
+        return (
+          <List
+            rowCount={tickets.length}
+            height={height}
+            width={width}
+            deferredMeasurementCache={cache}
+            rowHeight={cache.rowHeight}
+            rowRenderer={rowRenderer}
+          />
+        );
+      }}
+    </AutoSizer>
   );
 };
 

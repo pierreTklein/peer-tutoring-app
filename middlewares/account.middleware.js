@@ -161,6 +161,21 @@ async function failIfExists(req, res, next) {
     next();
 }
 
+async function failIfNotTutor(req, res, next) {
+    const account = req.body.account;
+    if (!account.accountType.includes(Constants.General.TUTOR)) {
+        return next({
+            status: 422,
+            message: Constants.Error.AUTH_403_MESSAGE,
+            error: {
+                route: req.path
+            }
+        });
+    }
+    next();
+}
+
+
 /**
  * @function addAccount
  * @param {{body: {accountDetails: object}}} req 
@@ -318,6 +333,7 @@ module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
     failIfExists: Middleware.Util.asyncMiddleware(failIfExists),
+    failIfNotTutor: failIfNotTutor,
 
     getInvites: Middleware.Util.asyncMiddleware(getInvites),
     getByEmail: Middleware.Util.asyncMiddleware(getByEmail),

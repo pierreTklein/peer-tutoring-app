@@ -10,4 +10,6 @@ export interface ITicket {
   startedAt?: string;
   endedAt?: string;
   rating?: number;
+  id?: string;
+  _id?: string;
 }
