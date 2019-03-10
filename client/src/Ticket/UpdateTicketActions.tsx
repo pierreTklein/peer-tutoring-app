@@ -40,6 +40,7 @@ export const UpdateTicketActions: React.FunctionComponent<
             onStartTicket(ticket, onTicketUpdated);
           }}
           buttonType={ButtonType.SUCCESS}
+          tabIndex={1}
         >
           Start
         </Button>
@@ -51,6 +52,7 @@ export const UpdateTicketActions: React.FunctionComponent<
             onAbandonTicket(ticket, onTicketUpdated);
           }}
           buttonType={ButtonType.WARNING}
+          tabIndex={1}
         >
           Abandon
         </Button>
@@ -62,6 +64,7 @@ export const UpdateTicketActions: React.FunctionComponent<
             onEndTicket(ticket, onTicketUpdated);
           }}
           buttonType={ButtonType.DANGER}
+          tabIndex={1}
         >
           End
         </Button>

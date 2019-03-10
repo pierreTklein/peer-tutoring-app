@@ -143,6 +143,7 @@ export class MyTicketsContainer extends React.Component<
             showStudentActions={showStudent}
             showTutorActions={showTutor}
             onTicketUpdated={this.queryTickets}
+            defaultOpened={true}
           />
           <TicketList
             title={"Assigned questions"}
@@ -151,6 +152,7 @@ export class MyTicketsContainer extends React.Component<
             showStudentActions={showStudent}
             showTutorActions={showTutor}
             onTicketUpdated={this.queryTickets}
+            defaultOpened={true}
           />
           <TicketList
             title={"Your answered questions"}

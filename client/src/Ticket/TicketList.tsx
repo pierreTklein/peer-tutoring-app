@@ -22,6 +22,7 @@ interface ITicketListProps {
   hidden?: boolean;
   height?: string | number;
   onTicketUpdated: () => void;
+  defaultOpened?: boolean;
 }
 
 export const TicketList: React.FunctionComponent<ITicketListProps> = ({
@@ -31,7 +32,8 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
   title,
   hidden,
   height,
-  onTicketUpdated
+  onTicketUpdated,
+  defaultOpened
 }) => {
   const cache = new CellMeasurerCache({
     defaultHeight: 273,
@@ -48,7 +50,7 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
       >
         {({ measure }) => {
           return (
-            <div style={style} onLoad={measure}>
+            <div style={style} onLoad={measure} tabIndex={1}>
               <Ticket
                 showStudentActions={showStudentActions}
                 showTutorActions={showTutorActions}
@@ -64,7 +66,12 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
 
   const _height = height || 220 * tickets.length;
   return (
-    <Section title={title} hidden={hidden} collapsable={true}>
+    <Section
+      title={title}
+      hidden={hidden}
+      collapsable={true}
+      isOpen={defaultOpened}
+    >
       <Flex
         style={{
           height: _height

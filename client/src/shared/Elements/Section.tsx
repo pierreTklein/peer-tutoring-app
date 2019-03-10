@@ -6,13 +6,15 @@ interface IProps {
   title: string;
   hidden?: boolean;
   collapsable?: boolean;
+  isOpen?: boolean;
 }
 
 export const Section: React.FunctionComponent<IProps> = ({
   title,
   children,
   hidden,
-  collapsable
+  collapsable,
+  isOpen
 }) => {
   if (hidden) {
     return <div />;
@@ -20,7 +22,7 @@ export const Section: React.FunctionComponent<IProps> = ({
     return (
       <React.Fragment>
         <hr />
-        <details style={{ cursor: "pointer" }}>
+        <details style={{ cursor: "pointer" }} open={isOpen}>
           <summary>
             <div>
               <H2 color={theme.colors.primary}>{title}</H2>

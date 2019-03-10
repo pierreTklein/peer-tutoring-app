@@ -1,11 +1,11 @@
 import * as React from "react";
 import { ITicket, ICourse, IAccount } from "../config";
-import { Panel, H2, Pillbox } from "../shared";
-import { Box, Flex, FlexProps } from "@rebass/grid";
-import LabelledField from "../shared/Elements/LabelledField";
+import { Panel, H2 } from "../shared";
+import { Box } from "@rebass/grid";
 import { TicketStatus, getStatus } from "../config/TicketStatus";
 import theme from "../shared/Styles/theme";
 import { UpdateTicketActions } from "./UpdateTicketActions";
+import LabelledField from "../shared/Elements/LabelledField";
 
 interface ITicketProps {
   ticket: ITicket;
