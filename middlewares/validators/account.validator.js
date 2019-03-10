@@ -3,6 +3,9 @@ const VALIDATOR = require("./util.validator");
 const Constants = require("../../constants/general.constant");
 
 module.exports = {
+    accountExpansionValidator: [
+        VALIDATOR.booleanValidator("query", "expandCourse", true),
+    ],
     searchAccountValidator: [
         VALIDATOR.stringValidator("body", "firstName", true),
         VALIDATOR.stringValidator("body", "lastName", true),

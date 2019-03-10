@@ -1,5 +1,10 @@
 const theme = {
   colors: {
+    purple: "#8840a7",
+    green: "#249948",
+    yellow: "#ecb911",
+    red: "#d21d27",
+
     greyLighter: "#F4F4F4",
     greyLight: "#BCBCBC",
     grey: "#939598",

@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { Redirect } from 'react-router-dom';
+import * as React from "react";
+import { Redirect } from "react-router-dom";
 
-import { FrontendRoute, IAccount } from '../../config';
-import { getUserInfo } from '../../util/UserInfoHelperFunctions';
+import { FrontendRoute, IAccount } from "../../config";
+import { getUserInfo } from "../../util/UserInfoHelperFunctions";
 
 enum authStates {
   authorized,
   unauthorized,
-  undefined,
+  undefined
 }
 
 export interface IAuthDirectOptions {
@@ -17,12 +17,14 @@ export interface IAuthDirectOptions {
   AuthVerification?: (acct: IAccount) => boolean;
   // True, if user should be redirected to original component if the user failed authentication.
   redirAfterLogin?: boolean;
+  redirTo?: string;
 }
 
 const defaultOptions = {
   requiredAuthState: true,
   AuthVerification: (acct: IAccount) => true,
   redirOnSuccess: false,
+  redirTo: FrontendRoute.LOGIN_PAGE
 };
 
 const withAuthRedirect = <P extends {}>(
@@ -32,11 +34,12 @@ const withAuthRedirect = <P extends {}>(
   class extends React.Component<P, { authState: authStates }> {
     private verification: (acct: IAccount) => boolean;
     private redirOnSuccess: string;
+    private redirTo: string;
 
     constructor(props: any) {
       super(props);
       this.state = {
-        authState: authStates.undefined,
+        authState: authStates.undefined
       };
       this.verification = options.AuthVerification
         ? options.AuthVerification
@@ -45,11 +48,12 @@ const withAuthRedirect = <P extends {}>(
         ? `?redir=${encodeURIComponent(
             window.location.pathname + window.location.search
           )}`
-        : '';
+        : "";
       options.requiredAuthState =
         options.requiredAuthState !== undefined
           ? options.requiredAuthState
           : defaultOptions.requiredAuthState;
+      this.redirTo = options.redirTo || defaultOptions.redirTo;
     }
 
     public async componentDidMount() {
@@ -60,16 +64,16 @@ const withAuthRedirect = <P extends {}>(
           this.setState({
             authState: verified
               ? authStates.authorized
-              : authStates.unauthorized,
+              : authStates.unauthorized
           });
         } else {
           this.setState({
-            authState: authStates.unauthorized,
+            authState: authStates.unauthorized
           });
         }
       } catch (e) {
         this.setState({
-          authState: authStates.unauthorized,
+          authState: authStates.unauthorized
         });
       }
     }
@@ -85,9 +89,7 @@ const withAuthRedirect = <P extends {}>(
           );
         case authStates.unauthorized:
           return options.requiredAuthState ? (
-            <Redirect
-              to={`${FrontendRoute.LOGIN_PAGE + this.redirOnSuccess}`}
-            />
+            <Redirect to={`${this.redirTo + this.redirOnSuccess}`} />
           ) : (
             <Component {...this.props} />
           );

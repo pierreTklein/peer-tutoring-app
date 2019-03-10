@@ -14,7 +14,7 @@ const LabelledField: React.FunctionComponent<IFieldProps> = ({
   hidden
 }) => {
   return (
-    <Box width={[1, 1 / 2]} hidden={hidden}>
+    <Box width={1} hidden={hidden}>
       <strong>{label}</strong>: {text}
     </Box>
   );

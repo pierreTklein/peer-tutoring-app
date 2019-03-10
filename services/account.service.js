@@ -9,13 +9,14 @@ const bcrypt = require("bcrypt");
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by mongoID.
  */
-function findById(id) {
+function findById(id, expandCourse = false) {
     const TAG = `[Account Service # findById]:`;
     const query = {
         _id: id
     };
 
-    return Account.findById(query, logger.queryCallbackFactory(TAG, "account", query));
+    const account = Account.findById(query, logger.queryCallbackFactory(TAG, "account", query));
+    return handleExpansion(account, expandCourse);
 }
 
 /**
@@ -24,12 +25,12 @@ function findById(id) {
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Find an account by email.
  */
-function findByEmail(email) {
+function findByEmail(email, expandCourse = false) {
     const query = {
         email: email
     };
 
-    return findOne(query);
+    return findOne(query, expandCourse);
 }
 
 /**
@@ -62,22 +63,25 @@ function hashPassword(password) {
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by some query.
  */
-function findOne(query) {
+function findOne(query, expandCourse = false) {
     const TAG = `[Account Service # findOne ]:`;
 
-    return Account.findOne(query, logger.queryCallbackFactory(TAG, "account", query));
+    const account = Account.findOne(query, logger.queryCallbackFactory(TAG, "account", query));
+    return handleExpansion(account, expandCourse);
 }
 
 /**
  * @function find
  * @param {*} query
+ * @param {boolean} expandCourse
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by some query.
  */
-function find(query) {
+function find(query, expandCourse = false) {
     const TAG = `[Account Service # findOne ]:`;
 
-    return Account.find(query, logger.queryCallbackFactory(TAG, "account", query));
+    const account = Account.find(query, logger.queryCallbackFactory(TAG, "account", query));
+    return handleExpansion(account, expandCourse);
 }
 
 /**
@@ -118,6 +122,18 @@ function updatePassword(id, newPassword) {
     return updateOne(id, {
         password: hashed
     });
+}
+
+/**
+ * 
+ * @param {DocumentQuery} docQuery 
+ * @param {boolean} expandCourse 
+ */
+function handleExpansion(docQuery, expandCourse) {
+    if (expandCourse) {
+        docQuery.populate("tutor.courses");
+    }
+    return docQuery.exec();
 }
 
 

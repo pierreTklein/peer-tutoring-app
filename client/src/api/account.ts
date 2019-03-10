@@ -1,8 +1,8 @@
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { APIRoute, CACHE_USER_KEY, IAccount, IInviteInfo } from '../config';
-import LocalCache from '../util/LocalCache';
-import API from './api';
-import APIResponse from './APIResponse';
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
+import { APIRoute, CACHE_USER_KEY, IAccount, IInviteInfo } from "../config";
+import LocalCache from "../util/LocalCache";
+import API from "./api";
+import APIResponse from "./APIResponse";
 
 class AccountAPI {
   constructor() {
@@ -23,12 +23,12 @@ class AccountAPI {
     if (authToken) {
       config = {
         headers: {
-          token: authToken,
-        },
+          token: authToken
+        }
       };
     }
     const value = await API.getEndpoint(APIRoute.ACCOUNT).create(account, {
-      config,
+      config
     });
     LocalCache.set(CACHE_USER_KEY, value);
     return value;
@@ -37,14 +37,17 @@ class AccountAPI {
    * Get the logged-in user's information.
    */
   public async getSelf(
+    expandCourse?: boolean,
     overrideCache?: boolean
   ): Promise<AxiosResponse<APIResponse<IAccount>>> {
-    const cached: any = LocalCache.get(CACHE_USER_KEY);
+    const cached: any = LocalCache.get(`${CACHE_USER_KEY}_${expandCourse}`);
     if (cached && !overrideCache) {
       return cached as AxiosResponse<APIResponse<IAccount>>;
     }
-    const value = await API.getEndpoint(APIRoute.ACCOUNT_SELF).getAll();
-    LocalCache.set(CACHE_USER_KEY, value);
+    const value = await API.getEndpoint(APIRoute.ACCOUNT_SELF).getAll({
+      params: { expandCourse: expandCourse }
+    });
+    LocalCache.set(`${CACHE_USER_KEY}_${expandCourse}`, value);
     return value;
   }
   /**
@@ -53,14 +56,20 @@ class AccountAPI {
    */
   public async get(
     id: string,
+    expandCourse?: boolean,
     overrideCache?: boolean
   ): Promise<AxiosResponse<APIResponse<IAccount>>> {
-    const key = CACHE_USER_KEY + '-' + id;
+    const key = CACHE_USER_KEY + "-" + id;
     const cached: any = LocalCache.get(key);
     if (cached && !overrideCache) {
       return cached as AxiosResponse<APIResponse<IAccount>>;
     }
-    const value = await API.getEndpoint(APIRoute.ACCOUNT).getOne({ id });
+    const value = await API.getEndpoint(APIRoute.ACCOUNT).getOne(
+      { id },
+      {
+        params: { expandCourse }
+      }
+    );
     LocalCache.set(key, value);
     return value;
   }

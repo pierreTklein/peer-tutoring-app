@@ -39,6 +39,10 @@ class TicketAPI {
   public start(id: string) {
     return API.getEndpoint(APIRoute.TICKET_START).patch({ id }, {});
   }
+
+  public assign() {
+    return API.getEndpoint(APIRoute.TICKET_ASSIGN).patch({ id: "" }, {});
+  }
 }
 export const Ticket = new TicketAPI();
 export default Ticket;

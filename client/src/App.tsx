@@ -12,17 +12,15 @@ import withTokenRedirect from "./shared/HOC/withTokenRedirect";
 import ForgotPasswordContainer from "./Login/ForgotPasswordContainer";
 import WithToasterContainer from "./shared/HOC/withToaster";
 import CreateTicket from "./Ticket/CreateTicket";
+import MyTicketsContainer from "./Ticket/MyTickets";
+import { isUserType } from "./util";
+import { MyAccountContainer } from "./Account/Account";
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route
-            exact={true}
-            path={FrontendRoute.HOME_PAGE}
-            component={withNavbar(withAuthRedirect(CreateTicket))}
-          />
           <Route
             exact={true}
             path={FrontendRoute.LOGIN_PAGE}
@@ -47,10 +45,21 @@ class App extends Component {
             path={FrontendRoute.CREATE_TICKET}
             component={withNavbar(
               withAuthRedirect(CreateTicket, {
+                redirTo: FrontendRoute.HOME_PAGE,
                 AuthVerification: (account: IAccount) =>
-                  account.accountType.includes(UserType.STUDENT)
+                  isUserType(account, UserType.STUDENT)
               })
             )}
+          />
+          <Route
+            exact={true}
+            path={FrontendRoute.HOME_PAGE}
+            component={withNavbar(withAuthRedirect(MyTicketsContainer))}
+          />
+          <Route
+            exact={true}
+            path={FrontendRoute.MY_ACCOUNT_PAGE}
+            component={withNavbar(withAuthRedirect(MyAccountContainer))}
           />
         </Switch>
       </BrowserRouter>

@@ -22,7 +22,7 @@ const Constants = {
 };
 
 module.exports = {
-  activate: function(apiRouter) {
+  activate: function (apiRouter) {
     const accountRouter = express.Router();
 
     accountRouter
@@ -31,6 +31,7 @@ module.exports = {
         Middleware.Auth.ensureAuthenticated(),
         Middleware.Auth.ensureAuthenticated([Constants.General.STAFF]),
         Middleware.Validator.Account.searchAccountValidator,
+        Middleware.Validator.Account.accountExpansionValidator,
         Middleware.Util.failIfNotValid,
         Middleware.Account.getByQuery,
         Controllers.Account.gotAccounts
@@ -62,6 +63,8 @@ module.exports = {
       .route("/self")
       .get(
         Middleware.Auth.ensureAuthenticated(),
+        Middleware.Validator.Account.accountExpansionValidator,
+        Middleware.Util.failIfNotValid,
         Middleware.Util.putUserIdInBody,
         Middleware.Account.getById,
         Controllers.Account.gotAccount
@@ -104,6 +107,7 @@ module.exports = {
       .get(
         Middleware.Auth.ensureAuthenticated(),
         Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
+        Middleware.Validator.Account.accountExpansionValidator,
         Middleware.Validator.RouteParam.idValidator,
         Middleware.Util.failIfNotValid,
         Middleware.Account.getById,

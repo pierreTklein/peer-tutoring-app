@@ -10,21 +10,26 @@ import {
 } from "react-virtualized";
 import "react-virtualized/styles.css"; // only needs to be imported once
 import { Ticket } from "./Ticket";
-import { MaxWidthBox } from "../shared";
+import { Section } from "../shared";
 import { Flex } from "@rebass/grid";
 
-const cache = new CellMeasurerCache({
-  defaultHeight: 50,
-  fixedWidth: true
-});
-
 interface ITicketListProps {
+  title: string;
   tickets: ITicket[];
+  hidden?: boolean;
+  height?: string | number;
 }
 
 export const TicketList: React.FunctionComponent<ITicketListProps> = ({
-  tickets
+  tickets,
+  title,
+  hidden,
+  height
 }) => {
+  const cache = new CellMeasurerCache({
+    defaultHeight: 200,
+    fixedWidth: true
+  });
   function rowRenderer({ key, index, style, parent }: ListRowProps) {
     return (
       <CellMeasurer
@@ -34,29 +39,45 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
         parent={parent}
         rowIndex={index}
       >
-        {({ measure }) => (
-          <div style={style} onLoad={measure}>
-            <Ticket ticket={tickets[index]} />
-          </div>
-        )}
+        {({ measure }) => {
+          return (
+            <div style={style}>
+              <Ticket ticket={tickets[index]} onLoad={measure} />
+            </div>
+          );
+        }}
       </CellMeasurer>
     );
   }
+  function renderList() {
+    return (
+      <Flex
+        style={{
+          height: height || "200px"
+        }}
+      >
+        <AutoSizer>
+          {({ height, width }) => {
+            return (
+              <List
+                rowCount={tickets.length}
+                height={height}
+                width={width}
+                deferredMeasurementCache={cache}
+                rowHeight={cache.rowHeight}
+                rowRenderer={rowRenderer}
+              />
+            );
+          }}
+        </AutoSizer>
+      </Flex>
+    );
+  }
+
   return (
-    <AutoSizer>
-      {({ height, width }) => {
-        return (
-          <List
-            rowCount={tickets.length}
-            height={height}
-            width={width}
-            deferredMeasurementCache={cache}
-            rowHeight={cache.rowHeight}
-            rowRenderer={rowRenderer}
-          />
-        );
-      }}
-    </AutoSizer>
+    <Section title={title} hidden={hidden}>
+      {tickets.length > 0 ? renderList() : ""}
+    </Section>
   );
 };
 

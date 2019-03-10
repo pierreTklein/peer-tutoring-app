@@ -10,7 +10,6 @@ import { Button, H1, MaxWidthBox } from "../shared/Elements";
 import { Form } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
-import WithToasterContainer from "../shared/HOC/withToaster";
 import Ticket from "../api/ticket";
 import { Account, Course } from "../api";
 
@@ -35,6 +34,7 @@ export class CreateTicketContainer extends React.Component<
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.renderFormik = this.renderFormik.bind(this);
+    console.log("Hello");
   }
   private async loadAccount() {
     try {
@@ -57,10 +57,12 @@ export class CreateTicketContainer extends React.Component<
     }
   }
   public async componentDidMount() {
+    console.log("Hello");
     await Promise.all([this.loadAccount(), this.loadCourses()]);
     this.setState({ loadingData: false });
   }
   public render() {
+    console.log("Hello");
     if (this.state.submitted) {
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
@@ -151,4 +153,4 @@ export class CreateTicketContainer extends React.Component<
   }
 }
 
-export default WithToasterContainer(CreateTicketContainer);
+export default CreateTicketContainer;

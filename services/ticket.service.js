@@ -18,17 +18,7 @@ function findById(id, expandTutor = false, expandStudent = false, expandCourse =
     };
 
     const ticket = Ticket.findById(query, logger.queryCallbackFactory(TAG, "Ticket", query));
-
-    if (expandTutor) {
-        ticket.populate("tutorId", "firstName lastName tutor");
-    }
-    if (expandStudent) {
-        ticket.populate("studentId");
-    }
-    if (expandCourse) {
-        ticket.populate("courseId");
-    }
-    return ticket.exec();
+    return handleExpansion(ticket);
 }
 
 /**

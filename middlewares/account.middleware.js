@@ -32,7 +32,7 @@ async function getByQuery(req, res, next) {
         }, _.isUndefined)
     };
     query = _.omitBy(query, (value) => _.isEmpty(value));
-    const accounts = await Services.Account.find(query);
+    const accounts = await Services.Account.find(query, req.body.expandCourse);
     req.body.accounts = accounts;
     next();
 }
@@ -104,12 +104,13 @@ async function updatePassword(req, res, next) {
 /**
  * @async
  * @function getById
- * @param {{body: {id: string}}} req
+ * @param {{body: {id: string, expandCourse?: boolean}}} req
  * @param {*} res
  * @description Retrieves an account's information from mongoId specified in req.body.id, and places it in req.body.account
  */
 async function getById(req, res, next) {
-    const acc = await Services.Account.findById(req.body.id);
+    console.log(req.body);
+    const acc = await Services.Account.findById(req.body.id, req.body.expandCourse);
 
     if (!acc) {
         return next({
@@ -126,12 +127,12 @@ async function getById(req, res, next) {
 /**
  * @async
  * @function getByEmail
- * @param {{user: {email: string}}} req
+ * @param {{user: {email: string, expandCourse?: boolean}}} req
  * @param {*} res
  * @description Gets an account by user email, and sets req.body.acc to the retrived account object if successful.
  */
 async function getByEmail(req, res, next) {
-    const acc = await Services.Account.findByEmail(req.user.email);
+    const acc = await Services.Account.findByEmail(req.user.email, req.body.expandCourse);
 
     if (!acc) {
         return next({
