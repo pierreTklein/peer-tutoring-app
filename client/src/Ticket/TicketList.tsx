@@ -12,22 +12,29 @@ import "react-virtualized/styles.css"; // only needs to be imported once
 import { Ticket } from "./Ticket";
 import { Section } from "../shared";
 import { Flex } from "@rebass/grid";
+import { Collapse } from "@material-ui/core";
 
 interface ITicketListProps {
   title: string;
+  showStudentActions: boolean;
+  showTutorActions: boolean;
   tickets: ITicket[];
   hidden?: boolean;
   height?: string | number;
+  onTicketUpdated: () => void;
 }
 
 export const TicketList: React.FunctionComponent<ITicketListProps> = ({
+  showStudentActions,
+  showTutorActions,
   tickets,
   title,
   hidden,
-  height
+  height,
+  onTicketUpdated
 }) => {
   const cache = new CellMeasurerCache({
-    defaultHeight: 200,
+    defaultHeight: 273,
     fixedWidth: true
   });
   function rowRenderer({ key, index, style, parent }: ListRowProps) {
@@ -41,19 +48,26 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
       >
         {({ measure }) => {
           return (
-            <div style={style}>
-              <Ticket ticket={tickets[index]} onLoad={measure} />
+            <div style={style} onLoad={measure}>
+              <Ticket
+                showStudentActions={showStudentActions}
+                showTutorActions={showTutorActions}
+                ticket={tickets[index]}
+                onTicketUpdated={onTicketUpdated}
+              />
             </div>
           );
         }}
       </CellMeasurer>
     );
   }
-  function renderList() {
-    return (
+
+  const _height = height || 220 * tickets.length;
+  return (
+    <Section title={title} hidden={hidden} collapsable={true}>
       <Flex
         style={{
-          height: height || "200px"
+          height: _height
         }}
       >
         <AutoSizer>
@@ -71,12 +85,6 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
           }}
         </AutoSizer>
       </Flex>
-    );
-  }
-
-  return (
-    <Section title={title} hidden={hidden}>
-      {tickets.length > 0 ? renderList() : ""}
     </Section>
   );
 };

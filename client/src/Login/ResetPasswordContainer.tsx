@@ -9,7 +9,7 @@ import ToastError from "../shared/Form/validationErrorGenerator";
 import { APIResponse, Auth } from "../api";
 
 import { FrontendRoute, getTokenFromQuery } from "../config";
-import { Button, H1, MaxWidthBox } from "../shared/Elements";
+import { Button, H1, MaxWidthBox, ButtonType } from "../shared/Elements";
 import { Form, PasswordInput } from "../shared/Form";
 
 export interface IResetPasswordContainerState {
@@ -72,7 +72,11 @@ class ResetPasswordContainer extends React.Component<
                   "Passwords must match!"}
               </Box>
               <Box>
-                <Button type="button" onClick={this.handleSubmit}>
+                <Button
+                  type="button"
+                  onClick={this.handleSubmit}
+                  buttonType={ButtonType.PRIMARY}
+                >
                   Submit
                 </Button>
               </Box>

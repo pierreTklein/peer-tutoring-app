@@ -12,3 +12,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+summary:before {
+  content: "+";
+  float: right;
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 0;
+  text-align: center;
+  width: 20px;
+}
+
+details[open] summary:before {
+  content: "–";
+}

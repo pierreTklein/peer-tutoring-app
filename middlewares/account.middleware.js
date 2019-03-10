@@ -109,7 +109,6 @@ async function updatePassword(req, res, next) {
  * @description Retrieves an account's information from mongoId specified in req.body.id, and places it in req.body.account
  */
 async function getById(req, res, next) {
-    console.log(req.body);
     const acc = await Services.Account.findById(req.body.id, req.body.expandCourse);
 
     if (!acc) {

@@ -12,6 +12,7 @@ class TicketAPI {
     API.createEntity(APIRoute.TICKET_START, ":id");
     API.createEntity(APIRoute.TICKET_END, ":id");
     API.createEntity(APIRoute.TICKET_RATE, ":id");
+    API.createEntity(APIRoute.TICKET_ABANDON, ":id");
   }
   public create(ticket: ITicket) {
     return API.getEndpoint(APIRoute.TICKET).create(ticket);
@@ -39,7 +40,15 @@ class TicketAPI {
   public start(id: string) {
     return API.getEndpoint(APIRoute.TICKET_START).patch({ id }, {});
   }
-
+  public end(id: string) {
+    return API.getEndpoint(APIRoute.TICKET_END).patch({ id }, {});
+  }
+  public rate(id: string) {
+    return API.getEndpoint(APIRoute.TICKET_RATE).patch({ id }, {});
+  }
+  public abandon(id: string) {
+    return API.getEndpoint(APIRoute.TICKET_ABANDON).patch({ id }, {});
+  }
   public assign() {
     return API.getEndpoint(APIRoute.TICKET_ASSIGN).patch({ id: "" }, {});
   }

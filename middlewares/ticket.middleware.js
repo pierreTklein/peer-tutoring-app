@@ -192,6 +192,17 @@ async function rateTicket(req, res, next) {
     req.body.ticket = ticket;
     next();
 }
+async function abandonTicket(req, res, next) {
+    const updatedValue = {
+        $unset: {
+            tutorId: 1,
+            startedAt: 1
+        }
+    };
+    const ticket = await Services.Ticket.updateOne(req.body.id, updatedValue);
+    req.body.ticket = ticket;
+    next();
+}
 
 async function getNewTicketFIFO(req, res, next) {
     const tutor = req.user.tutor;
@@ -228,6 +239,7 @@ module.exports = {
     getNewTicketFIFO: Middleware.Util.asyncMiddleware(getNewTicketFIFO),
     getNewTicketOptimized: Middleware.Util.asyncMiddleware(getNewTicketOptimized),
     assignTicket: Middleware.Util.asyncMiddleware(assignTicket),
+    abandonTicket: Middleware.Util.asyncMiddleware(abandonTicket),
     startTicket: Middleware.Util.asyncMiddleware(startTicket),
     endTicket: Middleware.Util.asyncMiddleware(endTicket),
     rateTicket: Middleware.Util.asyncMiddleware(rateTicket),

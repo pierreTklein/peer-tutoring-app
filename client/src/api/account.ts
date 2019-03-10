@@ -40,14 +40,16 @@ class AccountAPI {
     expandCourse?: boolean,
     overrideCache?: boolean
   ): Promise<AxiosResponse<APIResponse<IAccount>>> {
-    const cached: any = LocalCache.get(`${CACHE_USER_KEY}_${expandCourse}`);
+    const cached: any = LocalCache.get(
+      `${CACHE_USER_KEY}_${expandCourse || ""}`
+    );
     if (cached && !overrideCache) {
       return cached as AxiosResponse<APIResponse<IAccount>>;
     }
     const value = await API.getEndpoint(APIRoute.ACCOUNT_SELF).getAll({
       params: { expandCourse: expandCourse }
     });
-    LocalCache.set(`${CACHE_USER_KEY}_${expandCourse}`, value);
+    LocalCache.set(`${CACHE_USER_KEY}_${expandCourse || ""}`, value);
     return value;
   }
   /**

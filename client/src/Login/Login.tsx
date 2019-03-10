@@ -8,7 +8,7 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import ForgotPasswordLinkComponent from "./ForgotPasswordLink";
 
-import { Button, H1, MaxWidthBox, Panel } from "../shared/Elements";
+import { Button, H1, MaxWidthBox, Panel, ButtonType } from "../shared/Elements";
 import { EmailInput, Form, PasswordInput } from "../shared/Form";
 
 import { APIResponse, Auth } from "../api";
@@ -62,7 +62,11 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
             </Box>
             <Flex>
               <Box pr={"5px"}>
-                <Button type="button" onClick={this.handleSubmit}>
+                <Button
+                  type="button"
+                  onClick={this.handleSubmit}
+                  buttonType={ButtonType.PRIMARY}
+                >
                   Sign in
                 </Button>
               </Box>
@@ -73,7 +77,7 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
                     state: { ...this.state }
                   }}
                 >
-                  <Button type="button" secondary={true}>
+                  <Button type="button" buttonType={ButtonType.SECONDARY}>
                     Register
                   </Button>
                 </Link>

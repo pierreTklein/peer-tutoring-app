@@ -8,7 +8,14 @@ import Email from "@material-ui/icons/EmailRounded";
 
 import { APIResponse, Auth } from "../api";
 import { EMAIL_LABEL } from "../config";
-import { Button, H1, Image, MaxWidthBox, Paragraph } from "../shared/Elements";
+import {
+  Button,
+  H1,
+  Image,
+  MaxWidthBox,
+  Paragraph,
+  ButtonType
+} from "../shared/Elements";
 import { EmailInput, Form } from "../shared/Form";
 import validationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import ResetPasswordEmailSentContainer from "./ResetPasswordEmailSentContainer";
@@ -74,7 +81,11 @@ class ForgotPasswordContainer extends React.Component<
                   />
                 </MaxWidthBox>
                 <Box>
-                  <Button type="button" onClick={this.handleSubmit}>
+                  <Button
+                    type="button"
+                    onClick={this.handleSubmit}
+                    buttonType={ButtonType.PRIMARY}
+                  >
                     Reset password
                   </Button>
                 </Box>

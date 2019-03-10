@@ -1,8 +1,8 @@
-import { AxiosPromise, AxiosResponse } from 'axios';
-import { APIRoute, CACHE_USER_KEY } from '../config';
-import LocalCache from '../util/LocalCache';
-import API from './api';
-import APIResponse from './APIResponse';
+import { AxiosPromise, AxiosResponse } from "axios";
+import { APIRoute, CACHE_USER_KEY } from "../config";
+import LocalCache from "../util/LocalCache";
+import API from "./api";
+import APIResponse from "./APIResponse";
 
 class AuthAPI {
   constructor() {
@@ -26,9 +26,12 @@ class AuthAPI {
    */
   public async logout(): Promise<AxiosResponse<APIResponse<{}>>> {
     const value = await API.getEndpoint(APIRoute.AUTH_LOGOUT).getOne({
-      id: '',
+      id: ""
     });
     LocalCache.remove(CACHE_USER_KEY);
+    LocalCache.remove(CACHE_USER_KEY + "_true");
+    LocalCache.remove(CACHE_USER_KEY + "_false");
+    LocalCache.remove(CACHE_USER_KEY + "_");
     return value;
   }
   /**
@@ -49,8 +52,8 @@ class AuthAPI {
   ): Promise<AxiosResponse<APIResponse<{}>>> {
     const config = {
       headers: {
-        'x-reset-token': authToken,
-      },
+        "x-reset-token": authToken
+      }
     };
     const result = await API.getEndpoint(APIRoute.AUTH_RESET_PASS).create(
       { password },
@@ -71,10 +74,10 @@ class AuthAPI {
   ): AxiosPromise {
     const changePasswordObject = {
       oldPassword,
-      newPassword,
+      newPassword
     };
     return API.getEndpoint(APIRoute.AUTH_CHANGE_PASS).patch(
-      { id: '' },
+      { id: "" },
       changePasswordObject
     );
   }

@@ -23,7 +23,7 @@ export interface IAuthDirectOptions {
 const defaultOptions = {
   requiredAuthState: true,
   AuthVerification: (acct: IAccount) => true,
-  redirOnSuccess: false,
+  redirOnSuccess: true,
   redirTo: FrontendRoute.LOGIN_PAGE
 };
 
@@ -80,6 +80,7 @@ const withAuthRedirect = <P extends {}>(
 
     public render() {
       const { authState } = this.state;
+      console.log(authState);
       switch (authState) {
         case authStates.authorized:
           return options.requiredAuthState ? (

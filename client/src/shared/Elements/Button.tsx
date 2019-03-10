@@ -1,15 +1,31 @@
 import styled from "../Styles/styled-components";
+import theme from "../Styles/theme";
+
+export enum ButtonType {
+  PRIMARY = "primary",
+  SECONDARY = "secondary",
+  WARNING = "warning",
+  DANGER = "danger",
+  SUCCESS = "success"
+}
 
 export interface IButtonProps {
-  secondary?: boolean;
   isLoading?: boolean;
   isNarrow?: boolean;
   disabled?: boolean;
+  buttonType: ButtonType;
 }
 
+const colors = {
+  primary: theme.colors.primary,
+  success: theme.colors.green,
+  secondary: theme.colors.grey,
+  warning: theme.colors.yellow,
+  danger: theme.colors.red
+};
+
 export const Button = styled.button<IButtonProps>`
-  background-color: ${props =>
-    props.secondary ? props.theme.colors.grey : props.theme.colors.primary};
+  background-color: ${props => colors[props.buttonType]};
   font-size: 14px;
   font-family: ${props => props.theme.fonts.header};
   color: white;
@@ -32,9 +48,9 @@ export const Button = styled.button<IButtonProps>`
       `
       : `&:hover {
           background-color: ${
-            props.secondary
-              ? props.theme.colors.greyDark
-              : props.theme.colors.primaryDark
+            props.buttonType === ButtonType.PRIMARY
+              ? props.theme.colors.primaryDark
+              : props.theme.colors.greyDark
           };
         }
     `}
@@ -49,13 +65,15 @@ export const Button = styled.button<IButtonProps>`
     props.isLoading &&
     `
     color: ${
-      props.secondary ? props.theme.colors.grey : props.theme.colors.primary
+      props.buttonType === ButtonType.PRIMARY
+        ? props.theme.colors.primary
+        : props.theme.colors.grey
     };
     &:hover {
       color: ${
-        props.secondary
-          ? props.theme.colors.greyLight
-          : props.theme.colors.primaryLight
+        props.buttonType === ButtonType.PRIMARY
+          ? props.theme.colors.primaryLight
+          : props.theme.colors.greyLight
       };
     }
     &:before {
@@ -70,9 +88,9 @@ export const Button = styled.button<IButtonProps>`
       margin-left: -10px;
       border-radius: 50%;
       border: 3px solid ${
-        props.secondary
-          ? props.theme.colors.greyLight
-          : props.theme.colors.primaryLight
+        props.buttonType === ButtonType.PRIMARY
+          ? props.theme.colors.primaryLight
+          : props.theme.colors.greyLight
       };
       border-top-color: ${props.theme.colors.white};
       animation: spinner .8s ease infinite;

@@ -99,6 +99,19 @@ function assignedTicket(req, res) {
         }
     });
 }
+/**
+ * Assigned ticket.
+ * @param {*} req 
+ * @param {*} res 
+ */
+function abandonedTicket(req, res) {
+    res.status(200).json({
+        message: Success.TICKET_ABANDON,
+        data: {
+            ticket: req.body.ticket
+        }
+    });
+}
 
 
 module.exports = {
@@ -109,4 +122,5 @@ module.exports = {
     startedTicket: startedTicket,
     endedTicket: endedTicket,
     ratedTicket: ratedTicket,
+    abandonedTicket: abandonedTicket,
 };

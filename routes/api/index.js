@@ -12,7 +12,6 @@ const Logger = require("../../services/logger.service");
  * @apiPermission public
  */
 router.get("/", function (req, res) {
-    Logger.info("hello");
     const VERSION = versionService.get();
     res.status(200).send({
         name: "tutoringAPI",

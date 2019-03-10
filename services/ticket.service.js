@@ -108,6 +108,9 @@ async function getNewTicketFIFO(courseIds) {
         createdAt: {
             $gte: midnight
         },
+        tutorId: {
+            $exists: false
+        },
         startedAt: {
             $exists: false
         },

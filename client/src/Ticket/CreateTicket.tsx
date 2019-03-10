@@ -6,7 +6,7 @@ import { Redirect } from "react-router";
 import { object, string } from "yup";
 
 import { FrontendRoute, IAccount, ICourse, ITicket } from "../config";
-import { Button, H1, MaxWidthBox } from "../shared/Elements";
+import { Button, H1, MaxWidthBox, ButtonType } from "../shared/Elements";
 import { Form } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
@@ -34,7 +34,6 @@ export class CreateTicketContainer extends React.Component<
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.renderFormik = this.renderFormik.bind(this);
-    console.log("Hello");
   }
   private async loadAccount() {
     try {
@@ -57,12 +56,10 @@ export class CreateTicketContainer extends React.Component<
     }
   }
   public async componentDidMount() {
-    console.log("Hello");
     await Promise.all([this.loadAccount(), this.loadCourses()]);
     this.setState({ loadingData: false });
   }
   public render() {
-    console.log("Hello");
     if (this.state.submitted) {
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
@@ -126,6 +123,7 @@ export class CreateTicketContainer extends React.Component<
               onClick={fp.submitForm}
               isLoading={fp.isSubmitting}
               disabled={fp.isSubmitting || this.state.loadingData}
+              buttonType={ButtonType.PRIMARY}
             >
               {this.state.loadingData ? "Loading..." : "Create ticket"}
             </Button>

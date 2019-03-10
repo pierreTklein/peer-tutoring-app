@@ -20,13 +20,23 @@ export default class Navbar extends React.Component<
   INavbarProps,
   INavbarState
 > {
+  private mounted: boolean;
   constructor(props: INavbarProps) {
     super(props);
     this.state = {
       loggedIn: false
     };
+    this.mounted = false;
+    this.checkLoggedIn = this.checkLoggedIn.bind(this);
+  }
+  public componentDidMount() {
+    this.mounted = true;
     this.checkLoggedIn();
   }
+  public componentWillUnmount() {
+    this.mounted = false;
+  }
+
   public render() {
     const logoutBtn = this.state.loggedIn ? <LogoutBtn /> : "";
     return (
@@ -51,9 +61,11 @@ export default class Navbar extends React.Component<
   }
   private checkLoggedIn() {
     isLoggedIn().then(result => {
-      this.setState({
-        loggedIn: result
-      });
+      if (this.mounted) {
+        this.setState({
+          loggedIn: result
+        });
+      }
     });
   }
 }

@@ -5,18 +5,24 @@ import { Box, Flex, FlexProps } from "@rebass/grid";
 import LabelledField from "../shared/Elements/LabelledField";
 import { TicketStatus, getStatus } from "../config/TicketStatus";
 import theme from "../shared/Styles/theme";
+import { UpdateTicketActions } from "./UpdateTicketActions";
 
 interface ITicketProps {
   ticket: ITicket;
-  onLoad: () => void;
+  onTicketUpdated: (ticket: ITicket) => void;
+  showTutorActions: boolean;
+  showStudentActions: boolean;
 }
 
 export const Ticket: React.FunctionComponent<ITicketProps> = ({
   ticket,
-  onLoad
+  onTicketUpdated,
+  showTutorActions,
+  showStudentActions
 }) => {
   const courseDescription = parseCourse(ticket.courseId);
   const tutorDescription = parseTutor(ticket.tutorId);
+  const studentDescription = parseStudent(ticket.studentId);
   const { question, createdAt, startedAt, endedAt, rating } = ticket;
   const status = getStatus(ticket);
   const opacity = "7F";
@@ -43,11 +49,12 @@ export const Ticket: React.FunctionComponent<ITicketProps> = ({
       my={"2%"}
       p={"15px"}
       backgroundColor={color + opacity}
-      onLoad={onLoad}
     >
-      <H2 marginLeft="0px" color={theme.colors.white}>
-        {courseDescription}
-      </H2>
+      <Box>
+        <H2 marginLeft="0px" color={theme.colors.white}>
+          {studentDescription} | {courseDescription}
+        </H2>
+      </Box>
       <LabelledField label={"Status"} text={status} />
       <LabelledField label={"Tutor"} text={tutorDescription} />
       <LabelledField label={"Question"} text={question} />
@@ -66,6 +73,12 @@ export const Ticket: React.FunctionComponent<ITicketProps> = ({
         hidden={!endedAt}
         text={new Date(endedAt || "").toLocaleString()}
       />
+      <UpdateTicketActions
+        showTutorActions={showTutorActions}
+        showStudentActions={showStudentActions}
+        ticket={ticket}
+        onTicketUpdated={onTicketUpdated}
+      />
     </Panel>
   );
 };
@@ -77,6 +90,7 @@ function parseCourse(course: string | ICourse) {
     return `${course.dept} ${course.code}`;
   }
 }
+
 function parseTutor(tutor: string | IAccount | undefined) {
   if (!tutor) {
     return "No assigned tutor";
@@ -84,5 +98,13 @@ function parseTutor(tutor: string | IAccount | undefined) {
     return `${tutor}`;
   } else {
     return `${tutor.firstName} ${tutor.lastName}`;
+  }
+}
+
+function parseStudent(student: string | IAccount) {
+  if (typeof student === "string") {
+    return `${student}`;
+  } else {
+    return `${student.firstName} ${student.lastName.substr(0, 1)}.`;
   }
 }

@@ -9,7 +9,9 @@ import { Account } from "../api";
 import Ticket from "../api/ticket";
 import TicketList from "./TicketList";
 import { isUserType } from "../util";
-import { TicketActions } from "./TicketActions";
+import { TicketActions as ReceiveNewTicketActions } from "./ReceiveNewTicketActions";
+import ToastError from "../shared/Form/validationErrorGenerator";
+import { toast } from "react-toastify";
 
 interface ITicketsContainerState {
   loadingData: boolean;
@@ -34,13 +36,29 @@ export class MyTicketsContainer extends React.Component<
       tutorTicketsPast: [],
       tutorTicketsCurrent: []
     };
+    this.queryTickets = this.queryTickets.bind(this);
   }
 
   public async componentDidMount() {
-    const midnight = new Date();
-    midnight.setHours(0, 0, 0, 0); // last midnight
     try {
       const account = (await Account.getSelf()).data.data;
+      this.setState({ account }, this.queryTickets);
+    } catch (e) {
+      if (e && e.data) {
+        ValidationErrorGenerator(e.data);
+      }
+    } finally {
+      this.setState({ loadingData: false });
+    }
+  }
+  public async queryTickets() {
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0); // last midnight
+    const { account } = this.state;
+    if (!account) {
+      return;
+    }
+    try {
       const tickets: ITicket[] = (await Ticket.getSelf(true, true, false)).data
         .data.tickets;
       const studentTicketsCurrent: ITicket[] = [];
@@ -72,22 +90,16 @@ export class MyTicketsContainer extends React.Component<
         }
       });
       this.setState({
-        account,
         studentTicketsCurrent,
         studentTicketsPast,
         tutorTicketsCurrent,
         tutorTicketsPast
       });
     } catch (e) {
-      if (e && e.data) {
-        ValidationErrorGenerator(e.data);
-      }
-    } finally {
-      this.setState({ loadingData: false });
+      ToastError(e.data);
     }
   }
   public render() {
-    console.log("Hello");
     const {
       account,
       studentTicketsCurrent,
@@ -96,8 +108,10 @@ export class MyTicketsContainer extends React.Component<
       tutorTicketsPast,
       loadingData
     } = this.state;
-    const showTutor = account && isUserType(account, UserType.TUTOR);
-    const showStudent = account && isUserType(account, UserType.STUDENT);
+    const showTutor = (account &&
+      isUserType(account, UserType.TUTOR)) as boolean;
+    const showStudent = (account &&
+      isUserType(account, UserType.STUDENT)) as boolean;
     if (loadingData || !account) {
       return (
         <MaxWidthBox width={0.9} m={"auto"}>
@@ -116,35 +130,49 @@ export class MyTicketsContainer extends React.Component<
         </Helmet>
         <MaxWidthBox width={0.9} m={"auto"}>
           <H1 textAlign={"center"}>My questions</H1>
-          <TicketActions
+          <ReceiveNewTicketActions
             hideAssign={!isUserType(account, UserType.TUTOR)}
             hideRequest={!isUserType(account, UserType.STUDENT)}
             disableRequest={studentTicketsCurrent.length > 0}
+            onQuestionAssigned={this.queryTickets}
           />
           <TicketList
             title={"Your current questions"}
             tickets={studentTicketsCurrent}
             hidden={!showStudent}
+            showStudentActions={showStudent}
+            showTutorActions={showTutor}
+            onTicketUpdated={this.queryTickets}
           />
           <TicketList
             title={"Assigned questions"}
             tickets={tutorTicketsCurrent}
             hidden={!showTutor}
+            showStudentActions={showStudent}
+            showTutorActions={showTutor}
+            onTicketUpdated={this.queryTickets}
           />
           <TicketList
             title={"Your answered questions"}
             tickets={studentTicketsPast}
             hidden={!showStudent}
+            showStudentActions={showStudent}
+            showTutorActions={showTutor}
+            onTicketUpdated={this.queryTickets}
           />
           <TicketList
             title={"Questions you answered"}
             tickets={tutorTicketsPast}
             hidden={!showTutor}
+            showStudentActions={showStudent}
+            showTutorActions={showTutor}
+            onTicketUpdated={this.queryTickets}
           />
         </MaxWidthBox>
       </Flex>
     );
   }
+  private onQuestionAssigned() {}
 }
 
 export default MyTicketsContainer;

@@ -98,10 +98,22 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
-            Middleware.Ticket.failIfNotAssigned,
             Middleware.Ticket.failIfEnded,
             Middleware.Ticket.endTicket,
             Controllers.Ticket.endedTicket
+        );
+
+        //end a ticket
+        ticketRouter.route("/:id/abandon").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.STUDENT, Constants.General.TUTOR]),
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Util.failIfNotValid,
+            Middleware.Ticket.getById,
+            Middleware.Ticket.failIfNotAssigned,
+            Middleware.Ticket.failIfEnded,
+            Middleware.Ticket.abandonTicket,
+            Controllers.Ticket.abandonedTicket
         );
 
         //add rating

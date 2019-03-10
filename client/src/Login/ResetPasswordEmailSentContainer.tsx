@@ -5,7 +5,14 @@ import { Link } from "react-router-dom";
 import Email from "@material-ui/icons/EmailRounded";
 
 import { FrontendRoute } from "../config";
-import { Button, H1, Image, MaxWidthBox, Paragraph } from "../shared/Elements";
+import {
+  Button,
+  H1,
+  Image,
+  MaxWidthBox,
+  Paragraph,
+  ButtonType
+} from "../shared/Elements";
 
 const ResetPasswordEmailSentContainer: React.StatelessComponent<{}> = props => {
   return (
@@ -30,7 +37,9 @@ const ResetPasswordEmailSentContainer: React.StatelessComponent<{}> = props => {
       </MaxWidthBox>
       <Box>
         <Link to={FrontendRoute.LOGIN_PAGE}>
-          <Button type="button">Login page</Button>
+          <Button type="button" buttonType={ButtonType.PRIMARY}>
+            Login page
+          </Button>
         </Link>
       </Box>
     </Flex>

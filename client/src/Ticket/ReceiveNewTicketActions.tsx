@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IAccount, UserType, FrontendRoute } from "../config";
-import { Button } from "../shared";
+import { Button, ButtonType } from "../shared";
 import { Flex, Box } from "@rebass/grid";
 import { isUserType } from "../util";
 import { Ticket } from "../api";
@@ -12,33 +12,44 @@ interface ITicketActionProps {
   hideRequest?: boolean;
   disableAssign?: boolean;
   disableRequest?: boolean;
+  onQuestionAssigned?: () => void;
 }
 
 export const TicketActions: React.FunctionComponent<ITicketActionProps> = ({
   hideAssign,
   hideRequest,
   disableAssign,
-  disableRequest
+  disableRequest,
+  onQuestionAssigned
 }) => {
   return (
     <Flex width={1} justifyContent={"center"}>
       <Box hidden={hideAssign}>
-        <Button disabled={disableAssign} onClick={onAssignQuestion}>
+        <Button
+          disabled={disableAssign}
+          onClick={() => {
+            onAssignQuestion(onQuestionAssigned);
+          }}
+          buttonType={ButtonType.PRIMARY}
+        >
           Assign new question
         </Button>
       </Box>
       <Box hidden={hideRequest}>
         <Link to={FrontendRoute.CREATE_TICKET}>
-          <Button disabled={disableRequest}>Ask new question</Button>
+          <Button disabled={disableRequest} buttonType={ButtonType.PRIMARY}>
+            Ask new question
+          </Button>
         </Link>
       </Box>
     </Flex>
   );
 };
 
-async function onAssignQuestion() {
+async function onAssignQuestion(callback?: () => void) {
   try {
     await Ticket.assign();
+    callback && callback();
   } catch (e) {
     ToastError(e.data);
   }
