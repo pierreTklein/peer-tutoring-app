@@ -18,7 +18,7 @@ export const Ticket: React.FunctionComponent<ITicketProps> = ({ ticket }) => {
         <H2 marginLeft="0px">{courseDescription}</H2>
       </Box>
       <LabelledField label={"Tutor"} text={tutorDescription} />
-      <LabelledField label={"question"} text={question} />
+      <LabelledField label={"Question"} text={question} />
       <LabelledField
         label={"Asked on"}
         hidden={!createdAt}

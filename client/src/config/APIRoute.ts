@@ -20,6 +20,9 @@ export enum APIRoute {
   TICKET_RATE = "ticket/:id/rate",
 
   //Tutor routes
-  TUTOR = "tutor"
+  TUTOR = "tutor",
+
+  //Course routes
+  COURSE = "course"
 }
 export default APIRoute;

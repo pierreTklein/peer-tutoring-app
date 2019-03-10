@@ -117,7 +117,7 @@ function asciiValidator(fieldLocation, fieldname, optional = true) {
             checkFalsy: true
         }).isAscii().withMessage("must contain only ascii characters");
     } else {
-        return name.exists().withMessage("name must exist").isAscii().withMessage("must contain only ascii characters");
+        return name.exists().withMessage(`${fieldname} must exist`).isAscii().withMessage("must contain only ascii characters");
     }
 }
 
@@ -134,7 +134,7 @@ function stringValidator(fieldLocation, fieldname, optional = true) {
             checkFalsy: true
         }).isString().withMessage("must be a string");
     } else {
-        return name.exists().withMessage("name must exist").isString().withMessage("must be a string");
+        return name.exists().withMessage(`${fieldname} must exist`).isString().withMessage("must be a string");
     }
 }
 

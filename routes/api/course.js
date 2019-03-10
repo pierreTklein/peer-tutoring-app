@@ -23,12 +23,11 @@ module.exports = {
             Middleware.Course.getByQuery,
             Controllers.Course.gotCourses,
         );
-    
-        //make new course
-        courseRouter.route("/").post(
-        );
 
-        //get specific ticket
+        //make new course
+        courseRouter.route("/").post();
+
+        //get specific course
         courseRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,

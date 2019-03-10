@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ITutor, ICourse } from "../config";
-import { H2, Section, Pillbox } from "../shared";
+import { Section, Pillbox } from "../shared";
 import { Box, Flex } from "@rebass/grid";
 import LabelledField from "../shared/Elements/LabelledField";
 
@@ -11,7 +11,7 @@ interface ITutorProps {
 export const Tutor: React.FunctionComponent<ITutorProps> = ({ tutor }) => {
   const onDuty = tutor.isOnDuty ? "Yes" : "No";
   return (
-    <Section title={"Tutor Information"}>
+    <Section title={"Tutor Info"}>
       <Flex flexDirection={"column"}>
         <LabelledField label={"Is on duty"} text={onDuty} />
         <Box>
@@ -32,7 +32,9 @@ function parseCourses(courses: string[] | ICourse[]) {
   } else if (typeof courses[0] === "string") {
     courses = courses as string[];
     return courses.map((course, index) => (
-      <Pillbox key={index}>{course}</Pillbox>
+      <Pillbox key={index} px={"3px"} mx={"2px"}>
+        {course}
+      </Pillbox>
     ));
   } else {
     courses = courses as ICourse[];

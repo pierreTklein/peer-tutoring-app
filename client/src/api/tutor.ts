@@ -1,5 +1,5 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
-import { APIRoute, ITutor } from "../config";
+import { APIRoute, ITutor, ITicket } from "../config";
 import API from "./api";
 import APIResponse from "./APIResponse";
 import { ITicketQuery } from "../config/ITicketQuery";
@@ -12,6 +12,9 @@ class TicketAPI {
     API.createEntity(APIRoute.TICKET_START, ":id");
     API.createEntity(APIRoute.TICKET_END, ":id");
     API.createEntity(APIRoute.TICKET_RATE, ":id");
+  }
+  public create(ticket: ITicket) {
+    return API.getEndpoint(APIRoute.TUTOR).create(ticket);
   }
   public patchSelf(tutor: ITutor) {
     return API.getEndpoint(APIRoute.TUTOR).patch({ id: "" }, tutor);

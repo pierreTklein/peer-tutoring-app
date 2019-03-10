@@ -54,7 +54,6 @@ function parsePatch(req, res, next) {
         }, _.isUndefined)
     };
     req.body.accountDetails = _.omitBy(accountDetails, (value) => _.isEmpty(value));
-    console.log(req.body.accountDetails);
     return next();
 }
 

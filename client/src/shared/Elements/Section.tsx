@@ -17,7 +17,7 @@ export const Section: React.FunctionComponent<IProps> = ({
   ) : (
     <section>
       <hr />
-      <H2 color={theme.colors.grey}>{title}</H2>
+      <H2 color={theme.colors.primary}>{title}</H2>
       {children}
     </section>
   );

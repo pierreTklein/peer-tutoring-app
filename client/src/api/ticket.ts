@@ -14,7 +14,7 @@ class TicketAPI {
     API.createEntity(APIRoute.TICKET_RATE, ":id");
   }
   public create(ticket: ITicket) {
-    return API.getEndpoint(APIRoute.TICKET).create({ ticket });
+    return API.getEndpoint(APIRoute.TICKET).create(ticket);
   }
   public getSelf(
     expandTutor?: boolean,

@@ -12,6 +12,7 @@ interface IStylizedSelectFormikProps {
   creatable: boolean;
   required?: boolean;
   isDisabled?: boolean;
+  isLoading?: boolean;
 }
 
 const StylizedSelectFormikComponent: React.StatelessComponent<
@@ -25,7 +26,8 @@ const StylizedSelectFormikComponent: React.StatelessComponent<
     isMulti: props.isMulti,
     placeholder: props.placeholder || "Select...",
     value: generateValue(props.value),
-    isDisabled: props.isDisabled
+    isDisabled: props.isDisabled,
+    isLoading: props.isLoading
   };
   return (
     <Label>
@@ -60,10 +62,9 @@ function handleChangeFactory(props: IStylizedSelectFormikProps & FieldProps) {
     if (Array.isArray(newValue)) {
       const field = props.field;
       const form = props.form;
-      const skills = newValue.map(value => value.value);
-      form.setFieldValue(field.name, skills);
-    } else if (newValue && newValue.value) {
-      form.setFieldValue(field.name, newValue.value);
+      form.setFieldValue(field.name, newValue);
+    } else if (newValue) {
+      form.setFieldValue(field.name, newValue);
     } else {
       form.setFieldValue(field.name, "");
     }
