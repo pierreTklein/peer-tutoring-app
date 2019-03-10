@@ -7,6 +7,7 @@ export enum FrontendRoute {
   MY_ACCOUNT_PAGE = "/account/",
   VIEW_ACCOUNT_PAGE = "/account/:id",
   CREATE_ACCOUNT_PAGE = "/account/new",
+  EDIT_ACCOUNT_PAGE = "/account/edit",
 
   CREATE_TICKET = "/ticket/new"
 }

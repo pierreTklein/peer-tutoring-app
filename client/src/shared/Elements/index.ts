@@ -14,6 +14,7 @@ export * from "./MaxWidthBox";
 export * from "./Panel";
 export * from "./Paragraph";
 export * from "./Pillbox";
+export * from "./PrewrapBox";
 export * from "./StyledModal";
 export * from "./Section";
 export * from "./Table";

@@ -347,5 +347,6 @@ module.exports = {
     verifyInviteToken: verifyInviteToken,
     inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount),
     parseInviteToken: parseInviteToken,
+    getInviteFromToken: Middleware.Util.asyncMiddleware(getInviteFromToken),
     getAccountTypeFromInvite: Middleware.Util.asyncMiddleware(getAccountTypeFromInvite),
 };

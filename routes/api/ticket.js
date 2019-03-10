@@ -3,7 +3,7 @@ const express = require("express");
 
 const Constants = {
     General: require("../../constants/general.constant")
-}
+};
 
 const Model = {
     Ticket: require("../../models/ticket.model")

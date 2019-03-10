@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Box } from "@rebass/grid";
+import { PrewrapBox } from ".";
 
 interface IFieldProps {
   text: string | number | undefined;
@@ -14,9 +14,9 @@ const LabelledField: React.FunctionComponent<IFieldProps> = ({
   hidden
 }) => {
   return (
-    <Box width={1} hidden={hidden}>
+    <PrewrapBox width={1} hidden={hidden}>
       <strong>{label}</strong>: {text}
-    </Box>
+    </PrewrapBox>
   );
 };
 

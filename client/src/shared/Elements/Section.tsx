@@ -22,8 +22,8 @@ export const Section: React.FunctionComponent<IProps> = ({
     return (
       <React.Fragment>
         <hr />
-        <details style={{ cursor: "pointer" }} open={isOpen}>
-          <summary>
+        <details open={isOpen}>
+          <summary style={{ cursor: "pointer" }}>
             <div>
               <H2 color={theme.colors.primary}>{title}</H2>
             </div>

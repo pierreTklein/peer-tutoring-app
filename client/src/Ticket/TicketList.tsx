@@ -12,7 +12,6 @@ import "react-virtualized/styles.css"; // only needs to be imported once
 import { Ticket } from "./Ticket";
 import { Section } from "../shared";
 import { Flex } from "@rebass/grid";
-import { Collapse } from "@material-ui/core";
 
 interface ITicketListProps {
   title: string;
@@ -64,7 +63,7 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     );
   }
 
-  const _height = height || 220 * tickets.length;
+  const _height = height || 280 * tickets.length;
   return (
     <Section
       title={title}

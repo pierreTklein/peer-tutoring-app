@@ -2,7 +2,7 @@
 const express = require("express");
 const versionService = require("../../services/version.service");
 const router = new express.Router();
-const Logger = require("../../services/logger.service");
+
 /* GET home page. */
 /**
  * @api {get} / version

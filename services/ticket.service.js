@@ -18,7 +18,7 @@ function findById(id, expandTutor = false, expandStudent = false, expandCourse =
     };
 
     const ticket = Ticket.findById(query, logger.queryCallbackFactory(TAG, "Ticket", query));
-    return handleExpansion(ticket);
+    return handleExpansion(ticket, expandTutor, expandStudent, expandCourse);
 }
 
 /**

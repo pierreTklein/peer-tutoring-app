@@ -7,7 +7,7 @@ export interface IAccount {
   firstName: string;
   lastName: string;
   email: string;
-  password?: string;
+  password: string;
   accountType: UserType[];
   tutor: ITutor;
 }

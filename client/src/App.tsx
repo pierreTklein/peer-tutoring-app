@@ -14,7 +14,9 @@ import WithToasterContainer from "./shared/HOC/withToaster";
 import CreateTicket from "./Ticket/CreateTicket";
 import MyTicketsContainer from "./Ticket/MyTickets";
 import { isUserType } from "./util";
-import { MyAccountContainer } from "./Account/Account";
+import { MyAccountContainer } from "./AccountView/Account";
+import { CreateAccount } from "./AccountManagement/CreateAccount";
+import { EditAccount } from "./AccountManagement/EditAccount";
 
 class App extends Component {
   render() {
@@ -58,8 +60,17 @@ class App extends Component {
           />
           <Route
             exact={true}
-            path={FrontendRoute.MY_ACCOUNT_PAGE}
-            component={withNavbar(withAuthRedirect(MyAccountContainer))}
+            path={FrontendRoute.CREATE_ACCOUNT_PAGE}
+            component={withNavbar(
+              withAuthRedirect(CreateAccount, {
+                requiredAuthState: false
+              })
+            )}
+          />
+          <Route
+            exact={true}
+            path={FrontendRoute.EDIT_ACCOUNT_PAGE}
+            component={withNavbar(withAuthRedirect(EditAccount))}
           />
         </Switch>
       </BrowserRouter>

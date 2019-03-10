@@ -29,7 +29,6 @@ export class MyAccountContainer extends React.Component<
   public async componentDidMount() {
     try {
       const account = (await Account.getSelf(true)).data.data;
-      console.log(account);
       this.setState({ account });
     } catch (e) {
       if (e && e.data) {
