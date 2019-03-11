@@ -87,7 +87,7 @@ class AccountAPI {
       { id: "" },
       account
     );
-    LocalCache.remove(CACHE_USER_KEY);
+    LocalCache.removeAll();
     return value;
   }
   /**
@@ -103,7 +103,7 @@ class AccountAPI {
       { id },
       account
     );
-    LocalCache.remove(CACHE_USER_KEY);
+    LocalCache.removeAll();
     return value;
   }
 

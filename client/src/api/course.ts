@@ -1,5 +1,5 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
-import { APIRoute, ITicket } from "../config";
+import { APIRoute } from "../config";
 import API from "./api";
 
 class CourseAPI {

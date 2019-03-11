@@ -28,10 +28,7 @@ class AuthAPI {
     const value = await API.getEndpoint(APIRoute.AUTH_LOGOUT).getOne({
       id: ""
     });
-    LocalCache.remove(CACHE_USER_KEY);
-    LocalCache.remove(CACHE_USER_KEY + "_true");
-    LocalCache.remove(CACHE_USER_KEY + "_false");
-    LocalCache.remove(CACHE_USER_KEY + "_");
+    LocalCache.removeAll();
     return value;
   }
   /**
@@ -59,7 +56,7 @@ class AuthAPI {
       { password },
       { config }
     );
-    LocalCache.remove(CACHE_USER_KEY);
+    LocalCache.removeAll();
     return result;
   }
 
