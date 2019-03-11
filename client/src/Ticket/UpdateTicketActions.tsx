@@ -41,6 +41,7 @@ export const UpdateTicketActions: React.FunctionComponent<
           }}
           buttonType={ButtonType.SUCCESS}
           tabIndex={1}
+          title={"Start the session"}
         >
           Start
         </Button>
@@ -53,6 +54,7 @@ export const UpdateTicketActions: React.FunctionComponent<
           }}
           buttonType={ButtonType.WARNING}
           tabIndex={1}
+          title={"End session, and return to queue"}
         >
           Abandon
         </Button>
@@ -65,6 +67,7 @@ export const UpdateTicketActions: React.FunctionComponent<
           }}
           buttonType={ButtonType.DANGER}
           tabIndex={1}
+          title={"End the session"}
         >
           End
         </Button>

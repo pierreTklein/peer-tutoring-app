@@ -14,11 +14,14 @@ interface ITicketProps {
   showStudentActions: boolean;
 }
 
-export const Ticket: React.FunctionComponent<ITicketProps> = ({
+export const Ticket: React.FunctionComponent<
+  ITicketProps & React.HTMLAttributes<HTMLElement>
+> = ({
   ticket,
   onTicketUpdated,
   showTutorActions,
-  showStudentActions
+  showStudentActions,
+  ...rest
 }) => {
   const courseDescription = parseCourse(ticket.courseId);
   const tutorDescription = parseTutor(ticket.tutorId);
@@ -49,6 +52,7 @@ export const Ticket: React.FunctionComponent<ITicketProps> = ({
       my={"2%"}
       p={"15px"}
       backgroundColor={color + opacity}
+      {...rest}
     >
       <Box>
         <H2 marginLeft="0px" color={theme.colors.white}>

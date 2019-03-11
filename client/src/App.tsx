@@ -55,11 +55,6 @@ class App extends Component {
           />
           <Route
             exact={true}
-            path={FrontendRoute.HOME_PAGE}
-            component={withNavbar(withAuthRedirect(MyTicketsContainer))}
-          />
-          <Route
-            exact={true}
             path={FrontendRoute.CREATE_ACCOUNT_PAGE}
             component={withNavbar(
               withAuthRedirect(CreateAccount, {
@@ -71,6 +66,11 @@ class App extends Component {
             exact={true}
             path={FrontendRoute.EDIT_ACCOUNT_PAGE}
             component={withNavbar(withAuthRedirect(EditAccount))}
+          />
+
+          <Route
+            path={FrontendRoute.HOME_PAGE}
+            component={withNavbar(withAuthRedirect(MyTicketsContainer))}
           />
         </Switch>
       </BrowserRouter>

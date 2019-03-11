@@ -49,12 +49,13 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
       >
         {({ measure }) => {
           return (
-            <div style={style} onLoad={measure} tabIndex={1}>
+            <div style={style} onLoad={measure}>
               <Ticket
                 showStudentActions={showStudentActions}
                 showTutorActions={showTutorActions}
                 ticket={tickets[index]}
                 onTicketUpdated={onTicketUpdated}
+                tabIndex={1}
               />
             </div>
           );
