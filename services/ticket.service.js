@@ -114,6 +114,9 @@ async function getNewTicketFIFO(tutorId, courseIds) {
         startedAt: {
             $exists: false
         },
+        endedAt: {
+            $exists: false
+        },
         courseId: {
             $in: courseIds
         },

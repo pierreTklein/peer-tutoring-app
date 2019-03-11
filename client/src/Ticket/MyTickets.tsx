@@ -2,7 +2,7 @@ import { Flex } from "@rebass/grid";
 import * as React from "react";
 import Helmet from "react-helmet";
 
-import { IAccount, ITicket, UserType } from "../config";
+import { IAccount, ITicket, UserType, compareTicket } from "../config";
 import { H1, MaxWidthBox, Section, Button } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import { Account } from "../api";
@@ -89,6 +89,10 @@ export class MyTicketsContainer extends React.Component<
           }
         }
       });
+      studentTicketsCurrent.sort(compareTicket);
+      studentTicketsPast.sort(compareTicket);
+      tutorTicketsCurrent.sort(compareTicket);
+      tutorTicketsPast.sort(compareTicket);
       this.setState({
         studentTicketsCurrent,
         studentTicketsPast,
@@ -174,7 +178,6 @@ export class MyTicketsContainer extends React.Component<
       </Flex>
     );
   }
-  private onQuestionAssigned() {}
 }
 
 export default MyTicketsContainer;

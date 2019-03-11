@@ -28,13 +28,14 @@ module.exports = {
     ],
     PostTicketValidator: [
         VALIDATOR.mongoIdValidator("body", "courseId", false),
-        VALIDATOR.asciiValidator("body", "question", false),
+        VALIDATOR.stringValidator("body", "question", false),
+        VALIDATOR.stringValidator("body", "category", true),
     ],
     PatchTicketValidator: [
         VALIDATOR.mongoIdValidator("body", "tutorId", true),
         VALIDATOR.mongoIdValidator("body", "studentId", true),
         VALIDATOR.mongoIdValidator("body", "courseId", true),
-        VALIDATOR.asciiValidator("body", "question", true),
+        VALIDATOR.stringValidator("body", "question", true),
     ],
     rateValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false),

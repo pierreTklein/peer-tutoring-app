@@ -18,15 +18,15 @@
             "description": "The deployment frontend address",
             "value": "app.mchacks.ca"
         },
-        "DB_ADDRESS_DEPLOY": {
+        "DB_ADDRESS_PROD": {
             "description": "The mongodb connection string for the deployment database",
             "value": ""
         },
-        "DB_USER_DEPLOY": {
+        "DB_USER_PROD": {
             "description": "",
             "value": ""
         },
-        "DB_PASS_DEPLOY": {
+        "DB_PASS_PROD": {
             "description": "",
             "value": ""
         },

@@ -19,7 +19,6 @@ interface ITicketListProps {
   showTutorActions: boolean;
   tickets: ITicket[];
   hidden?: boolean;
-  height?: string | number;
   onTicketUpdated: () => void;
   defaultOpened?: boolean;
 }
@@ -30,14 +29,14 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
   tickets,
   title,
   hidden,
-  height,
   onTicketUpdated,
   defaultOpened
 }) => {
   const cache = new CellMeasurerCache({
-    defaultHeight: 273,
+    defaultHeight: 150,
     fixedWidth: true
   });
+  const showDetails: boolean[] = tickets.map(() => false);
   function rowRenderer({ key, index, style, parent }: ListRowProps) {
     return (
       <CellMeasurer
@@ -49,13 +48,19 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
       >
         {({ measure }) => {
           return (
-            <div style={style} onLoad={measure}>
+            <div style={style}>
               <Ticket
                 showStudentActions={showStudentActions}
                 showTutorActions={showTutorActions}
                 ticket={tickets[index]}
                 onTicketUpdated={onTicketUpdated}
-                tabIndex={1}
+                showTicketDetails={showDetails[index]}
+                onLoad={measure}
+                onCollapseChange={(isOpen: boolean) => {
+                  showDetails[index] = isOpen;
+                  cache.clear(index, 0);
+                  measure();
+                }}
               />
             </div>
           );
@@ -64,14 +69,18 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     );
   }
 
-  const _height = height || 280 * tickets.length;
+  const _height =
+    tickets.length > 0
+      ? tickets.map((v, i) => cache.getHeight(i, 0)).reduce((pv, cv) => pv + cv)
+      : 0;
   const innerContents =
     tickets.length === 0 ? (
       "No applicable questions found"
     ) : (
       <Flex
         style={{
-          height: _height
+          height: _height,
+          maxHeight: "calc(100vh * 0.5)"
         }}
       >
         <AutoSizer>
@@ -92,10 +101,10 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     );
   return (
     <Section
-      title={title}
+      title={`${title} (${tickets.length})`}
       hidden={hidden}
       collapsable={true}
-      isOpen={defaultOpened}
+      defaultOpen={defaultOpened}
     >
       {innerContents}
     </Section>

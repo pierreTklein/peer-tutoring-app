@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { isUserType } from "../util";
 import { getStatus, TicketStatus } from "../config/TicketStatus";
 import theme from "../shared/Styles/theme";
+import { toast } from "react-toastify";
 
 interface ITicketActionProps {
   showTutorActions: boolean;
@@ -39,7 +40,7 @@ export const UpdateTicketActions: React.FunctionComponent<
           onClick={() => {
             onStartTicket(ticket, onTicketUpdated);
           }}
-          buttonType={ButtonType.SUCCESS}
+          buttonType={ButtonType.PRIMARY}
           tabIndex={1}
           title={"Start the session"}
         >
@@ -65,11 +66,11 @@ export const UpdateTicketActions: React.FunctionComponent<
           onClick={() => {
             onEndTicket(ticket, onTicketUpdated);
           }}
-          buttonType={ButtonType.DANGER}
+          buttonType={ButtonType.SUCCESS}
           tabIndex={1}
           title={"End the session"}
         >
-          End
+          Resolve
         </Button>
       </Box>
     </Flex>
@@ -95,7 +96,11 @@ async function onEndTicket(
     await Ticket.end(ticket.id || "");
     onTicketUpdated && onTicketUpdated(ticket);
   } catch (e) {
-    ToastError(e.data);
+    if (e && e.data) {
+      ToastError(e.data);
+    } else {
+      toast.error("Unexpected error");
+    }
   }
 }
 

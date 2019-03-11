@@ -1,12 +1,13 @@
 import * as React from "react";
 import { H2 } from ".";
 import theme from "../Styles/theme";
+import Collapsible from "./Collapsible";
 
 interface IProps {
   title: string;
   hidden?: boolean;
   collapsable?: boolean;
-  isOpen?: boolean;
+  defaultOpen?: boolean;
 }
 
 export const Section: React.FunctionComponent<IProps> = ({
@@ -14,7 +15,7 @@ export const Section: React.FunctionComponent<IProps> = ({
   children,
   hidden,
   collapsable,
-  isOpen
+  defaultOpen
 }) => {
   if (hidden) {
     return <div />;
@@ -22,14 +23,9 @@ export const Section: React.FunctionComponent<IProps> = ({
     return (
       <React.Fragment>
         <hr />
-        <details open={isOpen}>
-          <summary style={{ cursor: "pointer" }}>
-            <div>
-              <H2 color={theme.colors.primary}>{title}</H2>
-            </div>
-          </summary>
+        <Collapsible open={defaultOpen || false} title={title}>
           {children}
-        </details>
+        </Collapsible>
       </React.Fragment>
     );
   } else {
