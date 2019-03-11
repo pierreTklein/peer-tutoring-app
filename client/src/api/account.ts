@@ -80,11 +80,27 @@ class AccountAPI {
    * so that it's not the entirety of the Account object.
    * @param {IAccount} account
    */
-  public async update(
+  public async updateSelf(
     account: IAccount
   ): Promise<AxiosResponse<APIResponse<IAccount>>> {
     const value = await API.getEndpoint(APIRoute.ACCOUNT).patch(
-      account,
+      { id: "" },
+      account
+    );
+    LocalCache.remove(CACHE_USER_KEY);
+    return value;
+  }
+  /**
+   * Update an account. In the future, we might want to relax the attributes being passed in
+   * so that it's not the entirety of the Account object.
+   * @param {IAccount} account
+   */
+  public async update(
+    id: string,
+    account: IAccount
+  ): Promise<AxiosResponse<APIResponse<IAccount>>> {
+    const value = await API.getEndpoint(APIRoute.ACCOUNT).patch(
+      { id },
       account
     );
     LocalCache.remove(CACHE_USER_KEY);

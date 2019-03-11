@@ -252,7 +252,7 @@ class ManageAccountContainer extends React.Component<
     newPassword?: string
   ) {
     try {
-      await Account.update(payload);
+      await Account.updateSelf(payload);
       if (oldPassword && newPassword) {
         await Auth.changePassword(oldPassword, newPassword);
       }
