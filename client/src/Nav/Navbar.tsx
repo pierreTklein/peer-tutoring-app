@@ -38,7 +38,6 @@ export default class Navbar extends React.Component<
   }
 
   public render() {
-    const logoutBtn = this.state.loggedIn ? <LogoutBtn /> : "";
     return (
       <Nav borderThickness={this.props.showDivider ? "1px" : "0px"}>
         <Flex
@@ -53,16 +52,18 @@ export default class Navbar extends React.Component<
             </Link>
           </Box>
           <Box>
-            <Flex>
-              <Box alignSelf={"center"} my={"auto"}>
-                <Link to={FrontendRoute.EDIT_ACCOUNT_PAGE}>
-                  <Button buttonType={ButtonType.PRIMARY}>Account</Button>
-                </Link>
-              </Box>
-              <Box alignSelf={"center"} my={"auto"}>
-                {logoutBtn}
-              </Box>
-            </Flex>
+            {this.state.loggedIn && (
+              <Flex>
+                <Box alignSelf={"center"} my={"auto"}>
+                  <Link to={FrontendRoute.EDIT_ACCOUNT_PAGE}>
+                    <Button buttonType={ButtonType.PRIMARY}>Account</Button>
+                  </Link>
+                </Box>
+                <Box alignSelf={"center"} my={"auto"}>
+                  <LogoutBtn />
+                </Box>
+              </Flex>
+            )}
           </Box>
         </Flex>
       </Nav>
