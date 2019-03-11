@@ -19,7 +19,6 @@ interface ITicketListProps {
   showTutorActions: boolean;
   tickets: ITicket[];
   hidden?: boolean;
-  height?: string | number;
   onTicketUpdated: () => void;
   defaultOpened?: boolean;
 }
@@ -30,12 +29,11 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
   tickets,
   title,
   hidden,
-  height,
   onTicketUpdated,
   defaultOpened
 }) => {
   const cache = new CellMeasurerCache({
-    defaultHeight: 273,
+    defaultHeight: 150,
     fixedWidth: true
   });
   const showDetails: boolean[] = tickets.map(() => false);
@@ -56,7 +54,6 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
                 showTutorActions={showTutorActions}
                 ticket={tickets[index]}
                 onTicketUpdated={onTicketUpdated}
-                tabIndex={1}
                 showTicketDetails={showDetails[index]}
                 onLoad={measure}
                 onCollapseChange={(isOpen: boolean) => {
@@ -71,7 +68,10 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     );
   }
 
-  const _height = height || 150 * tickets.length;
+  const _height =
+    tickets.length > 0
+      ? tickets.map((v, i) => cache.getHeight(i, 0)).reduce((pv, cv) => pv + cv)
+      : 0;
   const innerContents =
     tickets.length === 0 ? (
       "No applicable questions found"

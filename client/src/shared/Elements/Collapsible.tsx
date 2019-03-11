@@ -11,7 +11,11 @@ interface IProps extends React.HTMLAttributes<HTMLDetailsElement> {
   onToggle?: (isOpen: boolean) => void;
 }
 
-export class Collapsible extends React.Component<IProps, {}> {
+interface IState {
+  initialOpenState: boolean;
+}
+
+export class Collapsible extends React.Component<IProps, IState> {
   private nv: HTMLDetailsElement | null = null;
   private suppressFirstToggle: boolean;
   public constructor(props: IProps) {
@@ -23,7 +27,9 @@ export class Collapsible extends React.Component<IProps, {}> {
      * first toggle if props.open is true.
      */
     this.suppressFirstToggle = props.open;
-    this.state = {};
+    this.state = {
+      initialOpenState: props.open
+    };
     this.onToggle = this.onToggle.bind(this);
   }
   public render() {
@@ -31,7 +37,11 @@ export class Collapsible extends React.Component<IProps, {}> {
     return (
       <Details
         ref={elem => (this.nv = elem as HTMLDetailsElement)}
-        open={open}
+        /**
+         * Note here we don't use open from this.props. This is to prevent the update
+         * infinite loop from occuring in future renders.
+         */
+        open={this.state.initialOpenState}
         {...rest}
       >
         <Summary style={{ cursor: "pointer" }}>
@@ -47,7 +57,7 @@ export class Collapsible extends React.Component<IProps, {}> {
     }
   }
 
-  public onToggle(e: Event) {
+  public onToggle() {
     const _onToggle = this.props.onToggle;
     if (this.nv && this.nv.open && this.suppressFirstToggle) {
       /**
