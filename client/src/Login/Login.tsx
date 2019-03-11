@@ -93,7 +93,7 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
           placeholder={"Password"}
           label={"Password"}
           required={true}
-          value={fp.values.email}
+          value={fp.values.password}
         />
         <ErrorMessage component={FormikElements.Error} name="email" />
         <Flex width={1} justifyContent={"flex-end"} mb={"30px"}>
