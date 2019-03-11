@@ -41,6 +41,9 @@ module.exports = {
       .post(
         Middleware.Validator.Account.newAccountValidator,
         Middleware.Util.failIfNotValid,
+        Middleware.Account.verifyInviteTokenIfExists,
+        Middleware.Account.getInviteFromTokenIfExists,
+        Middleware.Account.setAccountType,
         Middleware.Account.parseAccount,
         Middleware.Account.failIfExists,
         Middleware.Account.addAccount,

@@ -5,8 +5,20 @@ import Helmet from "react-helmet";
 import { Redirect } from "react-router";
 import { object, string } from "yup";
 
-import { FrontendRoute, IAccount, ICourse, ITicket } from "../config";
-import { Button, H1, MaxWidthBox, ButtonType } from "../shared/Elements";
+import {
+  FrontendRoute,
+  IAccount,
+  ICourse,
+  ITicket,
+  REQUIRED_DESCRIPTION
+} from "../config";
+import {
+  Button,
+  H1,
+  MaxWidthBox,
+  ButtonType,
+  FormDescription
+} from "../shared/Elements";
 import { Form } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
@@ -74,6 +86,7 @@ export class CreateTicketContainer extends React.Component<
         </Helmet>
         <MaxWidthBox width={1}>
           <H1 textAlign={"center"}>Create new ticket</H1>
+          <FormDescription>{REQUIRED_DESCRIPTION}</FormDescription>
           <Formik
             enableReinitialize={true}
             initialValues={{

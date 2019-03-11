@@ -3,7 +3,7 @@ import * as React from "react";
 
 import Logo from "../assets/images/logo/logo_full_color.svg";
 import { FrontendRoute } from "../config/frontendRoutes";
-import { Image } from "../shared/Elements";
+import { Image, Button, ButtonType } from "../shared/Elements";
 import { isLoggedIn } from "../util/UserInfoHelperFunctions";
 import LogoutBtn from "./LogoutButton";
 import Nav from "./Nav";
@@ -52,8 +52,17 @@ export default class Navbar extends React.Component<
               <Image src={Logo} imgHeight={"50px"} />
             </Link>
           </Box>
-          <Box alignSelf={"center"} my={"auto"}>
-            {logoutBtn}
+          <Box>
+            <Flex>
+              <Box alignSelf={"center"} my={"auto"}>
+                <Link to={FrontendRoute.EDIT_ACCOUNT_PAGE}>
+                  <Button buttonType={ButtonType.PRIMARY}>Account</Button>
+                </Link>
+              </Box>
+              <Box alignSelf={"center"} my={"auto"}>
+                {logoutBtn}
+              </Box>
+            </Flex>
           </Box>
         </Flex>
       </Nav>

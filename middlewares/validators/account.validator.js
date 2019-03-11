@@ -17,6 +17,7 @@ module.exports = {
     newAccountValidator: [
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
         VALIDATOR.passwordValidator("body", "password", false),
+        VALIDATOR.jwtValidator("header", "token", process.env.JWT_INVITE_SECRET, true),
 
         VALIDATOR.stringValidator("body", "firstName", true),
         VALIDATOR.stringValidator("body", "lastName", true),

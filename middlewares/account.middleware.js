@@ -262,7 +262,7 @@ async function getInvites(req, res, next) {
  * @param {*} res 
  * @param {(err?)=>void} next 
  */
-function verifyInviteToken(req, res, next) {
+function verifyInviteTokenIfExists(req, res, next) {
     if (req.body.token) {
         try {
             req.body.decodedToken = jwt.verify(req.body.token, process.env.JWT_INVITE_SECRET);
@@ -279,10 +279,14 @@ function verifyInviteToken(req, res, next) {
  * @param {*} res 
  * @param {(err?)=>void} next 
  */
-async function getInviteFromToken(req, res, next) {
-    const invite = await Services.Invite.findById(req.body.decodedToken.InviteId);
-    req.body.invite = invite;
-    next();
+async function getInviteFromTokenIfExists(req, res, next) {
+    if (req.body.decodedToken) {
+        const invite = await Services.Invite.findById(req.body.decodedToken.InviteId);
+        req.body.invite = invite;
+        next();
+    } else {
+        next();
+    }
 }
 
 
@@ -292,40 +296,24 @@ async function getInviteFromToken(req, res, next) {
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
-async function getAccountTypeFromInvite(req, res, next) {
-    const confirmationObj = await Services.Invite.findById(req.body.decodedToken.InviteId);
-    if (confirmationObj) {
-        req.body.accountType = confirmationObj.accountType;
-        return next();
+async function setAccountType(req, res, next) {
+    if (req.body.invite) {
+        const inviteObj = await Services.Invite.findById(req.body.decodedToken.InviteId);
+        if (inviteObj) {
+            req.body.accountType = inviteObj.accountType;
+            return next();
+        } else {
+            //Either the token was already used, it's invalid, or user does not exist.
+            return next({
+                status: 401,
+                message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
+                error: {}
+            });
+        }
     } else {
-        //Either the token was already used, it's invalid, or user does not exist.
-        return next({
-            status: 401,
-            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
-            error: {}
-        });
+        req.body.accountType = [Constants.General.STUDENT];
+        next();
     }
-}
-
-/**
- * Attempts to parse the jwt token that is found in req.body.token using process.env.JWT_INVITE_SECRET as the key.
- * Places the parsed object into req.body.decodedToken
- * If the token does not exist it just continues flow
- * @param {{body:{token:string}}} req 
- * @param {any} res 
- * @param {(err?)=>void} next 
- */
-function parseInviteToken(req, res, next) {
-    if (!!req.body.token) {
-        jwt.verify(req.body.token, process.env.JWT_INVITE_SECRET, function (err, decoded) {
-            if (err) {
-                return next(err);
-            } else {
-                req.body.decodedToken = decoded;
-            }
-        });
-    }
-    return next();
 }
 
 module.exports = {
@@ -344,9 +332,8 @@ module.exports = {
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
     updateAccount: Middleware.Util.asyncMiddleware(updateAccount),
 
-    verifyInviteToken: verifyInviteToken,
+    verifyInviteTokenIfExists: verifyInviteTokenIfExists,
     inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount),
-    parseInviteToken: parseInviteToken,
-    getInviteFromToken: Middleware.Util.asyncMiddleware(getInviteFromToken),
-    getAccountTypeFromInvite: Middleware.Util.asyncMiddleware(getAccountTypeFromInvite),
+    getInviteFromTokenIfExists: Middleware.Util.asyncMiddleware(getInviteFromTokenIfExists),
+    setAccountType: Middleware.Util.asyncMiddleware(setAccountType),
 };
