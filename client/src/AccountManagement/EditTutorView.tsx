@@ -47,8 +47,8 @@ export class EditTutorView extends React.Component<
     this.courseToLabelValue = this.courseToLabelValue.bind(this);
   }
   public render() {
+    console.log("In edit tutor");
     let courses = this.props.account.tutor.courses;
-    console.log(courses);
     let kvp = [];
     if (courses.length > 0 && typeof courses[0] === "string") {
       courses = courses as string[];
@@ -56,7 +56,6 @@ export class EditTutorView extends React.Component<
     } else {
       courses = courses as ICourse[];
       kvp = courses.map(this.courseToLabelValue);
-      console.log(kvp);
     }
     if (this.state.submitted) {
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
