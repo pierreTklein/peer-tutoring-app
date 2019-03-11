@@ -1,5 +1,12 @@
 import { Flex } from "@rebass/grid";
-import { ErrorMessage, Formik, FormikProps, Field, FastField } from "formik";
+import {
+  ErrorMessage,
+  Formik,
+  FormikProps,
+  Field,
+  FastField,
+  FormikActions
+} from "formik";
 import * as React from "react";
 import { Redirect } from "react-router";
 import { object, array } from "yup";
@@ -47,7 +54,6 @@ export class EditTutorView extends React.Component<
     this.courseToLabelValue = this.courseToLabelValue.bind(this);
   }
   public render() {
-    console.log("In edit tutor");
     let courses = this.props.account.tutor.courses;
     let kvp = [];
     if (courses.length > 0 && typeof courses[0] === "string") {
@@ -128,16 +134,25 @@ export class EditTutorView extends React.Component<
     return lv.value;
   }
 
-  private async onSubmit(values: any) {
+  private async onSubmit(
+    values: any,
+    actions: FormikActions<{
+      courses: {
+        label: string | ICourse;
+        value: string | ICourse;
+      }[];
+    }>
+  ) {
     const { account } = this.props;
     try {
       const tutorData: ITutor = account.tutor;
       tutorData.courses = values.courses.map(this.labelValueToValue);
-      console.log(values.courses);
       await Tutor.patchSelf(tutorData);
       this.setState({ submitted: true });
     } catch (e) {
       ValidationErrorGenerator(e.data);
+    } finally {
+      actions.setSubmitting(false);
     }
   }
 }

@@ -38,6 +38,7 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     defaultHeight: 273,
     fixedWidth: true
   });
+  const showDetails: boolean[] = tickets.map(() => false);
   function rowRenderer({ key, index, style, parent }: ListRowProps) {
     return (
       <CellMeasurer
@@ -49,13 +50,19 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
       >
         {({ measure }) => {
           return (
-            <div style={style} onLoad={measure}>
+            <div style={style}>
               <Ticket
                 showStudentActions={showStudentActions}
                 showTutorActions={showTutorActions}
                 ticket={tickets[index]}
                 onTicketUpdated={onTicketUpdated}
                 tabIndex={1}
+                showTicketDetails={showDetails[index]}
+                onLoad={measure}
+                onCollapseChange={(isOpen: boolean) => {
+                  showDetails[index] = isOpen;
+                  measure();
+                }}
               />
             </div>
           );
@@ -64,14 +71,15 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     );
   }
 
-  const _height = height || 280 * tickets.length;
+  const _height = height || 150 * tickets.length;
   const innerContents =
     tickets.length === 0 ? (
       "No applicable questions found"
     ) : (
       <Flex
         style={{
-          height: _height
+          height: _height,
+          maxHeight: "calc(100vh * 0.5)"
         }}
       >
         <AutoSizer>
@@ -92,10 +100,10 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
     );
   return (
     <Section
-      title={title}
+      title={`${title} (${tickets.length})`}
       hidden={hidden}
       collapsable={true}
-      isOpen={defaultOpened}
+      defaultOpen={defaultOpened}
     >
       {innerContents}
     </Section>

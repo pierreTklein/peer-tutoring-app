@@ -39,7 +39,7 @@ export const UpdateTicketActions: React.FunctionComponent<
           onClick={() => {
             onStartTicket(ticket, onTicketUpdated);
           }}
-          buttonType={ButtonType.SUCCESS}
+          buttonType={ButtonType.PRIMARY}
           tabIndex={1}
           title={"Start the session"}
         >
@@ -65,11 +65,11 @@ export const UpdateTicketActions: React.FunctionComponent<
           onClick={() => {
             onEndTicket(ticket, onTicketUpdated);
           }}
-          buttonType={ButtonType.DANGER}
+          buttonType={ButtonType.SUCCESS}
           tabIndex={1}
           title={"End the session"}
         >
-          End
+          Resolve
         </Button>
       </Box>
     </Flex>

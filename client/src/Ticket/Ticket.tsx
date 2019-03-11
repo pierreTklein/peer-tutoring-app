@@ -6,12 +6,15 @@ import { TicketStatus, getStatus } from "../config/TicketStatus";
 import theme from "../shared/Styles/theme";
 import { UpdateTicketActions } from "./UpdateTicketActions";
 import LabelledField from "../shared/Elements/LabelledField";
+import Collapsible from "../shared/Elements/Collapsible";
 
 interface ITicketProps {
   ticket: ITicket;
   onTicketUpdated: (ticket: ITicket) => void;
   showTutorActions: boolean;
   showStudentActions: boolean;
+  showTicketDetails: boolean;
+  onCollapseChange?: (isOpen: boolean) => void;
 }
 
 export const Ticket: React.FunctionComponent<
@@ -21,6 +24,8 @@ export const Ticket: React.FunctionComponent<
   onTicketUpdated,
   showTutorActions,
   showStudentActions,
+  onCollapseChange,
+  showTicketDetails,
   ...rest
 }) => {
   const courseDescription = parseCourse(ticket.courseId);
@@ -55,34 +60,38 @@ export const Ticket: React.FunctionComponent<
       {...rest}
     >
       <Box>
-        <H2 marginLeft="0px" color={theme.colors.white}>
-          {studentDescription} | {courseDescription}
-        </H2>
+        <Collapsible
+          titleColor={theme.colors.white}
+          title={`${studentDescription} | ${courseDescription}`}
+          open={showTicketDetails}
+          onToggle={onCollapseChange}
+        >
+          <LabelledField label={"Status"} text={status} />
+          <LabelledField label={"Tutor"} text={tutorDescription} />
+          <LabelledField label={"Question"} text={question} />
+          <LabelledField
+            label={"Asked on"}
+            hidden={!createdAt}
+            text={new Date(createdAt || "").toLocaleString()}
+          />
+          <LabelledField
+            label={"Started at"}
+            hidden={!startedAt}
+            text={new Date(startedAt || "").toLocaleString()}
+          />
+          <LabelledField
+            label={"Ended at"}
+            hidden={!endedAt}
+            text={new Date(endedAt || "").toLocaleString()}
+          />
+        </Collapsible>
       </Box>
-      <LabelledField label={"Status"} text={status} />
-      <LabelledField label={"Tutor"} text={tutorDescription} />
-      <LabelledField label={"Question"} text={question} />
-      <LabelledField
-        label={"Asked on"}
-        hidden={!createdAt}
-        text={new Date(createdAt || "").toLocaleString()}
-      />
-      <LabelledField
-        label={"Started at"}
-        hidden={!startedAt}
-        text={new Date(startedAt || "").toLocaleString()}
-      />
-      <LabelledField
-        label={"Ended at"}
-        hidden={!endedAt}
-        text={new Date(endedAt || "").toLocaleString()}
-      />
       <UpdateTicketActions
         showTutorActions={showTutorActions}
         showStudentActions={showStudentActions}
         ticket={ticket}
         onTicketUpdated={onTicketUpdated}
-      />
+      />{" "}
     </Panel>
   );
 };
@@ -97,7 +106,7 @@ function parseCourse(course: string | ICourse) {
 
 function parseTutor(tutor: string | IAccount | undefined) {
   if (!tutor) {
-    return "No assigned tutor";
+    return "Pending...";
   } else if (typeof tutor === "string") {
     return `${tutor}`;
   } else {

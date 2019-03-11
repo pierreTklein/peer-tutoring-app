@@ -18,6 +18,7 @@ import { EMAIL_LABEL, FrontendRoute, PASSWORD_LABEL } from "../config";
 export interface ILoginState {
   email: string;
   password: string;
+  submitting: boolean;
 }
 
 /**
@@ -28,7 +29,8 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      submitting: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onPasswordChanged = this.onPasswordChanged.bind(this);
@@ -66,6 +68,7 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
                   type="button"
                   onClick={this.handleSubmit}
                   buttonType={ButtonType.PRIMARY}
+                  isLoading={this.state.submitting}
                 >
                   Sign in
                 </Button>
@@ -77,7 +80,11 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
                     state: { ...this.state }
                   }}
                 >
-                  <Button type="button" buttonType={ButtonType.SECONDARY}>
+                  <Button
+                    type="button"
+                    buttonType={ButtonType.SECONDARY}
+                    isLoading={this.state.submitting}
+                  >
                     Register
                   </Button>
                 </Link>
@@ -92,28 +99,19 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
   /**
    * Function that calls the login function once the form is submitted.
    */
-  private handleSubmit(): void {
-    Auth.login(this.state.email, this.state.password)
-      .then((value: AxiosResponse) => {
-        // Good response
-        if (value.status === 200) {
-          // Probably want to redirect to login page or something
-          console.log("Logged in");
-          const redir = this.getRedirectLink();
-          if (redir) {
-            this.props.history.push(redir);
-          } else {
-            this.props.history.push(FrontendRoute.HOME_PAGE);
-          }
-        } else {
-          console.error(value);
-        }
-      })
-      .catch((response: AxiosResponse<APIResponse<any>> | undefined) => {
-        if (response && response.data) {
-          ToastError(response.data);
-        }
-      });
+  private async handleSubmit() {
+    this.setState({ submitting: true });
+    try {
+      await Auth.login(this.state.email, this.state.password);
+      const redir = this.getRedirectLink() || FrontendRoute.HOME_PAGE;
+      this.props.history.push(redir);
+    } catch (response) {
+      if (response && response.data) {
+        ToastError(response.data);
+      }
+    } finally {
+      this.setState({ submitting: false });
+    }
   }
   /**
    * Callback that is called once email is added.

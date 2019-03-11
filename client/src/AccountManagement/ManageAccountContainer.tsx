@@ -37,6 +37,7 @@ interface IManageAccountContainerState {
   mode: ManageAccountModes;
   formSubmitted: boolean;
   accountDetails: IAccount;
+  loaded: boolean;
   oldPassword: string;
   token?: string;
   allCourses: ICourse[];
@@ -55,6 +56,7 @@ class ManageAccountContainer extends React.Component<
     this.state = {
       formSubmitted: false,
       mode: props.mode,
+      loaded: false,
       accountDetails: {
         id: "",
         firstName: "",
@@ -90,11 +92,18 @@ class ManageAccountContainer extends React.Component<
         this.setState({ mode: ManageAccountModes.CREATE });
       }
     }
+    this.setState({ loaded: true });
   }
 
   public render() {
-    const { mode, formSubmitted, token } = this.state;
-
+    const { mode, formSubmitted, token, loaded } = this.state;
+    if (!loaded) {
+      return (
+        <MaxWidthBox width={0.9} m={"auto"}>
+          <H1>Loading...</H1>
+        </MaxWidthBox>
+      );
+    }
     if (!formSubmitted) {
       return this.renderForm();
     }

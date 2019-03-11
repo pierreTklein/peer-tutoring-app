@@ -84,7 +84,7 @@ export class CreateTicketContainer extends React.Component<
         <Helmet>
           <title>Create new ticket | CSUS Helpdesk</title>
         </Helmet>
-        <MaxWidthBox width={1}>
+        <MaxWidthBox width={0.9} m={"auto"}>
           <H1 textAlign={"center"}>Create new ticket</H1>
           <FormDescription>{REQUIRED_DESCRIPTION}</FormDescription>
           <Formik
