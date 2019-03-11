@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Input, Label, LabelText } from './';
+import * as React from "react";
+import { Input, Label, LabelText } from "./";
 
 interface IPasswordInputProp {
   onPasswordChanged: (email: string) => void;
@@ -9,13 +9,14 @@ interface IPasswordInputProp {
   isTight?: boolean;
   value?: string;
 }
-export const PasswordInput: React.StatelessComponent<IPasswordInputProp> = (
-  props
-) => {
+export const PasswordInput: React.StatelessComponent<
+  IPasswordInputProp
+> = props => {
   return (
     <Label>
       <LabelText label={props.label} required={props.required} />
       <Input
+        name="password"
         type="password"
         onChange={handleChange(props)}
         id={props.id}
