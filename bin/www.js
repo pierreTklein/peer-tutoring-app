@@ -7,7 +7,7 @@ const app = require("../app").app;
 const debug = require("debug")("peer-tutoring:server");
 const http = require("http");
 const fs = require("fs");
-
+const ioService = require("../services/socket.service");
 /**
  * Get port from environment and store in Express.
  */
@@ -20,6 +20,11 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
+
+/**
+ * Create Socket IO connection
+ */
+ioService.activate(server);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -50,21 +55,21 @@ function onError(error) {
     }
 
     const bind = typeof port === "string" ?
-        "Pipe " + port:
+        "Pipe " + port :
         "Port " + port;
 
     // handle specific listen errors with friendly messages
     switch (error.code) {
-    case "EACCES":
-        console.error(bind + " requires elevated privileges");
-        process.exit(1);
-        break;
-    case "EADDRINUSE":
-        console.error(bind + " is already in use");
-        process.exit(1);
-        break;
-    default:
-        throw error;
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
     }
 }
 
