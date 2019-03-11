@@ -45,13 +45,28 @@ const StylizedSelectFormikComponent: React.StatelessComponent<
   );
 };
 
-function generateValue(value: string | string[] | undefined) {
-  if (value && typeof value === "string") {
+function generateValue(
+  value:
+    | string
+    | string[]
+    | { label: string; value: string }
+    | Array<{ label: string; value: string }>
+    | undefined
+) {
+  if (!value) {
+    return "";
+  }
+  if (typeof value === "string") {
     return { label: value, value };
-  } else if (value && Array.isArray(value)) {
+  } else if (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    typeof value[0] === "string"
+  ) {
+    value = value as string[];
     return value.map(val => ({ label: val, value: val }));
   } else {
-    return "";
+    return value;
   }
 }
 

@@ -10,8 +10,8 @@ import {
   FormikProps,
   FormikValues
 } from "formik";
-import { Account, Auth } from "../api";
-import { FrontendRoute, IAccount, UserType } from "../config";
+import { Account, Auth, Course } from "../api";
+import { FrontendRoute, IAccount, UserType, ICourse } from "../config";
 import * as CONSTANTS from "../config/constants";
 import {
   FormDescription,
@@ -24,8 +24,9 @@ import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 
 import ToastError from "../shared/Form/validationErrorGenerator";
-import { getValueFromQuery } from "../util";
+import { getValueFromQuery, isUserType } from "../util";
 import getValidationSchema from "./ValidationSchema";
+import { EditTutorView } from "./EditTutorView";
 
 export enum ManageAccountModes {
   CREATE,
@@ -38,6 +39,7 @@ interface IManageAccountContainerState {
   accountDetails: IAccount;
   oldPassword: string;
   token?: string;
+  allCourses: ICourse[];
 }
 
 interface IManageAccountContainerProps extends RouteProps {
@@ -66,6 +68,7 @@ class ManageAccountContainer extends React.Component<
         }
       },
       oldPassword: "",
+      allCourses: [],
       token: getValueFromQuery("token")
     };
     this.renderFormik = this.renderFormik.bind(this);
@@ -76,8 +79,9 @@ class ManageAccountContainer extends React.Component<
     const { mode } = this.state;
     if (mode === ManageAccountModes.EDIT) {
       try {
-        const accountDetails = (await Account.getSelf()).data.data;
-        this.setState({ accountDetails });
+        const accountDetails = (await Account.getSelf(true)).data.data;
+        const allCourses = (await Course.getAll()).data.data.courses;
+        this.setState({ accountDetails, allCourses });
       } catch (e) {
         if (e && e.data) {
           ToastError(e.data);
@@ -108,7 +112,7 @@ class ManageAccountContainer extends React.Component<
   }
 
   private renderForm() {
-    const { mode, accountDetails } = this.state;
+    const { mode, accountDetails, allCourses } = this.state;
     return (
       <MaxWidthBox width={0.9} m={"auto"}>
         <Helmet>
@@ -136,6 +140,9 @@ class ManageAccountContainer extends React.Component<
             mode === ManageAccountModes.CREATE
           )}
         />
+        {isUserType(accountDetails, UserType.TUTOR) && (
+          <EditTutorView account={accountDetails} courses={allCourses} />
+        )}
       </MaxWidthBox>
     );
   }

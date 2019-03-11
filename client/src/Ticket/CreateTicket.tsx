@@ -117,7 +117,7 @@ export class CreateTicketContainer extends React.Component<
           }))}
           label={"What course do you need help with?"}
           required={true}
-          value={fp.values.course.label}
+          value={fp.values.course}
         />
         <ErrorMessage component={FormikElements.Error} name="course" />
         <FastField

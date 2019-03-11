@@ -206,7 +206,7 @@ async function abandonTicket(req, res, next) {
 
 async function getNewTicketFIFO(req, res, next) {
     const tutor = req.user.tutor;
-    const ticket = await Services.Ticket.getNewTicketFIFO(tutor.courses);
+    const ticket = await Services.Ticket.getNewTicketFIFO(req.user.id, tutor.courses);
     if (!ticket) {
         return next({
             status: 400,
