@@ -64,13 +64,10 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
   }
 
   const _height = height || 280 * tickets.length;
-  return (
-    <Section
-      title={title}
-      hidden={hidden}
-      collapsable={true}
-      isOpen={defaultOpened}
-    >
+  const innerContents =
+    tickets.length === 0 ? (
+      "No applicable questions found"
+    ) : (
       <Flex
         style={{
           height: _height
@@ -91,6 +88,15 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
           }}
         </AutoSizer>
       </Flex>
+    );
+  return (
+    <Section
+      title={title}
+      hidden={hidden}
+      collapsable={true}
+      isOpen={defaultOpened}
+    >
+      {innerContents}
     </Section>
   );
 };
