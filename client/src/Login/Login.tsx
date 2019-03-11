@@ -14,6 +14,7 @@ import { EmailInput, Form, PasswordInput } from "../shared/Form";
 import { APIResponse, Auth } from "../api";
 
 import { EMAIL_LABEL, FrontendRoute, PASSWORD_LABEL } from "../config";
+import { toast } from "react-toastify";
 
 export interface ILoginState {
   email: string;
@@ -106,11 +107,12 @@ class LoginContainer extends React.Component<RouteComponentProps, ILoginState> {
       const redir = this.getRedirectLink() || FrontendRoute.HOME_PAGE;
       this.props.history.push(redir);
     } catch (response) {
+      this.setState({ submitting: false });
       if (response && response.data) {
         ToastError(response.data);
+      } else {
+        toast.error("There was an error while logging you in.");
       }
-    } finally {
-      this.setState({ submitting: false });
     }
   }
   /**
