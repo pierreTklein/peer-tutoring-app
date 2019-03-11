@@ -58,6 +58,7 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
                 onLoad={measure}
                 onCollapseChange={(isOpen: boolean) => {
                   showDetails[index] = isOpen;
+                  cache.clear(index, 0);
                   measure();
                 }}
               />

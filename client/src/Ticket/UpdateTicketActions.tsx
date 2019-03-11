@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { isUserType } from "../util";
 import { getStatus, TicketStatus } from "../config/TicketStatus";
 import theme from "../shared/Styles/theme";
+import { toast } from "react-toastify";
 
 interface ITicketActionProps {
   showTutorActions: boolean;
@@ -95,7 +96,11 @@ async function onEndTicket(
     await Ticket.end(ticket.id || "");
     onTicketUpdated && onTicketUpdated(ticket);
   } catch (e) {
-    ToastError(e.data);
+    if (e && e.data) {
+      ToastError(e.data);
+    } else {
+      toast.error("Unexpected error");
+    }
   }
 }
 

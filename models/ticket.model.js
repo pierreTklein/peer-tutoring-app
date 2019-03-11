@@ -16,6 +16,7 @@ const TicketSchema = new mongoose.Schema({
         required: true
     },
     question: String,
+    category: String,
     createdAt: {
         type: Date,
         default: Date.now

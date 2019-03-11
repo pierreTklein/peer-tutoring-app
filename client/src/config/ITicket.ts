@@ -6,6 +6,7 @@ export interface ITicket {
   studentId: string | IAccount;
   courseId: string | ICourse;
   question: string;
+  category?: string;
   createdAt?: string;
   startedAt?: string;
   endedAt?: string;

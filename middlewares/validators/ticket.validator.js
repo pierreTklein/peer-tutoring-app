@@ -29,6 +29,7 @@ module.exports = {
     PostTicketValidator: [
         VALIDATOR.mongoIdValidator("body", "courseId", false),
         VALIDATOR.stringValidator("body", "question", false),
+        VALIDATOR.stringValidator("body", "category", true),
     ],
     PatchTicketValidator: [
         VALIDATOR.mongoIdValidator("body", "tutorId", true),

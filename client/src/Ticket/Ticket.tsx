@@ -31,7 +31,7 @@ export const Ticket: React.FunctionComponent<
   const courseDescription = parseCourse(ticket.courseId);
   const tutorDescription = parseTutor(ticket.tutorId);
   const studentDescription = parseStudent(ticket.studentId);
-  const { question, createdAt, startedAt, endedAt, rating } = ticket;
+  const { question, createdAt, startedAt, endedAt, category, rating } = ticket;
   const status = getStatus(ticket);
   const opacity = "7F";
   let color = "";
@@ -68,21 +68,22 @@ export const Ticket: React.FunctionComponent<
         >
           <LabelledField label={"Status"} text={status} />
           <LabelledField label={"Tutor"} text={tutorDescription} />
+          <LabelledField label={"Category"} text={category} />
           <LabelledField label={"Question"} text={question} />
           <LabelledField
             label={"Asked on"}
             hidden={!createdAt}
-            text={new Date(createdAt || "").toLocaleString()}
+            text={createdAt && createdAt.toLocaleString()}
           />
           <LabelledField
             label={"Started at"}
             hidden={!startedAt}
-            text={new Date(startedAt || "").toLocaleString()}
+            text={startedAt && startedAt.toLocaleString()}
           />
           <LabelledField
             label={"Ended at"}
             hidden={!endedAt}
-            text={new Date(endedAt || "").toLocaleString()}
+            text={endedAt && endedAt.toLocaleString()}
           />
         </Collapsible>
       </Box>

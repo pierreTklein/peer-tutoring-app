@@ -1,5 +1,12 @@
 import { Box, Flex } from "@rebass/grid";
-import { ErrorMessage, FastField, Formik, FormikProps, Field } from "formik";
+import {
+  ErrorMessage,
+  FastField,
+  Formik,
+  FormikProps,
+  Field,
+  FormikActions
+} from "formik";
 import * as React from "react";
 import Helmet from "react-helmet";
 import { Redirect } from "react-router";
@@ -24,6 +31,8 @@ import * as FormikElements from "../shared/Form/FormikElements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import Ticket from "../api/ticket";
 import { Account, Course } from "../api";
+import { getOptionsFromEnum } from "../util";
+import { QuestionCategory } from "../config/QuestionCategory";
 
 interface ICreateTicketState {
   loadingData: boolean;
@@ -91,12 +100,14 @@ export class CreateTicketContainer extends React.Component<
             enableReinitialize={true}
             initialValues={{
               course: "",
-              question: ""
+              question: "",
+              category: ""
             }}
             onSubmit={this.onSubmit}
             validationSchema={object().shape({
               course: string().required("Required"),
-              question: string().required("Required")
+              question: string().required("Required"),
+              category: string().required("Required")
             })}
             render={this.renderFormik}
           />
@@ -120,6 +131,17 @@ export class CreateTicketContainer extends React.Component<
           value={fp.values.course}
         />
         <ErrorMessage component={FormikElements.Error} name="course" />
+        <FastField
+          name={"category"}
+          component={FormikElements.Select}
+          placeholder={"Assignment, Review, etc."}
+          label={"What is your question about?"}
+          creatable={true}
+          options={getOptionsFromEnum(QuestionCategory)}
+          required={true}
+          value={fp.values.category}
+        />
+        <ErrorMessage component={FormikElements.Error} name="category" />
         <FastField
           name={"question"}
           component={FormikElements.LongTextInput}
@@ -146,7 +168,8 @@ export class CreateTicketContainer extends React.Component<
     );
   }
 
-  private async onSubmit(values: any) {
+  private async onSubmit(values: any, actions: FormikActions<any>) {
+    console.log(values.category);
     if (!this.state.account) {
       return;
     }
@@ -154,12 +177,15 @@ export class CreateTicketContainer extends React.Component<
       const ticket: ITicket = {
         studentId: this.state.account.id,
         courseId: values.course.value,
-        question: values.question
+        question: values.question,
+        category: values.category.value
       };
       await Ticket.create(ticket);
       this.setState({ submitted: true });
     } catch (e) {
       ValidationErrorGenerator(e.data);
+    } finally {
+      actions.setSubmitting(false);
     }
   }
 }
