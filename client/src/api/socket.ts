@@ -7,6 +7,7 @@ import {
   PROD_URL
 } from "../config";
 import { toast } from "react-toastify";
+import { playNotification } from "../util/audio";
 
 export enum EventType {
   ASSIGNED = "assigned",
@@ -37,7 +38,8 @@ function notifyToast({ eventType, message }: ITicketUpdateEvent) {
     default:
       toastFn = toast.info;
   }
-  toastFn(message, {
+  playNotification();
+  toastFn(message || "", {
     toastId: "update",
     autoClose: 10000
   });
