@@ -1,6 +1,5 @@
 import * as React from "react";
 import { ITicket } from "../config";
-import "react-virtualized/styles.css"; // only needs to be imported once
 import { Ticket } from "./Ticket";
 import { Section } from "../shared";
 import { Flex, Box } from "@rebass/grid";
