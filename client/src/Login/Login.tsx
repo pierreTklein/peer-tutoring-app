@@ -77,7 +77,7 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
   }
   private renderFormik(fp: FormikProps<any>) {
     return (
-      <Form>
+      <Form onSubmit={fp.handleSubmit}>
         <FastField
           name={"email"}
           component={FormikElements.Email}
@@ -104,8 +104,7 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
         <Flex width={1} justifyContent={"center"}>
           <Box pr={"5px"}>
             <Button
-              type="button"
-              onClick={fp.submitForm}
+              type="submit"
               buttonType={ButtonType.PRIMARY}
               isLoading={fp.isSubmitting}
               disabled={fp.isSubmitting}
