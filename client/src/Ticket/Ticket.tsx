@@ -21,7 +21,7 @@ interface ITicketProps {
   showTutorActions: boolean;
   showStudentActions: boolean;
   showTicketDetails: boolean;
-  onCollapseChange?: (isOpen: boolean) => void;
+  onToggle?: (isOpen: boolean) => void;
 }
 
 export const Ticket: React.FunctionComponent<
@@ -31,7 +31,7 @@ export const Ticket: React.FunctionComponent<
   onTicketUpdated,
   showTutorActions,
   showStudentActions,
-  onCollapseChange,
+  onToggle,
   showTicketDetails,
   ...rest
 }) => {
@@ -71,7 +71,7 @@ export const Ticket: React.FunctionComponent<
           titleColor={theme.colors.white}
           title={`${studentDescription} | ${courseDescription}`}
           open={showTicketDetails}
-          onToggle={onCollapseChange}
+          onToggle={onToggle}
         >
           <LabelledField label={"Status"} text={status} />
           <LabelledField label={"Tutor"} text={tutorDescription} />

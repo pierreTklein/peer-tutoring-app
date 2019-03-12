@@ -26,7 +26,7 @@ import {
   ButtonType,
   FormDescription
 } from "../shared/Elements";
-import { Form } from "../shared/Form";
+import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import Ticket from "../api/ticket";
@@ -152,18 +152,13 @@ export class CreateTicketContainer extends React.Component<
           value={fp.values.question}
         />
         <ErrorMessage component={FormikElements.Error} name="question" />
-        <Flex justifyContent={"center"} mb={"20px"}>
-          <Box>
-            <Button
-              onClick={fp.submitForm}
-              isLoading={fp.isSubmitting}
-              disabled={fp.isSubmitting || this.state.loadingData}
-              buttonType={ButtonType.PRIMARY}
-            >
-              {this.state.loadingData ? "Loading..." : "Create ticket"}
-            </Button>
-          </Box>
-        </Flex>
+        <SubmitBtn
+          isLoading={fp.isSubmitting}
+          disabled={fp.isSubmitting}
+          buttonType={ButtonType.PRIMARY}
+        >
+          {this.state.loadingData ? "Loading..." : "Create ticket"}
+        </SubmitBtn>
       </Form>
     );
   }

@@ -44,7 +44,7 @@ export class Collapsible extends React.Component<IProps, IState> {
         open={this.state.initialOpenState}
         {...rest}
       >
-        <Summary style={{ cursor: "pointer" }}>
+        <Summary>
           <H2 color={titleColor || theme.colors.primary}>{title}</H2>
         </Summary>
         {children}
@@ -68,8 +68,8 @@ export class Collapsible extends React.Component<IProps, IState> {
       this.suppressFirstToggle = false;
       return;
     }
-    if (_onToggle) {
-      const newToggle = this.props.open === undefined || !this.props.open;
+    if (this.nv && _onToggle) {
+      const newToggle = !this.nv.open;
       _onToggle(newToggle);
     }
   }

@@ -105,7 +105,6 @@ export class EditTutorView extends React.Component<
         />
         <ErrorMessage component={FormikElements.Error} name="courses" />
         <SubmitBtn
-          onClick={fp.submitForm}
           isLoading={fp.isSubmitting}
           disabled={fp.isSubmitting}
           buttonType={ButtonType.PRIMARY}

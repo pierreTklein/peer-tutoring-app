@@ -77,7 +77,7 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
   }
   private renderFormik(fp: FormikProps<any>) {
     return (
-      <Form onSubmit={fp.handleSubmit}>
+      <Form>
         <FastField
           name={"email"}
           component={FormikElements.Email}

@@ -7,10 +7,10 @@ import { H1, MaxWidthBox } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import { Account, SocketConn } from "../api";
 import Ticket from "../api/ticket";
-import TicketList from "./TicketList";
 import { isUserType } from "../util";
 import { TicketActions as ReceiveNewTicketActions } from "./ReceiveNewTicketActions";
 import ToastError from "../shared/Form/validationErrorGenerator";
+import { TicketList } from "./TicketList";
 
 interface ITicketsContainerState {
   loadingData: boolean;
