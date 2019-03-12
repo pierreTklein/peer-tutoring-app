@@ -106,6 +106,7 @@ export class ForgotPasswordContainer extends React.Component<
   private async onSubmit(values: any, actions: FormikActions<any>) {
     try {
       await Auth.forgotPassword(values.email);
+      toast.success(`Please check your inbox at ${values.email}`);
     } catch (response) {
       if (response && response.data) {
         ToastError(response.data);

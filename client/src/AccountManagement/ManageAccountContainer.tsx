@@ -188,6 +188,7 @@ class ManageAccountContainer extends React.Component<
         </Flex>
         <FastField
           name={"pronoun"}
+          inputType={"text"}
           label={CONSTANTS.PRONOUN_LABEL}
           value={fp.values.pronoun}
           component={FormikElements.Input}
@@ -195,15 +196,16 @@ class ManageAccountContainer extends React.Component<
         <ErrorMessage component={FormikElements.Error} name="pronoun" />
         <FastField
           name={"email"}
+          inputType={"email"}
           label={CONSTANTS.EMAIL_LABEL}
           value={fp.values.email}
-          component={FormikElements.Input}
+          component={FormikElements.Email}
           isDisabled={mode === ManageAccountModes.EDIT}
           required={true}
         />
         <ErrorMessage component={FormikElements.Error} name="email" />
         <FastField
-          component={FormikElements.Input}
+          component={FormikElements.Password}
           inputType={"password"}
           label={CONSTANTS.PASSWORD_LABEL}
           name={"password"}
@@ -215,7 +217,7 @@ class ManageAccountContainer extends React.Component<
           <MaxWidthBox>
             <FastField
               label={CONSTANTS.NEW_PASSWORD_LABEL}
-              component={FormikElements.Input}
+              component={FormikElements.Password}
               inputType={"password"}
               name={"newPassword"}
             />

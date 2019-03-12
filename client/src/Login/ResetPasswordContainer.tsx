@@ -1,137 +1,128 @@
-import { Box, Flex } from "@rebass/grid";
-import { AxiosResponse } from "axios";
+import { Box } from "@rebass/grid";
+import {
+  ErrorMessage,
+  FastField,
+  Formik,
+  FormikProps,
+  FormikActions
+} from "formik";
 import * as React from "react";
 import Helmet from "react-helmet";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-
-import ToastError from "../shared/Form/validationErrorGenerator";
-
-import { APIResponse, Auth } from "../api";
+import { Redirect } from "react-router";
+import { object, string, ref } from "yup";
 
 import { FrontendRoute, getTokenFromQuery } from "../config";
-import { Button, H1, MaxWidthBox, ButtonType } from "../shared/Elements";
-import { Form, PasswordInput } from "../shared/Form";
+import {
+  MaxWidthBox,
+  ButtonType,
+  Panel,
+  H1,
+  FormDescription
+} from "../shared/Elements";
+import { Form, SubmitBtn } from "../shared/Form";
+import * as FormikElements from "../shared/Form/FormikElements";
+import { Auth } from "../api";
+import ToastError from "../shared/Form/validationErrorGenerator";
+import { toast } from "react-toastify";
 
 export interface IResetPasswordContainerState {
-  isValid: boolean;
   isSubmitted: boolean;
-  password: string;
 }
 
-/**
- * Container that renders form to reset a person's password. The auth token must be present in the URL for this to work.
- */
 class ResetPasswordContainer extends React.Component<
-  RouteComponentProps,
+  {},
   IResetPasswordContainerState
 > {
-  constructor(props: RouteComponentProps) {
+  constructor(props: {}) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onPasswordChanged = this.onPasswordChanged.bind(this);
-    this.onConfirmationChanged = this.onConfirmationChanged.bind(this);
     this.state = {
-      isValid: false,
-      isSubmitted: false,
-      password: ""
+      isSubmitted: false
     };
+    this.onSubmit = this.onSubmit.bind(this);
+    this.renderFormik = this.renderFormik.bind(this);
   }
   public render() {
+    if (this.state.isSubmitted) {
+      return <Redirect to={FrontendRoute.HOME_PAGE} />;
+    }
     return (
-      <Flex
-        justifyContent={"center"}
-        alignItems={"center"}
-        flexDirection={"column"}
-      >
+      <MaxWidthBox width={0.9} m={"auto"}>
         <Helmet>
           <title>Reset Password | CSUS Helpdesk</title>
         </Helmet>
-        <MaxWidthBox maxWidth={"500px"} width={1}>
-          <H1>Reset your password</H1>
-          <Form>
-            <Flex
-              justifyContent={"center"}
-              alignItems={"center"}
-              flexDirection={"column"}
-            >
-              <Box width={7 / 8}>
-                <PasswordInput
-                  onPasswordChanged={this.onPasswordChanged}
-                  label={"New password"}
-                  id={"new-password"}
-                />
-              </Box>
-              <Box width={7 / 8}>
-                <PasswordInput
-                  onPasswordChanged={this.onConfirmationChanged}
-                  label={"Confirm password"}
-                  id={"confirm-password"}
-                />
-                {!this.state.isValid &&
-                  this.state.isSubmitted &&
-                  "Passwords must match!"}
-              </Box>
-              <Box>
-                <Button
-                  type="button"
-                  onClick={this.handleSubmit}
-                  buttonType={ButtonType.PRIMARY}
-                >
-                  Submit
-                </Button>
-              </Box>
-            </Flex>
-          </Form>
-        </MaxWidthBox>
-      </Flex>
+        <Panel alignItems={"center"} flexDirection={"column"} p={"5%"}>
+          <Box alignSelf={"flex-start"}>
+            <H1 fontSize={"24px"}>Reset your password</H1>
+            <FormDescription>Enter in your new password</FormDescription>
+          </Box>
+          <Formik
+            enableReinitialize={true}
+            initialValues={{
+              password: "",
+              confirmPassword: ""
+            }}
+            onSubmit={this.onSubmit}
+            validationSchema={object().shape({
+              password: string()
+                .min(8, "Must be at least 8 characters")
+                .required("Password is required"),
+              confirmPassword: string()
+                .oneOf([ref("password"), null], "Passwords don't match")
+                .required("Confirm Password is required")
+            })}
+            render={this.renderFormik}
+          />
+        </Panel>
+      </MaxWidthBox>
     );
   }
-  /**
-   * Function that calls the reset password function once the form is submitted.
-   */
-  private handleSubmit(): void {
-    const { isValid } = this.state;
-    this.setState({ isSubmitted: true });
-    if (!isValid) {
-      return;
-    }
-    try {
-      const authToken: string | string[] = getTokenFromQuery();
-      Auth.resetPassword(this.state.password, authToken)
-        .then((value: AxiosResponse) => {
-          // Good response
-          if (value.status === 200) {
-            console.log("Reset password");
-            // Redirect to login page
-            this.props.history.push(FrontendRoute.LOGIN_PAGE);
-          }
-        })
-        .catch((response: AxiosResponse<APIResponse<any>> | undefined) => {
-          if (response && response.data) {
-            ToastError(response.data);
-          }
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  /**
-   * Callback that is called once password is updated.
-   * @param password The updated password
-   */
-  private onPasswordChanged(password: string) {
-    this.setState({ password });
+  private renderFormik(fp: FormikProps<any>) {
+    return (
+      <Form onSubmit={fp.handleSubmit}>
+        <FastField
+          name={"password"}
+          component={FormikElements.Password}
+          placeholder={"password"}
+          label={"New password"}
+          required={true}
+          value={fp.values.password}
+        />
+        <ErrorMessage component={FormikElements.Error} name="password" />
+        <FastField
+          name={"confirmPassword"}
+          component={FormikElements.Password}
+          placeholder={"Confirm password"}
+          label={"Confirm your password"}
+          required={true}
+          value={fp.values.confirmPassword}
+        />
+        <ErrorMessage component={FormikElements.Error} name="confirmPassword" />
+        <SubmitBtn
+          isLoading={fp.isSubmitting}
+          disabled={fp.isSubmitting}
+          buttonType={ButtonType.PRIMARY}
+        >
+          Reset password
+        </SubmitBtn>
+      </Form>
+    );
   }
 
-  /**
-   * Callback that is called once password is updated.
-   * @param password The updated password
-   */
-  private onConfirmationChanged(confirmation: string) {
-    this.setState(state => ({
-      isValid: state.password === confirmation && state.password.length > 0
-    }));
+  private async onSubmit(values: any, actions: FormikActions<any>) {
+    try {
+      const authToken: string | string[] = getTokenFromQuery();
+      await Auth.resetPassword(values.password, authToken);
+    } catch (response) {
+      if (response && response.data) {
+        ToastError(response.data);
+      } else {
+        toast.error("There was an error while resetting your password.");
+      }
+    } finally {
+      actions.setSubmitting(false);
+      this.setState({ isSubmitted: true });
+    }
   }
 }
 
-export default withRouter<RouteComponentProps>(ResetPasswordContainer);
+export default ResetPasswordContainer;

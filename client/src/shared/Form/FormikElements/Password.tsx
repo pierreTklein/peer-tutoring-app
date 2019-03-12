@@ -8,21 +8,25 @@ export interface IPasswordProps {
   id?: string;
   isTight?: boolean;
   value?: string;
+  isDisabled?: boolean;
 }
 
 export const Password: React.StatelessComponent<
   IPasswordProps & FieldProps
 > = props => {
+  const { id, isTight, value, label, required, isDisabled, field } = props;
   return (
     <Label>
-      <LabelText label={props.label} required={props.required} />
+      <LabelText label={label} required={required} />
       <Input
         name="password"
         type="password"
         onChange={handleChange(props)}
-        id={props.id}
-        isTight={props.isTight}
-        value={props.value}
+        id={id}
+        isTight={isTight}
+        value={value}
+        disabled={isDisabled}
+        {...field}
       />
     </Label>
   );
