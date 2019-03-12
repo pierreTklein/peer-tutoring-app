@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IAccount, UserType, FrontendRoute } from "../config";
-import { Button, ButtonType } from "../shared";
+import { Button, ButtonType, H2 } from "../shared";
 import { Flex, Box } from "@rebass/grid";
 import { isUserType } from "../util";
 import { Ticket } from "../api";
@@ -52,7 +52,9 @@ export class TicketActions extends React.Component<
         <Box hidden={hideRequest}>
           <Link to={FrontendRoute.CREATE_TICKET}>
             <Button disabled={disableRequest} buttonType={ButtonType.PRIMARY}>
-              Ask new question
+              {disableRequest
+                ? "Your question must be resolved before asking another."
+                : "Ask a new question"}
             </Button>
           </Link>
         </Box>
