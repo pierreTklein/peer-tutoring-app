@@ -9,7 +9,8 @@ import {
 
 export default function ToastError(
   response: APIResponse<IValidationError>,
-  autoClose: boolean = true
+  autoClose: boolean = true,
+  toastId: string = "apiResponseError"
 ) {
   if (!response) {
     return;
@@ -17,7 +18,8 @@ export default function ToastError(
   const errors: any = response.data;
   toast.error(response.message, {
     position: toast.POSITION.TOP_RIGHT,
-    autoClose: autoClose ? 5000 : false
+    autoClose: autoClose ? 5000 : false,
+    toastId: toastId
   });
 
   for (const key in errors) {

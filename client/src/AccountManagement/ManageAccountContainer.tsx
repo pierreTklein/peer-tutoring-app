@@ -8,7 +8,8 @@ import {
   FastField,
   Formik,
   FormikProps,
-  FormikValues
+  FormikValues,
+  FormikActions
 } from "formik";
 import { Account, Auth, Course } from "../api";
 import { FrontendRoute, IAccount, UserType, ICourse } from "../config";
@@ -232,25 +233,29 @@ class ManageAccountContainer extends React.Component<
     );
   }
 
-  private handleSubmit(values: FormikValues) {
+  private handleSubmit(values: FormikValues, actions: FormikActions<any>) {
     const { mode, accountDetails } = this.state;
 
     const formattedDetails = this.convertFormikToAccount(
       values,
       accountDetails.id
     );
-
     switch (mode) {
       case ManageAccountModes.CREATE:
-        this.handleCreate(formattedDetails);
+        this.handleCreate(formattedDetails, actions);
         break;
       case ManageAccountModes.EDIT:
-        this.handleEdit(formattedDetails, values.password, values.newPassword);
+        this.handleEdit(
+          formattedDetails,
+          actions,
+          values.password,
+          values.newPassword
+        );
         break;
     }
   }
 
-  private async handleCreate(payload: IAccount) {
+  private async handleCreate(payload: IAccount, actions: FormikActions<any>) {
     try {
       await Account.create(payload, this.state.token);
       await Auth.login(payload.email, payload.password);
@@ -259,11 +264,14 @@ class ManageAccountContainer extends React.Component<
       if (e && e.data) {
         ToastError(e.data);
       }
+    } finally {
+      actions.setSubmitting(false);
     }
   }
 
   private async handleEdit(
     payload: IAccount,
+    actions: FormikActions<any>,
     oldPassword?: string,
     newPassword?: string
   ) {
@@ -277,6 +285,8 @@ class ManageAccountContainer extends React.Component<
       if (e && e.data) {
         ToastError(e.data);
       }
+    } finally {
+      actions.setSubmitting(false);
     }
   }
   /**
