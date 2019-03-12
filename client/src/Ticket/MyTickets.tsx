@@ -36,11 +36,11 @@ export class MyTicketsContainer extends React.Component<
       tutorTicketsCurrent: []
     };
     this.queryTickets = this.queryTickets.bind(this);
-    SocketConn.addTicketUpdateEventListener(this.queryTickets);
   }
 
   public async componentDidMount() {
     try {
+      SocketConn.addTicketUpdateEventListener(this.queryTickets);
       const account = (await Account.getSelf()).data.data;
       this.setState({ account }, this.queryTickets);
     } catch (e) {
@@ -51,6 +51,10 @@ export class MyTicketsContainer extends React.Component<
       this.setState({ loadingData: false });
     }
   }
+  public componentWillUnmount() {
+    SocketConn.removeTicketUpdateEventListener(this.queryTickets);
+  }
+
   public async queryTickets() {
     const midnight = new Date();
     midnight.setHours(0, 0, 0, 0); // last midnight
@@ -159,7 +163,7 @@ export class MyTicketsContainer extends React.Component<
             defaultOpened={true}
           />
           <TicketList
-            title={"Your answered questions"}
+            title={"Your old questions"}
             tickets={studentTicketsPast}
             hidden={!showStudent}
             showStudentActions={showStudent}

@@ -30,7 +30,7 @@ export const UpdateTicketActions: React.FunctionComponent<
 
   const disableAbandon =
     ticketStatus === TicketStatus.ASKED || ticketStatus === TicketStatus.ENDED;
-  const hideAbandon = !(showTutorActions || showStudentActions);
+  const hideAbandon = disableAbandon || !showTutorActions;
 
   return (
     <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>

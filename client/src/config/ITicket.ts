@@ -15,6 +15,32 @@ export interface ITicket {
   _id?: string;
 }
 
+export function parseCourse(course: string | ICourse) {
+  if (typeof course === "string") {
+    return `course ID ${course}`;
+  } else {
+    return `${course.dept} ${course.code}`;
+  }
+}
+
+export function parseTutor(tutor: string | IAccount | undefined) {
+  if (!tutor) {
+    return "Pending...";
+  } else if (typeof tutor === "string") {
+    return `${tutor}`;
+  } else {
+    return `${tutor.firstName} ${tutor.lastName}`;
+  }
+}
+
+export function parseStudent(student: string | IAccount) {
+  if (typeof student === "string") {
+    return `${student}`;
+  } else {
+    return `${student.firstName} ${student.lastName.substr(0, 1)}.`;
+  }
+}
+
 /**
  * Compare by:
  * - End date, earliest to latest. If only one has this date, then that is placed first.
@@ -23,7 +49,7 @@ export interface ITicket {
  * @param t1 first ticket
  * @param t2 second ticket
  */
-function compareTicket(t1: ITicket, t2: ITicket): number {
+export function compareTicket(t1: ITicket, t2: ITicket): number {
   if (t1.endedAt && t2.endedAt) {
     return new Date(t2.endedAt).getTime() - new Date(t1.endedAt).getTime();
   } else if (t1.endedAt || t2.endedAt) {
@@ -38,4 +64,3 @@ function compareTicket(t1: ITicket, t2: ITicket): number {
     return t1.createdAt ? -1 : 1;
   }
 }
-export { compareTicket };

@@ -1,20 +1,52 @@
 import openSocket from "socket.io-client";
-import { ITicket } from "../config";
+import {
+  ITicket,
+  UserType,
+  IS_LOCALHOST,
+  LOCAL_URL,
+  PROD_URL
+} from "../config";
 import { toast } from "react-toastify";
 
-export interface TicketUpdateEvent {
-  eventType: "assigned" | "started" | "ended" | "abandoned" | "rated";
+export enum EventType {
+  ASSIGNED = "assigned",
+  STARTED = "started",
+  ENDED = "ended",
+  ABANDONED = "abandoned",
+  RATED = "rated"
+}
+
+export interface ITicketUpdateEvent {
+  eventType: EventType;
+  message: string;
   data: ITicket;
 }
 
-function notifyToast({ eventType }: TicketUpdateEvent) {
-  toast.info(`Your question was ${eventType}!`, {
-    toastId: "update"
+function notifyToast({ eventType, message }: ITicketUpdateEvent) {
+  let toastFn;
+  switch (eventType) {
+    case EventType.STARTED:
+      toastFn = toast.warn;
+      break;
+    case EventType.ABANDONED:
+      toastFn = toast.error;
+      break;
+    case EventType.ENDED:
+      toastFn = toast.success;
+      break;
+    default:
+      toastFn = toast.info;
+  }
+  toastFn(message, {
+    toastId: "update",
+    autoClose: 10000
   });
 }
 
+const uri = IS_LOCALHOST ? LOCAL_URL : PROD_URL;
+
 class SocketAPI {
-  private socket = openSocket("/");
+  private socket = openSocket(uri);
   private roomsJoined: { [key: string]: boolean } = {};
   constructor() {
     this.socket.on("update", notifyToast);
@@ -31,8 +63,13 @@ class SocketAPI {
       this.roomsJoined[room] = false;
     }
   }
-  public addTicketUpdateEventListener(fn: (data: TicketUpdateEvent) => void) {
+  public addTicketUpdateEventListener(fn: (data: ITicketUpdateEvent) => void) {
     this.socket.on("update", fn);
+  }
+  public removeTicketUpdateEventListener(
+    fn: (data: ITicketUpdateEvent) => void
+  ) {
+    this.socket.removeEventListener("update", fn);
   }
 }
 

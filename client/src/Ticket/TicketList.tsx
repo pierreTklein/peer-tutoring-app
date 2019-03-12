@@ -75,11 +75,12 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
       : 0;
   const innerContents =
     tickets.length === 0 ? (
-      "No applicable questions found"
+      "You don't have any questions."
     ) : (
       <Flex
         style={{
           height: _height,
+          minHeight: 275,
           maxHeight: "calc(100vh * 0.5)"
         }}
       >

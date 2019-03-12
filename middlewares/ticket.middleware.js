@@ -3,7 +3,8 @@
 const _ = require("lodash");
 
 const Constants = {
-    Error: require("../constants/error.constant")
+    Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant")
 };
 
 const Services = {
@@ -234,21 +235,51 @@ async function assignTicket(req, res, next) {
 
 
 function broadcastTicketUpdateEvent(eventType) {
-    return (req, res, next) => {
+    return Middleware.Util.asyncMiddleware(async (req, res, next) => {
         const ticket = req.body.ticket;
+        const fullTicket = await Services.Ticket.findById(ticket.id, true, true);
+        const tutorName = fullTicket.tutorId ? fullTicket.tutorId.firstName : "a tutor";
+        const studentName = fullTicket.studentId ? `${fullTicket.studentId.firstName} ${fullTicket.studentId.lastName.substr(0, 1)}.` : "a student";
+        const MESSAGES = {
+            STUDENT: {
+                assigned: `Your question was assigned to ${tutorName}. Make sure they can find you!`,
+                started: `${tutorName} has started the session.`,
+                ended: `Your question has been fulfilled. Still puzzled? Ask a new question!`,
+                abandoned: `${tutorName} abandoned the question. You will be put at the front of the queue.`,
+                rated: `Thank you for rating this session!`,
+                default: `Your question was ${eventType}`
+            },
+            TUTOR: {
+                assigned: `You have been assigned to ${studentName}. Make sure they can find you!`,
+                started: `You have started the session.`,
+                ended: `Another one done.`,
+                abandoned: `You have abandoned the question.`,
+                rated: `Someone has rated your help.`,
+                default: `Your student's question was ${eventType}`
+            }
+        };
         const data = {
             eventType,
-            ticket
+            fullTicket
         };
-        Services.Socket.broadcast(ticket.id, "update", data);
+        Services.Socket.broadcast(ticket.id, "update", {
+            ...data,
+            message: `The question was ${eventType}`
+        });
         if (ticket.studentId) {
-            Services.Socket.broadcast(ticket.studentId, "update", data);
+            Services.Socket.broadcast(ticket.studentId, "update", {
+                ...data,
+                message: MESSAGES.STUDENT[eventType] || MESSAGES.STUDENT.default
+            });
         }
         if (ticket.tutorId) {
-            Services.Socket.broadcast(ticket.tutorId, "update", data);
+            Services.Socket.broadcast(ticket.tutorId, "update", {
+                ...data,
+                message: MESSAGES.TUTOR[eventType] || MESSAGES.TUTOR.default
+            });
         }
         next();
-    };
+    });
 }
 
 module.exports = {

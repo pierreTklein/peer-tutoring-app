@@ -1,5 +1,12 @@
 import * as React from "react";
-import { ITicket, ICourse, IAccount } from "../config";
+import {
+  ITicket,
+  ICourse,
+  IAccount,
+  parseCourse,
+  parseTutor,
+  parseStudent
+} from "../config";
 import { Panel, H2 } from "../shared";
 import { Box } from "@rebass/grid";
 import { TicketStatus, getStatus } from "../config/TicketStatus";
@@ -40,7 +47,7 @@ export const Ticket: React.FunctionComponent<
       color = theme.colors.red;
       break;
     case TicketStatus.ASSIGNED:
-      color = theme.colors.purple;
+      color = theme.colors.orange;
       break;
     case TicketStatus.STARTED:
       color = theme.colors.yellow;
@@ -96,29 +103,3 @@ export const Ticket: React.FunctionComponent<
     </Panel>
   );
 };
-
-function parseCourse(course: string | ICourse) {
-  if (typeof course === "string") {
-    return `course ID ${course}`;
-  } else {
-    return `${course.dept} ${course.code}`;
-  }
-}
-
-function parseTutor(tutor: string | IAccount | undefined) {
-  if (!tutor) {
-    return "Pending...";
-  } else if (typeof tutor === "string") {
-    return `${tutor}`;
-  } else {
-    return `${tutor.firstName} ${tutor.lastName}`;
-  }
-}
-
-function parseStudent(student: string | IAccount) {
-  if (typeof student === "string") {
-    return `${student}`;
-  } else {
-    return `${student.firstName} ${student.lastName.substr(0, 1)}.`;
-  }
-}
