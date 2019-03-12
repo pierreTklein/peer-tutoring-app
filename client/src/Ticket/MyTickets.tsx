@@ -3,15 +3,14 @@ import * as React from "react";
 import Helmet from "react-helmet";
 
 import { IAccount, ITicket, UserType, compareTicket } from "../config";
-import { H1, MaxWidthBox, Section, Button } from "../shared/Elements";
+import { H1, MaxWidthBox } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
-import { Account } from "../api";
+import { Account, SocketConn } from "../api";
 import Ticket from "../api/ticket";
 import TicketList from "./TicketList";
 import { isUserType } from "../util";
 import { TicketActions as ReceiveNewTicketActions } from "./ReceiveNewTicketActions";
 import ToastError from "../shared/Form/validationErrorGenerator";
-import { toast } from "react-toastify";
 
 interface ITicketsContainerState {
   loadingData: boolean;
@@ -37,6 +36,7 @@ export class MyTicketsContainer extends React.Component<
       tutorTicketsCurrent: []
     };
     this.queryTickets = this.queryTickets.bind(this);
+    SocketConn.addTicketUpdateEventListener(this.queryTickets);
   }
 
   public async componentDidMount() {

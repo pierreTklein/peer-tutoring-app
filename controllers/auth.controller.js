@@ -6,14 +6,16 @@ module.exports = {
     onSuccessfulLogin: function (req, res) {
         return res.status(200).json({
             message: Success.LOGIN,
-            data: {}
+            data: req.body.account.toStrippedJSON()
         });
     },
     logout: function (req, res) {
+        const user = req.user;
+
         req.logout();
         return res.status(200).json({
             message: Success.LOGOUT,
-            data: {}
+            data: user.toStrippedJSON()
         });
     },
     sentResetEmail: function (req, res) {

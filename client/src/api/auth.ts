@@ -1,8 +1,9 @@
 import { AxiosPromise, AxiosResponse } from "axios";
-import { APIRoute, CACHE_USER_KEY } from "../config";
+import { APIRoute, CACHE_USER_KEY, IAccount } from "../config";
 import LocalCache from "../util/LocalCache";
 import API from "./api";
 import APIResponse from "./APIResponse";
+import SocketConn from "./socket";
 
 class AuthAPI {
   constructor() {
@@ -17,19 +18,25 @@ class AuthAPI {
    * @param {String} email
    * @param {String} password
    */
-  public login(email: string, password: string): AxiosPromise<APIResponse<{}>> {
-    return API.getEndpoint(APIRoute.AUTH_LOGIN).create({ email, password });
+  public async login(
+    email: string,
+    password: string
+  ): Promise<AxiosResponse<APIResponse<IAccount>>> {
+    const result: AxiosResponse<APIResponse<IAccount>> = await API.getEndpoint(
+      APIRoute.AUTH_LOGIN
+    ).create({ email, password });
+    return result;
   }
   /**
    * Logs out a user from the API
    * @returns {AxiosPromise<AxiosResponse>} a promise which resolves to a response
    */
-  public async logout(): Promise<AxiosResponse<APIResponse<{}>>> {
-    const value = await API.getEndpoint(APIRoute.AUTH_LOGOUT).getOne({
+  public async logout(): Promise<AxiosResponse<APIResponse<IAccount>>> {
+    const result = await API.getEndpoint(APIRoute.AUTH_LOGOUT).getOne({
       id: ""
     });
     LocalCache.removeAll();
-    return value;
+    return result;
   }
   /**
    * Sends a request for a reset-password email.

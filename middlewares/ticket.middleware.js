@@ -8,7 +8,8 @@ const Constants = {
 
 const Services = {
     Ticket: require("../services/ticket.service"),
-    Env: require("../services/env.service")
+    Env: require("../services/env.service"),
+    Socket: require("../services/socket.service")
 };
 
 const Middleware = {
@@ -231,7 +232,27 @@ async function assignTicket(req, res, next) {
     next();
 }
 
+
+function broadcastTicketUpdateEvent(eventType) {
+    return (req, res, next) => {
+        const ticket = req.body.ticket;
+        const data = {
+            eventType,
+            ticket
+        };
+        Services.Socket.broadcast(ticket.id, "update", data);
+        if (ticket.studentId) {
+            Services.Socket.broadcast(ticket.studentId, "update", data);
+        }
+        if (ticket.tutorId) {
+            Services.Socket.broadcast(ticket.tutorId, "update", data);
+        }
+        next();
+    };
+}
+
 module.exports = {
+    broadcastTicketUpdateEvent: broadcastTicketUpdateEvent,
     getByQuery: Middleware.Util.asyncMiddleware(getByQuery),
     createTicket: Middleware.Util.asyncMiddleware(createTicket),
     getById: Middleware.Util.asyncMiddleware(getById),

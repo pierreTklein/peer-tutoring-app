@@ -62,9 +62,9 @@ module.exports = {
         ticketRouter.route("/assign").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
-            Middleware.Ticket.getByUser,
             Middleware.Ticket.getNewTicketFIFO,
             Middleware.Ticket.assignTicket,
+            Middleware.Ticket.broadcastTicketUpdateEvent("assigned"),
             Controllers.Ticket.assignedTicket,
         );
 
@@ -78,6 +78,16 @@ module.exports = {
             Controllers.Ticket.gotTicket
         );
 
+        //assign a ticket
+        ticketRouter.route("/:id/assign").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
+            Middleware.Ticket.getById,
+            Middleware.Ticket.assignTicket,
+            Middleware.Ticket.broadcastTicketUpdateEvent("assigned"),
+            Controllers.Ticket.assignedTicket,
+        );
+
         //start a ticket
         ticketRouter.route("/:id/start").patch(
             Middleware.Auth.ensureAuthenticated(),
@@ -88,6 +98,7 @@ module.exports = {
             Middleware.Ticket.failIfNotAssigned,
             Middleware.Ticket.failIfStarted,
             Middleware.Ticket.startTicket,
+            Middleware.Ticket.broadcastTicketUpdateEvent("started"),
             Controllers.Ticket.startedTicket
         );
 
@@ -100,6 +111,7 @@ module.exports = {
             Middleware.Ticket.getById,
             Middleware.Ticket.failIfEnded,
             Middleware.Ticket.endTicket,
+            Middleware.Ticket.broadcastTicketUpdateEvent("ended"),
             Controllers.Ticket.endedTicket
         );
 
@@ -112,6 +124,7 @@ module.exports = {
             Middleware.Ticket.getById,
             Middleware.Ticket.failIfNotAssigned,
             Middleware.Ticket.failIfEnded,
+            Middleware.Ticket.broadcastTicketUpdateEvent("abandoned"),
             Middleware.Ticket.abandonTicket,
             Controllers.Ticket.abandonedTicket
         );
@@ -124,6 +137,7 @@ module.exports = {
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
             Middleware.Ticket.rateTicket,
+            Middleware.Ticket.broadcastTicketUpdateEvent("rated"),
             Controllers.Ticket.ratedTicket
         );
 

@@ -53,6 +53,7 @@ function login(req, res, next) {
                         error: {}
                     });
                 }
+                req.body.account = user;
                 return next();
             });
         })(req, res, next);

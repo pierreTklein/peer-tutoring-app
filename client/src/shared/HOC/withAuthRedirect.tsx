@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 
 import { FrontendRoute, IAccount } from "../../config";
 import { getUserInfo } from "../../util/UserInfoHelperFunctions";
+import { SocketConn } from "../../api";
 
 enum authStates {
   authorized,
@@ -60,6 +61,7 @@ const withAuthRedirect = <P extends {}>(
       try {
         const selfInfo = await getUserInfo();
         if (selfInfo) {
+          SocketConn.joinRoom(selfInfo.id);
           const verified = this.verification(selfInfo);
           this.setState({
             authState: verified

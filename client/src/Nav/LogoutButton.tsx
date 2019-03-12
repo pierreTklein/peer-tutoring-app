@@ -17,17 +17,15 @@ const LogoutBtn: React.StatelessComponent<RouteComponentProps> = (
 };
 
 function handleLogout(props: RouteComponentProps): () => void {
-  return () => {
-    Auth.logout()
-      .then(() => {
-        console.log(props);
-        props.history.push(FrontendRoute.LOGIN_PAGE);
-      })
-      .catch((response: AxiosResponse<APIResponse<IValidationError>>) => {
-        if (response && response.data) {
-          ToastError(response.data);
-        }
-      });
+  return async () => {
+    try {
+      await Auth.logout();
+      props.history.push(FrontendRoute.LOGIN_PAGE);
+    } catch (e) {
+      if (e && e.data) {
+        ToastError(e.data);
+      }
+    }
   };
 }
 

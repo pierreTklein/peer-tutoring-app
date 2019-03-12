@@ -14,7 +14,8 @@ export enum APIRoute {
   // Ticket routes
   TICKET = "ticket",
   TICKET_SELF = "ticket/me",
-  TICKET_ASSIGN = "ticket/assign",
+  TICKET_ASSIGN_UNK = "ticket/assign",
+  TICKET_ASSIGN = "ticket/:id/assign",
   TICKET_START = "ticket/:id/start",
   TICKET_END = "ticket/:id/end",
   TICKET_RATE = "ticket/:id/rate",

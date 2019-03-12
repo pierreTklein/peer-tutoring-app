@@ -8,7 +8,8 @@ class TicketAPI {
   constructor() {
     API.createEntity(APIRoute.TICKET);
     API.createEntity(APIRoute.TICKET_SELF);
-    API.createEntity(APIRoute.TICKET_ASSIGN);
+    API.createEntity(APIRoute.TICKET_ASSIGN_UNK);
+    API.createEntity(APIRoute.TICKET_ASSIGN, ":id");
     API.createEntity(APIRoute.TICKET_START, ":id");
     API.createEntity(APIRoute.TICKET_END, ":id");
     API.createEntity(APIRoute.TICKET_RATE, ":id");
@@ -49,8 +50,11 @@ class TicketAPI {
   public abandon(id: string) {
     return API.getEndpoint(APIRoute.TICKET_ABANDON).patch({ id }, {});
   }
-  public assign() {
-    return API.getEndpoint(APIRoute.TICKET_ASSIGN).patch({ id: "" }, {});
+  public assign(id: string) {
+    return API.getEndpoint(APIRoute.TICKET_ASSIGN).patch({ id }, {});
+  }
+  public assignUnk() {
+    return API.getEndpoint(APIRoute.TICKET_ASSIGN_UNK).patch({ id: "" }, {});
   }
 }
 export const Ticket = new TicketAPI();

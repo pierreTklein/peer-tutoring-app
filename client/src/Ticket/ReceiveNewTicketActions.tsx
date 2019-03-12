@@ -62,7 +62,7 @@ export class TicketActions extends React.Component<
   private async onAssignQuestion() {
     try {
       this.setState({ loading: true });
-      await Ticket.assign();
+      await Ticket.assignUnk();
       this.props.onQuestionAssigned && this.props.onQuestionAssigned();
     } catch (e) {
       ToastError(e.data);

@@ -169,7 +169,6 @@ export class CreateTicketContainer extends React.Component<
   }
 
   private async onSubmit(values: any, actions: FormikActions<any>) {
-    console.log(values.category);
     if (!this.state.account) {
       return;
     }
