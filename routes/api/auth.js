@@ -47,7 +47,6 @@ module.exports = {
 
         authRouter.route("/password/change").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
             Middleware.Validator.Auth.ChangePasswordValidator,
             Middleware.Util.failIfNotValid,
 
