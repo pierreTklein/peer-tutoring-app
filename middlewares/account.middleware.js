@@ -48,11 +48,14 @@ function parsePatch(req, res, next) {
     let accountDetails = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        pronoun: req.body.pronoun,
+        // Remove all entries that are undefined 
         tutor: _.omitBy({
             courses: req.body.courses,
             isOnDuty: req.body.isOnDuty
         }, _.isUndefined)
     };
+    // Remove all entries that are empty 
     req.body.accountDetails = _.omitBy(accountDetails, (value) => _.isEmpty(value));
     return next();
 }

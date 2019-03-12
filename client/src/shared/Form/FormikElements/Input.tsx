@@ -1,6 +1,6 @@
-import { FieldProps } from 'formik';
-import * as React from 'react';
-import { Input, Label, LabelText } from '..';
+import { FieldProps } from "formik";
+import * as React from "react";
+import { Input, Label, LabelText } from "..";
 
 interface IInputFormikComponentProp {
   label: string;
@@ -17,7 +17,7 @@ const InputFormikComponent: React.StatelessComponent<
       <LabelText label={label} required={required} />
       <Input
         type={inputType}
-        placeholder={placeholder || ''}
+        placeholder={placeholder || ""}
         disabled={isDisabled}
         {...field}
       />

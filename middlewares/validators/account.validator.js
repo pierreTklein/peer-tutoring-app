@@ -21,10 +21,12 @@ module.exports = {
 
         VALIDATOR.stringValidator("body", "firstName", true),
         VALIDATOR.stringValidator("body", "lastName", true),
+        VALIDATOR.stringValidator("body", "pronoun", true),
     ],
     updateAccountValidator: [
         VALIDATOR.stringValidator("body", "firstName", true),
         VALIDATOR.stringValidator("body", "lastName", true),
+        VALIDATOR.stringValidator("body", "pronoun", true),
     ],
     updateTutorValidator: [
         VALIDATOR.mongoIdArrayValidator("body", "courses", true),
