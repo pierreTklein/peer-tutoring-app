@@ -64,7 +64,7 @@ class ManageAccountContainer extends React.Component<
         lastName: "",
         pronoun: "",
         email: getNestedAttr(props, ["location", "state", "email"]) || "",
-        password: getNestedAttr(props, ["location", "state", "email"]) || "",
+        password: getNestedAttr(props, ["location", "state", "password"]) || "",
         accountType: [],
         tutor: {
           courses: [],

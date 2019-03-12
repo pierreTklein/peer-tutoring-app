@@ -17,7 +17,6 @@ import { Button, MaxWidthBox, ButtonType, Panel, H1 } from "../shared/Elements";
 import { Form } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 import { Auth } from "../api";
-import ForgotPasswordLinkComponent from "./ForgotPasswordLink";
 import { Link } from "react-router-dom";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { toast } from "react-toastify";
@@ -30,7 +29,7 @@ export interface ILoginState {
   redirTo: string;
 }
 
-export class CreateTicketContainer extends React.Component<{}, ILoginState> {
+export class LoginContainer extends React.Component<{}, ILoginState> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -95,10 +94,17 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
           required={true}
           value={fp.values.password}
         />
-        <ErrorMessage component={FormikElements.Error} name="email" />
+        <ErrorMessage component={FormikElements.Error} name="password" />
         <Flex width={1} justifyContent={"flex-end"} mb={"30px"}>
           <Box pr={"10px"}>
-            <ForgotPasswordLinkComponent />
+            <Link
+              to={{
+                pathname: FrontendRoute.FORGOT_PASSWORD_PAGE,
+                state: { email: fp.values.email }
+              }}
+            >
+              <span>Forgot password?</span>
+            </Link>
           </Box>
         </Flex>
         <Flex width={1} justifyContent={"center"}>
@@ -162,4 +168,4 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
   }
 }
 
-export default CreateTicketContainer;
+export default LoginContainer;
