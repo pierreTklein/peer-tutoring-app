@@ -4,5 +4,6 @@ export * from "./APIResponse";
 export * from "./auth";
 export * from "./course";
 export * from "./endpoint";
+export * from "./socket";
 export * from "./ticket";
 export * from "./tutor";

@@ -44,7 +44,7 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
     this.renderFormik = this.renderFormik.bind(this);
   }
   public render() {
-    if (this.state.success && this.state.submitting) {
+    if (this.state.success && !this.state.submitting) {
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
     return (
