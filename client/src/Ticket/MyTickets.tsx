@@ -130,7 +130,7 @@ export class MyTicketsContainer extends React.Component<
         flexDirection={"column"}
       >
         <Helmet>
-          <title>My questions | CSUS Helpdesk</title>
+          <title>Questions | CSUS Helpdesk</title>
         </Helmet>
         <MaxWidthBox width={0.9} m={"auto"}>
           <H1 textAlign={"center"}>My questions</H1>

@@ -1,5 +1,8 @@
-export const LOCAL_API_URL = "http://localhost:3000/api";
-export const PROD_API_URL = "/api";
+export const LOCAL_URL = "http://localhost:3000/";
+export const PROD_URL = "https://peer-tutoring-app.herokuapp.com/";
+
+export const LOCAL_API_URL = `${LOCAL_URL}api`;
+export const PROD_API_URL = `${PROD_URL}api`;
 
 export const CACHE_USER_KEY = "userInfo";
 

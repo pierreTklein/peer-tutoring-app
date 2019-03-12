@@ -14,7 +14,7 @@ function notifyToast({ eventType }: TicketUpdateEvent) {
 }
 
 class SocketAPI {
-  private socket = openSocket("http://localhost:3000/");
+  private socket = openSocket("/");
   private roomsJoined: { [key: string]: boolean } = {};
   constructor() {
     this.socket.on("update", notifyToast);
