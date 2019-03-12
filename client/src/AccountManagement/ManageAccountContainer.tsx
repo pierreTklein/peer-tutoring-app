@@ -24,7 +24,7 @@ import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 
 import ToastError from "../shared/Form/validationErrorGenerator";
-import { getValueFromQuery, isUserType } from "../util";
+import { getValueFromQuery, isUserType, getNestedAttr } from "../util";
 import getValidationSchema from "./ValidationSchema";
 import { EditTutorView } from "./EditTutorView";
 
@@ -61,8 +61,9 @@ class ManageAccountContainer extends React.Component<
         id: "",
         firstName: "",
         lastName: "",
-        email: "",
-        password: "",
+        pronoun: "",
+        email: getNestedAttr(props, ["location", "state", "email"]) || "",
+        password: getNestedAttr(props, ["location", "state", "email"]) || "",
         accountType: [],
         tutor: {
           courses: [],
@@ -139,6 +140,7 @@ class ManageAccountContainer extends React.Component<
           initialValues={{
             firstName: accountDetails.firstName,
             lastName: accountDetails.lastName,
+            pronoun: accountDetails.pronoun || "",
             email: accountDetails.email,
             password: accountDetails.password || "",
             newPassword: ""
@@ -184,6 +186,13 @@ class ManageAccountContainer extends React.Component<
           </MaxWidthBox>
         </Flex>
         <FastField
+          name={"pronoun"}
+          label={CONSTANTS.PRONOUN_LABEL}
+          value={fp.values.pronoun}
+          component={FormikElements.Input}
+        />
+        <ErrorMessage component={FormikElements.Error} name="pronoun" />
+        <FastField
           name={"email"}
           label={CONSTANTS.EMAIL_LABEL}
           value={fp.values.email}
@@ -201,7 +210,7 @@ class ManageAccountContainer extends React.Component<
           value={fp.values.password}
         />
         <ErrorMessage component={FormikElements.Error} name="password" />
-        {mode === ManageAccountModes.EDIT ? (
+        {mode === ManageAccountModes.EDIT && (
           <MaxWidthBox>
             <FastField
               label={CONSTANTS.NEW_PASSWORD_LABEL}
@@ -211,8 +220,6 @@ class ManageAccountContainer extends React.Component<
             />
             <ErrorMessage component={FormikElements.Error} name="newPassword" />
           </MaxWidthBox>
-        ) : (
-          ""
         )}
         <SubmitBtn
           isLoading={fp.isSubmitting}
@@ -281,10 +288,12 @@ class ManageAccountContainer extends React.Component<
     values: FormikValues,
     accountId: string = ""
   ): IAccount {
+    console.log(values.pronoun);
     return {
       accountType: [UserType.STUDENT],
       email: values.email,
       firstName: values.firstName,
+      pronoun: values.pronoun,
       id: accountId,
       lastName: values.lastName,
       password: values.password,

@@ -16,7 +16,8 @@ export const Basic: React.FunctionComponent<IBasicProps> = ({ account }) => {
           label={"Name"}
           text={`${account.firstName} ${account.lastName}`}
         />
-        <LabelledField label={"Email"} text={`${account.email}`} />
+        <LabelledField label={"Email"} text={account.email} />
+        <LabelledField label={"Pronoun"} text={account.pronoun} />
         <LabelledField
           label={"User Type"}
           text={`${account.accountType.join(", ").toLowerCase()}`}
