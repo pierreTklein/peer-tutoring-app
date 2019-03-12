@@ -10,6 +10,9 @@ const AccountSchema = new mongoose.Schema({
     lastName: {
         type: String,
     },
+    pronoun: {
+        type: String
+    },
     email: {
         type: String,
         trim: true,

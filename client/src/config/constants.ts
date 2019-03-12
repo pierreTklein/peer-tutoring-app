@@ -28,5 +28,6 @@ export const REQUIRED_DESCRIPTION =
 
 export const FIRST_NAME_LABEL = "First Name";
 export const LAST_NAME_LABEL = "Last Name";
+export const PRONOUN_LABEL = "Preferred Pronoun";
 export const OLD_PASSWORD_LABEL = "Old password";
 export const NEW_PASSWORD_LABEL = "New password";

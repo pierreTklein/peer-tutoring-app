@@ -116,7 +116,7 @@ export class CreateTicketContainer extends React.Component<{}, ILoginState> {
             <Link
               to={{
                 pathname: FrontendRoute.CREATE_ACCOUNT_PAGE,
-                state: { ...this.state }
+                state: { email: fp.values.email, password: fp.values.password }
               }}
             >
               <Button
