@@ -11,6 +11,7 @@ export * from "./LabelledParagraph";
 export * from "./LeftContainer";
 export * from "./LinkDuo";
 export * from "./MaxWidthBox";
+export * from "./PageContainer";
 export * from "./Panel";
 export * from "./Paragraph";
 export * from "./Pillbox";

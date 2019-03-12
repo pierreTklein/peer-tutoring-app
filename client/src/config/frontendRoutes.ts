@@ -9,7 +9,7 @@ export enum FrontendRoute {
   CREATE_ACCOUNT_PAGE = "/account/new",
   EDIT_ACCOUNT_PAGE = "/account/edit",
 
-  CREATE_TICKET = "/ticket/new"
+  CREATE_TICKET = "/question/new"
 }
 
 export default FrontendRoute;

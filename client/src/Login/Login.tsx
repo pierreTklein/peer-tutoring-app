@@ -8,12 +8,11 @@ import {
 } from "formik";
 import * as QueryString from "query-string";
 import * as React from "react";
-import Helmet from "react-helmet";
 import { Redirect } from "react-router";
 import { object, string } from "yup";
 
 import { FrontendRoute } from "../config";
-import { Button, MaxWidthBox, ButtonType, Panel, H1 } from "../shared/Elements";
+import { Button, ButtonType, H1, PageContainer } from "../shared/Elements";
 import { Form } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 import { Auth } from "../api";
@@ -47,31 +46,26 @@ export class LoginContainer extends React.Component<{}, ILoginState> {
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
     return (
-      <MaxWidthBox width={0.9} m={"auto"}>
-        <Helmet>
-          <title>Login | CSUS Helpdesk</title>
-        </Helmet>
-        <Panel alignItems={"center"} flexDirection={"column"} p={"5%"}>
-          <Box alignSelf={"flex-start"}>
-            <H1 fontSize={"24px"}>Sign in / Register</H1>
-          </Box>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              email: "",
-              password: ""
-            }}
-            onSubmit={this.onSubmit}
-            validationSchema={object().shape({
-              email: string()
-                .required("Required")
-                .email("Must be a valid email"),
-              password: string().required("Required")
-            })}
-            render={this.renderFormik}
-          />
-        </Panel>
-      </MaxWidthBox>
+      <PageContainer title={"Log In"}>
+        <Box alignSelf={"flex-start"}>
+          <H1 fontSize={"24px"}>Sign in / Register</H1>
+        </Box>
+        <Formik
+          enableReinitialize={true}
+          initialValues={{
+            email: "",
+            password: ""
+          }}
+          onSubmit={this.onSubmit}
+          validationSchema={object().shape({
+            email: string()
+              .required("Required")
+              .email("Must be a valid email"),
+            password: string().required("Required")
+          })}
+          render={this.renderFormik}
+        />
+      </PageContainer>
     );
   }
   private renderFormik(fp: FormikProps<any>) {

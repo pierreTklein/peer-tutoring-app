@@ -1,4 +1,4 @@
-import { Box, Flex } from "@rebass/grid";
+import { Box } from "@rebass/grid";
 import {
   ErrorMessage,
   FastField,
@@ -7,22 +7,19 @@ import {
   FormikActions
 } from "formik";
 import * as React from "react";
-import Helmet from "react-helmet";
 import { Redirect } from "react-router";
 import { object, string } from "yup";
 
 import { FrontendRoute } from "../config";
 import {
-  MaxWidthBox,
   ButtonType,
-  Panel,
   H1,
-  FormDescription
+  FormDescription,
+  PageContainer
 } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
 import { Auth } from "../api";
-import { Link } from "react-router-dom";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { toast } from "react-toastify";
 import { RouteProps } from "react-router";
@@ -51,33 +48,27 @@ export class ForgotPasswordContainer extends React.Component<
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
     return (
-      <MaxWidthBox width={0.9} m={"auto"}>
-        <Helmet>
-          <title>Forgot Password | CSUS Helpdesk</title>
-        </Helmet>
-        <Panel alignItems={"center"} flexDirection={"column"} p={"5%"}>
-          <Box alignSelf={"flex-start"}>
-            <H1 fontSize={"24px"}>Password Reset</H1>
-            <FormDescription>
-              Enter your email and we will send you a link to reset your
-              password.
-            </FormDescription>
-          </Box>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              email: this.state.email
-            }}
-            onSubmit={this.onSubmit}
-            validationSchema={object().shape({
-              email: string()
-                .required("Required")
-                .email("Must be a valid email")
-            })}
-            render={this.renderFormik}
-          />
-        </Panel>
-      </MaxWidthBox>
+      <PageContainer title={"Send Reset Email"}>
+        <Box>
+          <H1 textAlign={"center"}>Send Reset Email</H1>
+          <FormDescription>
+            Enter your email and we will send you a link to reset your password.
+          </FormDescription>
+        </Box>
+        <Formik
+          enableReinitialize={true}
+          initialValues={{
+            email: this.state.email
+          }}
+          onSubmit={this.onSubmit}
+          validationSchema={object().shape({
+            email: string()
+              .required("Required")
+              .email("Must be a valid email")
+          })}
+          render={this.renderFormik}
+        />
+      </PageContainer>
     );
   }
   private renderFormik(fp: FormikProps<any>) {
@@ -97,7 +88,7 @@ export class ForgotPasswordContainer extends React.Component<
           disabled={fp.isSubmitting}
           buttonType={ButtonType.PRIMARY}
         >
-          Reset password
+          Send email
         </SubmitBtn>
       </Form>
     );

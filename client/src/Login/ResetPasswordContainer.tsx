@@ -7,17 +7,15 @@ import {
   FormikActions
 } from "formik";
 import * as React from "react";
-import Helmet from "react-helmet";
 import { Redirect } from "react-router";
 import { object, string, ref } from "yup";
 
 import { FrontendRoute, getTokenFromQuery } from "../config";
 import {
-  MaxWidthBox,
   ButtonType,
-  Panel,
   H1,
-  FormDescription
+  FormDescription,
+  PageContainer
 } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
@@ -46,34 +44,31 @@ class ResetPasswordContainer extends React.Component<
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
     return (
-      <MaxWidthBox width={0.9} m={"auto"}>
-        <Helmet>
-          <title>Reset Password | CSUS Helpdesk</title>
-        </Helmet>
-        <Panel alignItems={"center"} flexDirection={"column"} p={"5%"}>
-          <Box alignSelf={"flex-start"}>
-            <H1 fontSize={"24px"}>Reset your password</H1>
-            <FormDescription>Enter in your new password</FormDescription>
-          </Box>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              password: "",
-              confirmPassword: ""
-            }}
-            onSubmit={this.onSubmit}
-            validationSchema={object().shape({
-              password: string()
-                .min(8, "Must be at least 8 characters")
-                .required("Password is required"),
-              confirmPassword: string()
-                .oneOf([ref("password"), null], "Passwords don't match")
-                .required("Confirm Password is required")
-            })}
-            render={this.renderFormik}
-          />
-        </Panel>
-      </MaxWidthBox>
+      <PageContainer title={"Reset password"}>
+        <Box>
+          <H1 textAlign={"center"}>Reset your password</H1>
+          <FormDescription textAlign={"center"}>
+            Enter in your new password
+          </FormDescription>
+        </Box>
+        <Formik
+          enableReinitialize={true}
+          initialValues={{
+            password: "",
+            confirmPassword: ""
+          }}
+          onSubmit={this.onSubmit}
+          validationSchema={object().shape({
+            password: string()
+              .min(8, "Must be at least 8 characters")
+              .required("Password is required"),
+            confirmPassword: string()
+              .oneOf([ref("password"), null], "Passwords don't match")
+              .required("Confirm Password is required")
+          })}
+          render={this.renderFormik}
+        />
+      </PageContainer>
     );
   }
   private renderFormik(fp: FormikProps<any>) {

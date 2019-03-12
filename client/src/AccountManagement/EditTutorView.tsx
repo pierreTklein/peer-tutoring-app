@@ -1,9 +1,7 @@
-import { Flex } from "@rebass/grid";
 import {
   ErrorMessage,
   Formik,
   FormikProps,
-  Field,
   FastField,
   FormikActions
 } from "formik";
@@ -22,7 +20,8 @@ import {
   H1,
   MaxWidthBox,
   ButtonType,
-  FormDescription
+  FormDescription,
+  Panel
 } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
@@ -67,12 +66,13 @@ export class EditTutorView extends React.Component<
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
     return (
-      <Flex
-        justifyContent={"center"}
-        alignItems={"center"}
-        flexDirection={"column"}
-      >
-        <MaxWidthBox width={1}>
+      <MaxWidthBox width={1}>
+        <Panel
+          alignItems={"center"}
+          flexDirection={"column"}
+          p={"5%"}
+          mb={"5%"}
+        >
           <H1 textAlign={"center"}>Update Tutor Info</H1>
           <FormDescription>{REQUIRED_DESCRIPTION}</FormDescription>
           <Formik
@@ -86,8 +86,8 @@ export class EditTutorView extends React.Component<
             })}
             render={this.renderFormik}
           />
-        </MaxWidthBox>
-      </Flex>
+        </Panel>
+      </MaxWidthBox>
     );
   }
   private renderFormik(fp: FormikProps<any>) {

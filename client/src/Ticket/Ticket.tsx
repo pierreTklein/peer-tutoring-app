@@ -1,13 +1,6 @@
 import * as React from "react";
-import {
-  ITicket,
-  ICourse,
-  IAccount,
-  parseCourse,
-  parseTutor,
-  parseStudent
-} from "../config";
-import { Panel, H2 } from "../shared";
+import { ITicket, parseCourse, parseTutor, parseStudent } from "../config";
+import { Panel } from "../shared";
 import { Box } from "@rebass/grid";
 import { TicketStatus, getStatus } from "../config/TicketStatus";
 import theme from "../shared/Styles/theme";
@@ -38,7 +31,7 @@ export const Ticket: React.FunctionComponent<
   const courseDescription = parseCourse(ticket.courseId);
   const tutorDescription = parseTutor(ticket.tutorId);
   const studentDescription = parseStudent(ticket.studentId);
-  const { question, createdAt, startedAt, endedAt, category, rating } = ticket;
+  const { question, createdAt, startedAt, endedAt, category } = ticket;
   const status = getStatus(ticket);
   const opacity = "7F";
   let color = "";
@@ -99,7 +92,7 @@ export const Ticket: React.FunctionComponent<
         showStudentActions={showStudentActions}
         ticket={ticket}
         onTicketUpdated={onTicketUpdated}
-      />{" "}
+      />
     </Panel>
   );
 };

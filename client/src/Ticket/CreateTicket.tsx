@@ -1,4 +1,4 @@
-import { Box, Flex } from "@rebass/grid";
+import { Box } from "@rebass/grid";
 import {
   ErrorMessage,
   FastField,
@@ -8,7 +8,6 @@ import {
   FormikActions
 } from "formik";
 import * as React from "react";
-import Helmet from "react-helmet";
 import { Redirect } from "react-router";
 import { object, string } from "yup";
 
@@ -20,11 +19,10 @@ import {
   REQUIRED_DESCRIPTION
 } from "../config";
 import {
-  Button,
   H1,
-  MaxWidthBox,
   ButtonType,
-  FormDescription
+  FormDescription,
+  PageContainer
 } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
@@ -85,34 +83,27 @@ export class CreateTicketContainer extends React.Component<
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
     return (
-      <Flex
-        justifyContent={"center"}
-        alignItems={"center"}
-        flexDirection={"column"}
-      >
-        <Helmet>
-          <title>Create new ticket | CSUS Helpdesk</title>
-        </Helmet>
-        <MaxWidthBox width={0.9} m={"auto"}>
-          <H1 textAlign={"center"}>Create new ticket</H1>
-          <FormDescription>{REQUIRED_DESCRIPTION}</FormDescription>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              course: "",
-              question: "",
-              category: ""
-            }}
-            onSubmit={this.onSubmit}
-            validationSchema={object().shape({
-              course: string().required("Required"),
-              question: string().required("Required"),
-              category: string().required("Required")
-            })}
-            render={this.renderFormik}
-          />
-        </MaxWidthBox>
-      </Flex>
+      <PageContainer title={"Ask Question"}>
+        <Box>
+          <H1 textAlign={"center"}>Ask a new question</H1>
+          <FormDescription>{REQUIRED_DESCRIPTION}</FormDescription>{" "}
+        </Box>
+        <Formik
+          enableReinitialize={true}
+          initialValues={{
+            course: "",
+            question: "",
+            category: ""
+          }}
+          onSubmit={this.onSubmit}
+          validationSchema={object().shape({
+            course: string().required("Required"),
+            question: string().required("Required"),
+            category: string().required("Required")
+          })}
+          render={this.renderFormik}
+        />
+      </PageContainer>
     );
   }
   private renderFormik(fp: FormikProps<any>) {
@@ -157,7 +148,7 @@ export class CreateTicketContainer extends React.Component<
           disabled={fp.isSubmitting}
           buttonType={ButtonType.PRIMARY}
         >
-          {this.state.loadingData ? "Loading..." : "Create ticket"}
+          {this.state.loadingData ? "Loading..." : "Ask question"}
         </SubmitBtn>
       </Form>
     );

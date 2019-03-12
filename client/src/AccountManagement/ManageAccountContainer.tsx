@@ -1,6 +1,5 @@
-import { Flex } from "@rebass/grid";
+import { Flex, Box } from "@rebass/grid";
 import * as React from "react";
-import Helmet from "react-helmet";
 import { Redirect, RouteProps } from "react-router";
 
 import {
@@ -18,8 +17,8 @@ import {
   FormDescription,
   H1,
   MaxWidthBox,
-  Button,
-  ButtonType
+  ButtonType,
+  PageContainer
 } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";
 import * as FormikElements from "../shared/Form/FormikElements";
@@ -98,7 +97,7 @@ class ManageAccountContainer extends React.Component<
   }
 
   public render() {
-    const { mode, formSubmitted, token, loaded } = this.state;
+    const { mode, formSubmitted, loaded } = this.state;
     if (!loaded) {
       return (
         <MaxWidthBox width={0.9} m={"auto"}>
@@ -124,38 +123,42 @@ class ManageAccountContainer extends React.Component<
 
   private renderForm() {
     const { mode, accountDetails, allCourses } = this.state;
+    const title = `${
+      mode === ManageAccountModes.CREATE ? "Create" : "Edit"
+    } Your Account`;
     return (
-      <MaxWidthBox width={0.9} m={"auto"}>
-        <Helmet>
-          <title>
-            {mode === ManageAccountModes.CREATE ? "Create" : "Edit"} Account |
-            CSUS Helpdesk
-          </title>
-        </Helmet>
-        <H1 textAlign={"center"}>
-          {mode === ManageAccountModes.CREATE ? "Create" : "Edit"} your Account
-        </H1>
-        <FormDescription>{CONSTANTS.REQUIRED_DESCRIPTION}</FormDescription>
-        <Formik
-          enableReinitialize={true}
-          initialValues={{
-            firstName: accountDetails.firstName,
-            lastName: accountDetails.lastName,
-            pronoun: accountDetails.pronoun || "",
-            email: accountDetails.email,
-            password: accountDetails.password || "",
-            newPassword: ""
-          }}
-          onSubmit={this.handleSubmit}
-          render={this.renderFormik}
-          validationSchema={getValidationSchema(
-            mode === ManageAccountModes.CREATE
+      <React.Fragment>
+        <PageContainer title={title}>
+          <Box>
+            <H1 textAlign={"center"}>
+              {mode === ManageAccountModes.CREATE ? "Create" : "Edit"} your
+              Account
+            </H1>
+            <FormDescription>{CONSTANTS.REQUIRED_DESCRIPTION}</FormDescription>
+          </Box>
+          <Formik
+            enableReinitialize={true}
+            initialValues={{
+              firstName: accountDetails.firstName,
+              lastName: accountDetails.lastName,
+              pronoun: accountDetails.pronoun || "",
+              email: accountDetails.email,
+              password: accountDetails.password || "",
+              newPassword: ""
+            }}
+            onSubmit={this.handleSubmit}
+            render={this.renderFormik}
+            validationSchema={getValidationSchema(
+              mode === ManageAccountModes.CREATE
+            )}
+          />
+        </PageContainer>
+        <MaxWidthBox width={0.9} m={"auto"}>
+          {isUserType(accountDetails, UserType.TUTOR) && (
+            <EditTutorView account={accountDetails} courses={allCourses} />
           )}
-        />
-        {isUserType(accountDetails, UserType.TUTOR) && (
-          <EditTutorView account={accountDetails} courses={allCourses} />
-        )}
-      </MaxWidthBox>
+        </MaxWidthBox>
+      </React.Fragment>
     );
   }
   private renderFormik(fp: FormikProps<any>) {

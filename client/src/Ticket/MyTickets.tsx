@@ -1,9 +1,7 @@
-import { Flex } from "@rebass/grid";
 import * as React from "react";
-import Helmet from "react-helmet";
 
 import { IAccount, ITicket, UserType, compareTicket } from "../config";
-import { H1, MaxWidthBox } from "../shared/Elements";
+import { H1, MaxWidthBox, PageContainer } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import { Account, SocketConn } from "../api";
 import Ticket from "../api/ticket";
@@ -128,58 +126,49 @@ export class MyTicketsContainer extends React.Component<
       );
     }
     return (
-      <Flex
-        justifyContent={"center"}
-        alignItems={"center"}
-        flexDirection={"column"}
-      >
-        <Helmet>
-          <title>Questions | CSUS Helpdesk</title>
-        </Helmet>
-        <MaxWidthBox width={0.9} m={"auto"}>
-          <H1 textAlign={"center"}>My questions</H1>
-          <ReceiveNewTicketActions
-            hideAssign={!isUserType(account, UserType.TUTOR)}
-            hideRequest={!isUserType(account, UserType.STUDENT)}
-            disableRequest={studentTicketsCurrent.length > 0}
-            onQuestionAssigned={this.queryTickets}
-          />
-          <TicketList
-            title={"Your current questions"}
-            tickets={studentTicketsCurrent}
-            hidden={!showStudent}
-            showStudentActions={showStudent}
-            showTutorActions={showTutor}
-            onTicketUpdated={this.queryTickets}
-            defaultOpened={true}
-          />
-          <TicketList
-            title={"Assigned questions"}
-            tickets={tutorTicketsCurrent}
-            hidden={!showTutor}
-            showStudentActions={showStudent}
-            showTutorActions={showTutor}
-            onTicketUpdated={this.queryTickets}
-            defaultOpened={true}
-          />
-          <TicketList
-            title={"Your old questions"}
-            tickets={studentTicketsPast}
-            hidden={!showStudent}
-            showStudentActions={showStudent}
-            showTutorActions={showTutor}
-            onTicketUpdated={this.queryTickets}
-          />
-          <TicketList
-            title={"Questions you answered"}
-            tickets={tutorTicketsPast}
-            hidden={!showTutor}
-            showStudentActions={showStudent}
-            showTutorActions={showTutor}
-            onTicketUpdated={this.queryTickets}
-          />
-        </MaxWidthBox>
-      </Flex>
+      <PageContainer title={"Questions"}>
+        <H1 textAlign={"center"}>My questions</H1>
+        <ReceiveNewTicketActions
+          hideAssign={!isUserType(account, UserType.TUTOR)}
+          hideRequest={!isUserType(account, UserType.STUDENT)}
+          disableRequest={studentTicketsCurrent.length > 0}
+          onQuestionAssigned={this.queryTickets}
+        />
+        <TicketList
+          title={"Your current questions"}
+          tickets={studentTicketsCurrent}
+          hidden={!showStudent}
+          showStudentActions={showStudent}
+          showTutorActions={showTutor}
+          onTicketUpdated={this.queryTickets}
+          defaultOpened={true}
+        />
+        <TicketList
+          title={"Assigned questions"}
+          tickets={tutorTicketsCurrent}
+          hidden={!showTutor}
+          showStudentActions={showStudent}
+          showTutorActions={showTutor}
+          onTicketUpdated={this.queryTickets}
+          defaultOpened={true}
+        />
+        <TicketList
+          title={"Your old questions"}
+          tickets={studentTicketsPast}
+          hidden={!showStudent}
+          showStudentActions={showStudent}
+          showTutorActions={showTutor}
+          onTicketUpdated={this.queryTickets}
+        />
+        <TicketList
+          title={"Questions you answered"}
+          tickets={tutorTicketsPast}
+          hidden={!showTutor}
+          showStudentActions={showStudent}
+          showTutorActions={showTutor}
+          onTicketUpdated={this.queryTickets}
+        />
+      </PageContainer>
     );
   }
 }
