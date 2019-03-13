@@ -1,13 +1,5 @@
 import openSocket from "socket.io-client";
-import {
-  ITicket,
-  UserType,
-  IS_LOCALHOST,
-  LOCAL_URL,
-  PROD_URL
-} from "../config";
-import { toast } from "react-toastify";
-import { playNotification } from "../util/audio";
+import { ITicket, IS_LOCALHOST, LOCAL_URL, PROD_URL } from "../config";
 
 export enum EventType {
   ASSIGNED = "assigned",
@@ -23,35 +15,12 @@ export interface ITicketUpdateEvent {
   data: ITicket;
 }
 
-function notifyToast({ eventType, message }: ITicketUpdateEvent) {
-  let toastFn;
-  switch (eventType) {
-    case EventType.STARTED:
-      toastFn = toast.warn;
-      break;
-    case EventType.ABANDONED:
-      toastFn = toast.error;
-      break;
-    case EventType.ENDED:
-      toastFn = toast.success;
-      break;
-    default:
-      toastFn = toast.info;
-  }
-  playNotification();
-  toastFn(message || "", {
-    toastId: "update",
-    autoClose: 10000
-  });
-}
-
-const uri = IS_LOCALHOST ? LOCAL_URL : PROD_URL;
-
 class SocketAPI {
-  private socket = openSocket(uri);
+  private socket: SocketIOClient.Socket;
   private roomsJoined: { [key: string]: boolean } = {};
   constructor() {
-    this.socket.on("update", notifyToast);
+    const uri = IS_LOCALHOST ? LOCAL_URL : PROD_URL;
+    this.socket = openSocket(uri);
   }
   public joinRoom(room: string) {
     if (!this.roomsJoined[room]) {

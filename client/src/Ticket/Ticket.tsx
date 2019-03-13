@@ -1,5 +1,11 @@
 import * as React from "react";
-import { ITicket, parseCourse, parseTutor, parseStudent } from "../config";
+import {
+  ITicket,
+  parseCourse,
+  parseTutor,
+  parseStudent,
+  UserType
+} from "../config";
 import { Panel } from "../shared";
 import { Box } from "@rebass/grid";
 import { TicketStatus, getStatus } from "../config/TicketStatus";
@@ -11,8 +17,7 @@ import Collapsible from "../shared/Elements/Collapsible";
 interface ITicketProps {
   ticket: ITicket;
   onTicketUpdated: (ticket: ITicket) => void;
-  showTutorActions: boolean;
-  showStudentActions: boolean;
+  view: UserType;
   showTicketDetails: boolean;
   onToggle?: (isOpen: boolean) => void;
 }
@@ -22,10 +27,9 @@ export const Ticket: React.FunctionComponent<
 > = ({
   ticket,
   onTicketUpdated,
-  showTutorActions,
-  showStudentActions,
   onToggle,
   showTicketDetails,
+  view,
   ...rest
 }) => {
   const courseDescription = parseCourse(ticket.courseId);
@@ -88,8 +92,7 @@ export const Ticket: React.FunctionComponent<
         </Collapsible>
       </Box>
       <UpdateTicketActions
-        showTutorActions={showTutorActions}
-        showStudentActions={showStudentActions}
+        view={view}
         ticket={ticket}
         onTicketUpdated={onTicketUpdated}
       />

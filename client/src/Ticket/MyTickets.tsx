@@ -132,8 +132,7 @@ export class MyTicketsContainer extends React.Component<
           title={"Your current questions"}
           tickets={studentTicketsCurrent}
           hidden={!showStudent}
-          showStudentActions={showStudent}
-          showTutorActions={showTutor}
+          view={UserType.STUDENT}
           onTicketUpdated={this.queryTickets}
           defaultOpened={true}
         />
@@ -141,8 +140,7 @@ export class MyTicketsContainer extends React.Component<
           title={"Assigned questions"}
           tickets={tutorTicketsCurrent}
           hidden={!showTutor}
-          showStudentActions={showStudent}
-          showTutorActions={showTutor}
+          view={UserType.TUTOR}
           onTicketUpdated={this.queryTickets}
           defaultOpened={true}
         />
@@ -150,16 +148,14 @@ export class MyTicketsContainer extends React.Component<
           title={"Your old questions"}
           tickets={studentTicketsPast}
           hidden={!showStudent}
-          showStudentActions={showStudent}
-          showTutorActions={showTutor}
+          view={UserType.STUDENT}
           onTicketUpdated={this.queryTickets}
         />
         <TicketList
           title={"Questions you answered"}
           tickets={tutorTicketsPast}
           hidden={!showTutor}
-          showStudentActions={showStudent}
-          showTutorActions={showTutor}
+          view={UserType.TUTOR}
           onTicketUpdated={this.queryTickets}
         />
       </PageContainer>

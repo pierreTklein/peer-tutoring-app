@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ITicket } from "../config";
+import { ITicket, UserType } from "../config";
 import { Ticket } from "./Ticket";
 import { Panel } from "../shared";
 import { Flex, Box } from "@rebass/grid";
@@ -7,8 +7,7 @@ import Collapsible from "../shared/Elements/Collapsible";
 
 interface ITicketListProps {
   title: string;
-  showStudentActions: boolean;
-  showTutorActions: boolean;
+  view: UserType;
   tickets: ITicket[];
   hidden?: boolean;
   onTicketUpdated: () => void;
@@ -16,8 +15,7 @@ interface ITicketListProps {
 }
 
 export const TicketList: React.FunctionComponent<ITicketListProps> = ({
-  showStudentActions,
-  showTutorActions,
+  view,
   tickets,
   title,
   hidden,
@@ -46,8 +44,7 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
             : tickets.map((ticket, index) => (
                 <Box key={index} width={1}>
                   <Ticket
-                    showStudentActions={showStudentActions}
-                    showTutorActions={showTutorActions}
+                    view={view}
                     ticket={ticket}
                     onTicketUpdated={onTicketUpdated}
                     showTicketDetails={false}

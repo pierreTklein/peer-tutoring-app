@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ITicket } from "../config";
+import { ITicket, UserType } from "../config";
 import { Button, ButtonType } from "../shared";
 import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
@@ -8,32 +8,28 @@ import { getStatus, TicketStatus } from "../config/TicketStatus";
 import { toast } from "react-toastify";
 
 interface ITicketActionProps {
-  showTutorActions: boolean;
-  showStudentActions: boolean;
+  view: UserType;
   ticket: ITicket;
   onTicketUpdated: (ticket: ITicket) => void;
 }
 
 export const UpdateTicketActions: React.FunctionComponent<
   ITicketActionProps
-> = ({ showTutorActions, showStudentActions, ticket, onTicketUpdated }) => {
+> = ({ ticket, onTicketUpdated, view }) => {
   const ticketStatus: TicketStatus = getStatus(ticket);
 
-  const disableStart = ticketStatus !== TicketStatus.ASSIGNED;
-  const hideStart = !showTutorActions;
-
-  const disableEnd = ticketStatus === TicketStatus.ENDED;
-  const hideEnd = !(showTutorActions || showStudentActions);
-
-  const disableAbandon =
-    ticketStatus === TicketStatus.ASKED || ticketStatus === TicketStatus.ENDED;
-  const hideAbandon = disableAbandon || !showTutorActions;
+  const hideStart =
+    view === UserType.STUDENT || ticketStatus !== TicketStatus.ASSIGNED;
+  const hideEnd = ticketStatus === TicketStatus.ENDED;
+  const hideAbandon =
+    ticketStatus === TicketStatus.ASKED ||
+    ticketStatus === TicketStatus.ENDED ||
+    view === UserType.STUDENT;
 
   return (
     <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>
-      <Box hidden={hideStart || disableStart}>
+      <Box hidden={hideStart}>
         <Button
-          disabled={disableStart}
           onClick={() => {
             onStartTicket(ticket, onTicketUpdated);
           }}
@@ -44,9 +40,8 @@ export const UpdateTicketActions: React.FunctionComponent<
           Start
         </Button>
       </Box>
-      <Box hidden={hideAbandon || disableEnd}>
+      <Box hidden={hideAbandon}>
         <Button
-          disabled={disableAbandon}
           onClick={() => {
             onAbandonTicket(ticket, onTicketUpdated);
           }}
@@ -57,9 +52,8 @@ export const UpdateTicketActions: React.FunctionComponent<
           Abandon
         </Button>
       </Box>
-      <Box hidden={hideEnd || disableEnd}>
+      <Box hidden={hideEnd}>
         <Button
-          disabled={disableEnd}
           onClick={() => {
             onEndTicket(ticket, onTicketUpdated);
           }}
