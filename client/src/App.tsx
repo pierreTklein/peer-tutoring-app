@@ -77,12 +77,7 @@ class App extends Component {
           <Route
             exact={true}
             path={FrontendRoute.CONFIRM_ACCOUNT_RESEND}
-            component={withNavbar(
-              withAuthRedirect(NotConfirmedContainer, {
-                redirTo: FrontendRoute.HOME_PAGE,
-                AuthVerification: (account: IAccount) => !account.confirmed
-              })
-            )}
+            component={withNavbar(withAuthRedirect(NotConfirmedContainer))}
           />
           <Route
             path={FrontendRoute.HOME_PAGE}
