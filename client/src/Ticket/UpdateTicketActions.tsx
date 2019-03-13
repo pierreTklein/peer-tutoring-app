@@ -1,13 +1,10 @@
 import * as React from "react";
-import { FrontendRoute, ITicket, IAccount, UserType } from "../config";
+import { ITicket } from "../config";
 import { Button, ButtonType } from "../shared";
 import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
-import { Link } from "react-router-dom";
-import { isUserType } from "../util";
 import { getStatus, TicketStatus } from "../config/TicketStatus";
-import theme from "../shared/Styles/theme";
 import { toast } from "react-toastify";
 
 interface ITicketActionProps {
@@ -34,7 +31,7 @@ export const UpdateTicketActions: React.FunctionComponent<
 
   return (
     <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>
-      <Box hidden={hideStart}>
+      <Box hidden={hideStart || disableStart}>
         <Button
           disabled={disableStart}
           onClick={() => {
@@ -47,7 +44,7 @@ export const UpdateTicketActions: React.FunctionComponent<
           Start
         </Button>
       </Box>
-      <Box hidden={hideAbandon}>
+      <Box hidden={hideAbandon || disableEnd}>
         <Button
           disabled={disableAbandon}
           onClick={() => {
@@ -60,7 +57,7 @@ export const UpdateTicketActions: React.FunctionComponent<
           Abandon
         </Button>
       </Box>
-      <Box hidden={hideEnd}>
+      <Box hidden={hideEnd || disableEnd}>
         <Button
           disabled={disableEnd}
           onClick={() => {

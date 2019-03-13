@@ -1,15 +1,17 @@
 import * as React from "react";
 
-import { Flex } from "@rebass/grid";
-import { MaxWidthBox, Panel } from "./";
+import { Flex, Box } from "@rebass/grid";
+import { MaxWidthBox, Panel, H1 } from "./";
 import Helmet from "react-helmet";
 
 interface IPageContainerProps {
   title: string;
+  loading?: boolean;
 }
 
 export const PageContainer: React.FunctionComponent<IPageContainerProps> = ({
   title,
+  loading,
   children
 }) => {
   return (
@@ -28,7 +30,13 @@ export const PageContainer: React.FunctionComponent<IPageContainerProps> = ({
           p={"5%"}
           mb={"5%"}
         >
-          {children}
+          {!loading ? (
+            children
+          ) : (
+            <Box>
+              <H1 textAlign={"center"}>Loading data...</H1>
+            </Box>
+          )}
         </Panel>
       </MaxWidthBox>
     </Flex>

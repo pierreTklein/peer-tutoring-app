@@ -1,12 +1,9 @@
-import { Flex } from "@rebass/grid";
 import * as React from "react";
-import Helmet from "react-helmet";
 
-import { IAccount, ITicket, UserType } from "../config";
-import { H1, MaxWidthBox, Section } from "../shared/Elements";
+import { IAccount } from "../config";
+import { H1, PageContainer } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import { Account } from "../api";
-import { isUserType } from "../util";
 import { View } from "./View";
 
 interface IAccountContainerProps {
@@ -39,15 +36,14 @@ export class MyAccountContainer extends React.Component<
     }
   }
   public render() {
-    const { account } = this.state;
-    if (!account) {
-      return (
-        <MaxWidthBox>
-          <H1>Loading...</H1>
-        </MaxWidthBox>
-      );
-    }
-    return <View account={account} />;
+    const { account, loadingData } = this.state;
+    const title = `${account ? account.firstName : "User"}'s Profile`;
+    return (
+      <PageContainer title={title} loading={loadingData || !account}>
+        <H1 textAlign={"center"}>{title}</H1>
+        {account && <View account={account} />}
+      </PageContainer>
+    );
   }
 }
 

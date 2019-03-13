@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { IAccount, ITicket, UserType, compareTicket } from "../config";
-import { H1, MaxWidthBox, PageContainer } from "../shared/Elements";
+import { H1, PageContainer } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import { Account, SocketConn } from "../api";
 import Ticket from "../api/ticket";
@@ -40,7 +40,8 @@ export class MyTicketsContainer extends React.Component<
     try {
       SocketConn.addTicketUpdateEventListener(this.queryTickets);
       const account = (await Account.getSelf()).data.data;
-      this.setState({ account }, this.queryTickets);
+      this.setState({ account });
+      await this.queryTickets();
     } catch (e) {
       if (e && e.data) {
         ValidationErrorGenerator(e.data);
@@ -118,19 +119,12 @@ export class MyTicketsContainer extends React.Component<
       isUserType(account, UserType.TUTOR)) as boolean;
     const showStudent = (account &&
       isUserType(account, UserType.STUDENT)) as boolean;
-    if (loadingData || !account) {
-      return (
-        <MaxWidthBox width={0.9} m={"auto"}>
-          <H1>Loading...</H1>
-        </MaxWidthBox>
-      );
-    }
     return (
-      <PageContainer title={"Questions"}>
+      <PageContainer title={"Questions"} loading={loadingData || !account}>
         <H1 textAlign={"center"}>My questions</H1>
         <ReceiveNewTicketActions
-          hideAssign={!isUserType(account, UserType.TUTOR)}
-          hideRequest={!isUserType(account, UserType.STUDENT)}
+          hideAssign={!!account && !isUserType(account, UserType.TUTOR)}
+          hideRequest={!!account && !isUserType(account, UserType.STUDENT)}
           disableRequest={studentTicketsCurrent.length > 0}
           onQuestionAssigned={this.queryTickets}
         />

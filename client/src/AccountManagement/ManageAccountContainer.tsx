@@ -98,15 +98,44 @@ class ManageAccountContainer extends React.Component<
 
   public render() {
     const { mode, formSubmitted, loaded } = this.state;
-    if (!loaded) {
-      return (
-        <MaxWidthBox width={0.9} m={"auto"}>
-          <H1>Loading...</H1>
-        </MaxWidthBox>
-      );
-    }
     if (!formSubmitted) {
-      return this.renderForm();
+      const { mode, accountDetails, allCourses } = this.state;
+      const title = `${
+        mode === ManageAccountModes.CREATE ? "Create" : "Edit"
+      } Your Account`;
+      return (
+        <React.Fragment>
+          <PageContainer title={title} loading={!loaded}>
+            <Box>
+              <H1 textAlign={"center"}>{title}</H1>
+              <FormDescription>
+                {CONSTANTS.REQUIRED_DESCRIPTION}
+              </FormDescription>
+            </Box>
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                firstName: accountDetails.firstName,
+                lastName: accountDetails.lastName,
+                pronoun: accountDetails.pronoun || "",
+                email: accountDetails.email,
+                password: accountDetails.password || "",
+                newPassword: ""
+              }}
+              onSubmit={this.handleSubmit}
+              render={this.renderFormik}
+              validationSchema={getValidationSchema(
+                mode === ManageAccountModes.CREATE
+              )}
+            />
+          </PageContainer>
+          <MaxWidthBox width={0.9} m={"auto"}>
+            {isUserType(accountDetails, UserType.TUTOR) && (
+              <EditTutorView account={accountDetails} courses={allCourses} />
+            )}
+          </MaxWidthBox>
+        </React.Fragment>
+      );
     }
 
     switch (mode) {
@@ -115,52 +144,10 @@ class ManageAccountContainer extends React.Component<
 
       case ManageAccountModes.EDIT:
         return <Redirect to={FrontendRoute.HOME_PAGE} />;
-
-      default:
-        return this.renderForm();
     }
   }
 
-  private renderForm() {
-    const { mode, accountDetails, allCourses } = this.state;
-    const title = `${
-      mode === ManageAccountModes.CREATE ? "Create" : "Edit"
-    } Your Account`;
-    return (
-      <React.Fragment>
-        <PageContainer title={title}>
-          <Box>
-            <H1 textAlign={"center"}>
-              {mode === ManageAccountModes.CREATE ? "Create" : "Edit"} your
-              Account
-            </H1>
-            <FormDescription>{CONSTANTS.REQUIRED_DESCRIPTION}</FormDescription>
-          </Box>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              firstName: accountDetails.firstName,
-              lastName: accountDetails.lastName,
-              pronoun: accountDetails.pronoun || "",
-              email: accountDetails.email,
-              password: accountDetails.password || "",
-              newPassword: ""
-            }}
-            onSubmit={this.handleSubmit}
-            render={this.renderFormik}
-            validationSchema={getValidationSchema(
-              mode === ManageAccountModes.CREATE
-            )}
-          />
-        </PageContainer>
-        <MaxWidthBox width={0.9} m={"auto"}>
-          {isUserType(accountDetails, UserType.TUTOR) && (
-            <EditTutorView account={accountDetails} courses={allCourses} />
-          )}
-        </MaxWidthBox>
-      </React.Fragment>
-    );
-  }
+  private renderForm() {}
   private renderFormik(fp: FormikProps<any>) {
     const { mode } = this.state;
     return (
