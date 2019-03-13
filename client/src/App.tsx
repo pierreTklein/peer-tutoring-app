@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./App.css";
 import Login from "./Login/Login";
 import { BrowserRouter } from "react-router-dom";
 import { Switch, Route } from "react-router";

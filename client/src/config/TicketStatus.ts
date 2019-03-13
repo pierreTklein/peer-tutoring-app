@@ -1,10 +1,10 @@
 import { ITicket } from ".";
 
 export enum TicketStatus {
-  ASKED = "Asked",
+  ASKED = "Waiting for tutor",
   ASSIGNED = "Tutor assigned",
-  STARTED = "In progress",
-  ENDED = "Ended"
+  STARTED = "Question being answered",
+  ENDED = "Question was resolved"
 }
 
 export function getStatus(ticket: ITicket) {

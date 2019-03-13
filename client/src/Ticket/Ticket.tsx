@@ -58,6 +58,8 @@ export const Ticket: React.FunctionComponent<
   let title = `${studentDescription} | ${courseDescription}`;
   if (ticket.queue && status === TicketStatus.ASKED) {
     title = `${toOrdinalSuffix(ticket.queue)} in line for ${courseDescription}`;
+  } else if (view === UserType.STUDENT) {
+    title = `${category || ""} question for ${courseDescription}`;
   }
 
   return (
@@ -81,19 +83,19 @@ export const Ticket: React.FunctionComponent<
           <LabelledField label={"Category"} text={category} />
           <LabelledField label={"Question"} text={question} />
           <LabelledField
-            label={"Asked on"}
+            label={"Asked"}
             hidden={!createdAt}
-            text={createdAt && createdAt.toLocaleString()}
+            text={createdAt && new Date(createdAt).toLocaleString("en-US")}
           />
           <LabelledField
-            label={"Started at"}
+            label={"Started"}
             hidden={!startedAt}
-            text={startedAt && startedAt.toLocaleString()}
+            text={startedAt && new Date(startedAt).toLocaleString("en-US")}
           />
           <LabelledField
-            label={"Ended at"}
+            label={"Resolved"}
             hidden={!endedAt}
-            text={endedAt && endedAt.toLocaleString()}
+            text={endedAt && new Date(endedAt).toLocaleString("en-US")}
           />
         </Collapsible>
       </Box>
