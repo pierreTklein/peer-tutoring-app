@@ -260,7 +260,7 @@ function isMongoIdArray(arr) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
-    const jwtValidationChain = setProperValidationChainBuilder(fieldLocation, fieldname, "Must be vali jwt");
+    const jwtValidationChain = setProperValidationChainBuilder(fieldLocation, fieldname, "Must be valid jwt");
     if (optional) {
         return jwtValidationChain.optional({
                 checkFalsy: true

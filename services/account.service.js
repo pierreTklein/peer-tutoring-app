@@ -124,6 +124,12 @@ function updatePassword(id, newPassword) {
     });
 }
 
+function confirmAccount(id) {
+    return updateOne(id, {
+        confirmed: true
+    });
+}
+
 /**
  * 
  * @param {DocumentQuery} docQuery 
@@ -138,6 +144,7 @@ function handleExpansion(docQuery, expandCourse) {
 
 
 module.exports = {
+    confirmAccount: confirmAccount,
     find: find,
     findOne: findOne,
     findById: findById,

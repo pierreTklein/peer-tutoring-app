@@ -13,6 +13,10 @@ const AccountSchema = new mongoose.Schema({
     pronoun: {
         type: String
     },
+    confirmed: {
+        type: Boolean,
+        default: false
+    },
     email: {
         type: String,
         trim: true,

@@ -36,10 +36,4 @@ module.exports = {
             data: {}
         });
     },
-    sentConfirmationEmail: function (req, res) {
-        return res.status(200).json({
-            message: Success.AUTH_SEND_CONFIRMATION_EMAIL,
-            data: {}
-        });
-    }
 };

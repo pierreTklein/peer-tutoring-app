@@ -40,6 +40,7 @@ module.exports = {
         ticketRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.STUDENT]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Validator.Ticket.PostTicketValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Util.parseByModel("ticketDetails", Model.Ticket),
@@ -62,6 +63,7 @@ module.exports = {
         ticketRouter.route("/assign").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Ticket.getNewTicketFIFO,
             Middleware.Ticket.assignTicket,
             Middleware.Ticket.broadcastQueueUpdatedEvent(-1),
@@ -73,6 +75,7 @@ module.exports = {
         ticketRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.STAFF, Constants.General.TUTOR]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
@@ -93,6 +96,7 @@ module.exports = {
         ticketRouter.route("/:id/assign").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Ticket.getById,
             Middleware.Ticket.assignTicket,
             Middleware.Ticket.broadcastQueueUpdatedEvent(-1),
@@ -104,6 +108,7 @@ module.exports = {
         ticketRouter.route("/:id/start").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR, Constants.General.STAFF]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
@@ -118,6 +123,7 @@ module.exports = {
         ticketRouter.route("/:id/end").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR, Constants.General.STAFF, Constants.General.STUDENT]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
@@ -131,6 +137,7 @@ module.exports = {
         ticketRouter.route("/:id/abandon").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.STUDENT, Constants.General.TUTOR]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
@@ -146,6 +153,7 @@ module.exports = {
         ticketRouter.route("/:id/rate").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.STAFF, Constants.General.STUDENT]),
+            Middleware.Auth.ensureConfirmed,
             Middleware.Validator.Ticket.rateValidator,
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,

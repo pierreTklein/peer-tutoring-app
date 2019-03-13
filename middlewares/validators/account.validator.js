@@ -35,5 +35,8 @@ module.exports = {
     inviteAccountValidator: [
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
         VALIDATOR.enumArrayValidator("body", "accountType", Constants.USER_TYPES, false)
-    ]
+    ],
+    confirmAccountValidator: [
+        VALIDATOR.jwtValidator("header", "x-conf-token", process.env.JWT_CONFIRM_ACC_SECRET, false),
+    ],
 };

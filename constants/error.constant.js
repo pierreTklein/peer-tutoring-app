@@ -11,7 +11,7 @@ const ACCOUNT_TOKEN_401_MESSAGE = "Invalid token for account";
 const AUTH_401_MESSAGE = "Invalid Authentication";
 
 const AUTH_403_MESSAGE = "Invalid Authorization";
-const ACCOUNT_403_MESSAGE = "Account not verified";
+const ACCOUNT_403_MESSAGE = "Email address not verified";
 
 const ACCOUNT_UPDATE_500_MESSAGE = "Error while updating account";
 const EMAIL_500_MESSAGE = "Error while generating email";

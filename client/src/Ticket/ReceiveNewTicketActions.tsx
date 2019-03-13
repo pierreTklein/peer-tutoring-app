@@ -5,6 +5,7 @@ import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface ITicketActionProps {
   numWaiting?: number;
@@ -70,7 +71,11 @@ export class TicketActions extends React.Component<
       await Ticket.assignUnk();
       this.props.onQuestionAssigned && this.props.onQuestionAssigned();
     } catch (e) {
-      ToastError(e.data);
+      if (e && e.data) {
+        ToastError(e.data);
+      } else {
+        toast.error("There was an unexpected error.");
+      }
     } finally {
       this.setState({ loading: false });
     }

@@ -74,10 +74,32 @@ module.exports = {
       );
 
     accountRouter
+      .route("/confirm")
+      .patch(
+        Middleware.Validator.Account.confirmAccountValidator,
+        Middleware.Util.failIfNotValid,
+        Middleware.Account.verifyConfirmationToken,
+        Middleware.Account.getAccountFromConfirmationToken,
+        Middleware.Account.confirmAccount,
+        Controllers.Account.confirmedAccount
+      );
+
+    accountRouter
+      .route("/confirm/resend")
+      .post(
+        Middleware.Auth.ensureAuthenticated(),
+        Middleware.Auth.ensureNotConfirmed,
+        Middleware.Util.putUserIdInBody,
+        Middleware.Account.getById,
+        Middleware.Account.sendConfirmationEmail,
+        Controllers.Account.sentConfirmationEmail
+      );
+
+    accountRouter
       .route("/invite")
       .get(
         Middleware.Auth.ensureAuthenticated(),
-        Middleware.Util.failIfNotValid,
+        Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
         Middleware.Account.getInvites,
         Controllers.Account.gotInvites
       );

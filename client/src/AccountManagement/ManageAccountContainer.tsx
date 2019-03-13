@@ -58,6 +58,7 @@ class ManageAccountContainer extends React.Component<
       mode: props.mode,
       loaded: false,
       accountDetails: {
+        confirmed: false,
         id: "",
         firstName: "",
         lastName: "",
@@ -290,8 +291,8 @@ class ManageAccountContainer extends React.Component<
     values: FormikValues,
     accountId: string = ""
   ): IAccount {
-    console.log(values.pronoun);
     return {
+      confirmed: false,
       accountType: [UserType.STUDENT],
       email: values.email,
       firstName: values.firstName,

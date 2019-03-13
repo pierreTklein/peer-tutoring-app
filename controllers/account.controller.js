@@ -70,6 +70,13 @@ function updatedAccount(req, res) {
     });
 }
 
+function confirmedAccount(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_CONFIRMED,
+        data: {}
+    });
+}
+
 function invitedAccount(req, res) {
     return res.status(200).json({
         message: Constants.Success.ACCOUNT_INVITE,
@@ -86,11 +93,19 @@ function gotInvites(req, res) {
     });
 }
 
+function sentConfirmationEmail(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_SEND_CONFIRMATION_EMAIL,
+        data: {}
+    });
+}
 module.exports = {
     addedAccount: addedAccount,
     gotInvites: gotInvites,
     updatedAccount: updatedAccount,
     invitedAccount: invitedAccount,
+    confirmedAccount: confirmedAccount,
+    sentConfirmationEmail: sentConfirmationEmail,
     gotAccount: gotAccount,
     gotAccounts: gotAccounts
 };

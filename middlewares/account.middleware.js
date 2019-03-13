@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const Services = {
     Logger: require("../services/logger.service"),
     Account: require("../services/account.service"),
+    Confirm: require("../services/confirmAccount.service"),
     Invite: require("../services/invite.service"),
     Email: require("../services/email.service"),
     Env: require("../services/env.service"),
@@ -163,7 +164,7 @@ async function failIfExists(req, res, next) {
     next();
 }
 
-async function failIfNotTutor(req, res, next) {
+function failIfNotTutor(req, res, next) {
     const account = req.body.account;
     if (!account.accountType.includes(Constants.General.TUTOR)) {
         return next({
@@ -177,6 +178,19 @@ async function failIfNotTutor(req, res, next) {
     next();
 }
 
+function failIfNotConfirmed(req, res, next) {
+    const account = req.body.account;
+    if (!account.confirmed) {
+        return next({
+            status: 403,
+            message: Constants.Error.ACCOUNT_403_MESSAGE,
+            error: {
+                route: req.path
+            }
+        });
+    }
+    next();
+}
 
 /**
  * @function addAccount
@@ -292,6 +306,46 @@ async function getInviteFromTokenIfExists(req, res, next) {
     }
 }
 
+/**
+ * Parses the confirmation token and places it inside of req.body.decodedToken
+ * @param {{body: {decodedToken: {AccountId: string}}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+function verifyConfirmationToken(req, res, next) {
+    try {
+        req.body.decodedToken = jwt.verify(req.body["x-conf-token"], process.env.JWT_CONFIRM_ACC_SECRET);
+        next();
+    } catch (e) {
+        next(e);
+    }
+}
+
+/**
+ * Gets account from confirmation token.
+ * @param {{body: {decodedToken: {AccountId: string}}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function getAccountFromConfirmationToken(req, res, next) {
+    const token = req.body.decodedToken;
+    const account = await Services.Account.findById(token.accountId);
+    req.body.account = account;
+    next();
+}
+
+/**
+ * Confirms an account
+ * @param {{body: {account: {id: string}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function confirmAccount(req, res, next) {
+    const account = req.body.account;
+    const newAcc = await Services.Account.confirmAccount(account.id);
+    req.body.account = newAcc;
+    next();
+}
 
 /**
  * Returns the type of account based on the confirmation token
@@ -319,11 +373,29 @@ async function setAccountType(req, res, next) {
     }
 }
 
+async function sendConfirmationEmail(req, res, next) {
+    const account = req.body.account;
+    const email = req.body.account.email;
+    const confirmToken = Services.Confirm.generateToken(account.id);
+    const address = Services.Env.frontendAddress();
+
+    const mailData = Services.Confirm.generateConfirmAccountEmail(address, email, confirmToken);
+    if (mailData !== undefined) {
+        await Services.Email.send(mailData);
+        return next();
+    } else {
+        return next({
+            message: Constants.Error.EMAIL_500_MESSAGE,
+        });
+    }
+}
+
 module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
     failIfExists: Middleware.Util.asyncMiddleware(failIfExists),
     failIfNotTutor: failIfNotTutor,
+    failIfNotConfirmed: failIfNotConfirmed,
 
     getInvites: Middleware.Util.asyncMiddleware(getInvites),
     getByEmail: Middleware.Util.asyncMiddleware(getByEmail),
@@ -334,6 +406,11 @@ module.exports = {
 
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
     updateAccount: Middleware.Util.asyncMiddleware(updateAccount),
+
+    verifyConfirmationToken: verifyConfirmationToken,
+    getAccountFromConfirmationToken: getAccountFromConfirmationToken,
+    sendConfirmationEmail: Middleware.Util.asyncMiddleware(sendConfirmationEmail),
+    confirmAccount: Middleware.Util.asyncMiddleware(confirmAccount),
 
     verifyInviteTokenIfExists: verifyInviteTokenIfExists,
     inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount),

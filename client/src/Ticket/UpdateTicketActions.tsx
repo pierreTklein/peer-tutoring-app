@@ -5,6 +5,7 @@ import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { getStatus, TicketStatus } from "../config/TicketStatus";
+import { toast } from "react-toastify";
 
 interface ITicketActionProps {
   view: UserType;
@@ -100,7 +101,11 @@ export class UpdateTicketActions extends React.Component<
       await action(ticket.id || "");
       cb && cb(ticket);
     } catch (e) {
-      ToastError(e.data);
+      if (e && e.data) {
+        ToastError(e.data);
+      } else {
+        toast.error("There was an unexpected error.");
+      }
     } finally {
       this.setState({ submitting: false });
     }

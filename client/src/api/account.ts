@@ -9,6 +9,8 @@ class AccountAPI {
     API.createEntity(APIRoute.ACCOUNT);
     API.createEntity(APIRoute.ACCOUNT_SELF);
     API.createEntity(APIRoute.ACCOUNT_INVITE);
+    API.createEntity(APIRoute.ACCOUNT_CONFIRM);
+    API.createEntity(APIRoute.ACCOUNT_CONFIRM_RESEND);
   }
   /**
    * Create an account.
@@ -113,6 +115,34 @@ class AccountAPI {
    */
   public invite(info: IInviteInfo): AxiosPromise<APIResponse<{}>> {
     return API.getEndpoint(APIRoute.ACCOUNT_INVITE).create(info);
+  }
+
+  /**
+   * Confirms a user.
+   * @param {string} token
+   */
+  public async confirm(token: string): Promise<AxiosResponse<APIResponse<{}>>> {
+    const config = {
+      headers: {
+        "x-conf-token": token
+      }
+    };
+    const result = await API.getEndpoint(APIRoute.ACCOUNT_CONFIRM).patch(
+      { id: "" },
+      {},
+      config
+    );
+    LocalCache.removeAll();
+    return result;
+  }
+
+  /**
+   * Resends confirmation email
+   */
+  public resendConfirm(): AxiosPromise<APIResponse<{}>> {
+    const result = API.getEndpoint(APIRoute.ACCOUNT_CONFIRM_RESEND).create({});
+    LocalCache.removeAll();
+    return result;
   }
 }
 export const Account = new AccountAPI();

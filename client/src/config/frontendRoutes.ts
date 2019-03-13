@@ -8,6 +8,8 @@ export enum FrontendRoute {
   VIEW_ACCOUNT_PAGE = "/account/:id",
   CREATE_ACCOUNT_PAGE = "/account/new",
   EDIT_ACCOUNT_PAGE = "/account/edit",
+  CONFIRM_ACCOUNT = "/account/confirm",
+  CONFIRM_ACCOUNT_RESEND = "/account/confirm/resend",
 
   CREATE_TICKET = "/question/new"
 }

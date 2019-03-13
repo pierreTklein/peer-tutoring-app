@@ -7,6 +7,7 @@ export interface IAccount {
   pronoun: string;
   firstName: string;
   lastName: string;
+  confirmed: boolean;
   email: string;
   password: string;
   accountType: UserType[];

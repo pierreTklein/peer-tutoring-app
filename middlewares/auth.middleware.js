@@ -97,6 +97,34 @@ function ensureAuthorized(accountType) {
     };
 }
 
+function ensureConfirmed(req, res, next) {
+    const account = req.user;
+    if (!account.confirmed) {
+        return next({
+            status: 403,
+            message: Constants.Error.ACCOUNT_403_MESSAGE,
+            error: {
+                route: req.path
+            }
+        });
+    }
+    next();
+}
+
+function ensureNotConfirmed(req, res, next) {
+    const account = req.user;
+    if (account.confirmed) {
+        return next({
+            status: 403,
+            message: Constants.Error.ACCOUNT_403_MESSAGE,
+            error: {
+                route: req.path
+            }
+        });
+    }
+    next();
+}
+
 /**
  * Checks that the oldPassword is the current password for the logged in user. If the password is correct,
  * then updates the password to the string in newPassword.
@@ -216,6 +244,8 @@ module.exports = {
     login: login,
     ensureAuthenticated: ensureAuthenticated,
     ensureAuthorized: ensureAuthorized,
+    ensureConfirmed: ensureConfirmed,
+    ensureNotConfirmed: ensureNotConfirmed,
     sendResetPasswordEmailMiddleware: Middleware.Util.asyncMiddleware(sendResetPasswordEmailMiddleware),
     parseResetToken: parseResetToken,
     validateResetToken: Middleware.Util.asyncMiddleware(validateResetToken),

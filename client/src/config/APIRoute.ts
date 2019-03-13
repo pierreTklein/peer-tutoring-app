@@ -10,6 +10,8 @@ export enum APIRoute {
   ACCOUNT = "account",
   ACCOUNT_SELF = "account/self",
   ACCOUNT_INVITE = "account/invite",
+  ACCOUNT_CONFIRM = "account/confirm",
+  ACCOUNT_CONFIRM_RESEND = "account/confirm/resend",
 
   // Ticket routes
   TICKET = "ticket",
