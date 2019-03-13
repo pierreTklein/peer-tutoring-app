@@ -48,9 +48,9 @@ export class ForgotPasswordContainer extends React.Component<
       return <Redirect to={FrontendRoute.HOME_PAGE} />;
     }
     return (
-      <PageContainer title={"Send Reset Email"}>
+      <PageContainer title={"Forgot Password"}>
         <Box>
-          <H1 textAlign={"center"}>Send Reset Email</H1>
+          <H1 textAlign={"center"}>Forgot your password?</H1>
           <FormDescription>
             Enter your email and we will send you a link to reset your password.
           </FormDescription>

@@ -1,6 +1,10 @@
 const notification = require("../assets/audio/notification.mp3");
 
-export function playNotification() {
-  const audio = new Audio(notification);
-  audio.play();
+export async function playNotification() {
+  try {
+    const audio = new Audio(notification);
+    await audio.play();
+  } catch (e) {
+    return;
+  }
 }
