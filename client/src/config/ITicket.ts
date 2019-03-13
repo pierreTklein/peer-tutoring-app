@@ -2,6 +2,7 @@ import { IAccount } from "./IAccount";
 import { ICourse } from "./ICourse";
 
 export interface ITicket {
+  queue?: number;
   tutorId?: string | IAccount;
   studentId: string | IAccount;
   courseId: string | ICourse;
@@ -13,6 +14,12 @@ export interface ITicket {
   rating?: number;
   id?: string;
   _id?: string;
+}
+
+export function getCourseId(course: string | ICourse): string {
+  const courseId =
+    typeof course === "string" ? course : course._id ? course._id : course.id;
+  return courseId as string;
 }
 
 export function parseCourse(course: string | ICourse) {
@@ -63,4 +70,10 @@ export function compareTicket(t1: ITicket, t2: ITicket): number {
   } else {
     return t1.createdAt ? -1 : 1;
   }
+}
+
+export function createdToday(ticket: ITicket) {
+  const midnight = new Date();
+  midnight.setHours(0, 0, 0, 0); // last midnight
+  return new Date(ticket.createdAt || new Date()) >= midnight;
 }

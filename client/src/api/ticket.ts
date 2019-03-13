@@ -14,6 +14,7 @@ class TicketAPI {
     API.createEntity(APIRoute.TICKET_END, ":id");
     API.createEntity(APIRoute.TICKET_RATE, ":id");
     API.createEntity(APIRoute.TICKET_ABANDON, ":id");
+    API.createEntity(APIRoute.TICKET_POSITION, ":id");
   }
   public create(ticket: ITicket) {
     return API.getEndpoint(APIRoute.TICKET).create(ticket);
@@ -55,6 +56,9 @@ class TicketAPI {
   }
   public assignUnk() {
     return API.getEndpoint(APIRoute.TICKET_ASSIGN_UNK).patch({ id: "" }, {});
+  }
+  public getPosition(id: string): AxiosPromise<AxiosResponse<number>> {
+    return API.getEndpoint(APIRoute.TICKET_POSITION).getOne({ id }, {});
   }
 }
 export const Ticket = new TicketAPI();

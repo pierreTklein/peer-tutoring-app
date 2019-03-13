@@ -64,6 +64,7 @@ module.exports = {
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
             Middleware.Ticket.getNewTicketFIFO,
             Middleware.Ticket.assignTicket,
+            Middleware.Ticket.broadcastQueueUpdatedEvent(-1),
             Middleware.Ticket.broadcastTicketUpdateEvent("assigned"),
             Controllers.Ticket.assignedTicket,
         );
@@ -77,13 +78,24 @@ module.exports = {
             Middleware.Ticket.getById,
             Controllers.Ticket.gotTicket
         );
-
+        //end a ticket
+        ticketRouter.route("/:id/position").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.STUDENT, Constants.General.TUTOR, Constants.General.STAFF]),
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Util.failIfNotValid,
+            Middleware.Ticket.getById,
+            Middleware.Ticket.failIfStarted,
+            Middleware.Ticket.getPositionInQueue,
+            Controllers.Ticket.gotTicketPosition
+        );
         //assign a ticket
         ticketRouter.route("/:id/assign").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
             Middleware.Ticket.getById,
             Middleware.Ticket.assignTicket,
+            Middleware.Ticket.broadcastQueueUpdatedEvent(-1),
             Middleware.Ticket.broadcastTicketUpdateEvent("assigned"),
             Controllers.Ticket.assignedTicket,
         );
@@ -124,6 +136,7 @@ module.exports = {
             Middleware.Ticket.getById,
             Middleware.Ticket.failIfNotAssigned,
             Middleware.Ticket.failIfEnded,
+            Middleware.Ticket.broadcastQueueUpdatedEvent(1),
             Middleware.Ticket.broadcastTicketUpdateEvent("abandoned"),
             Middleware.Ticket.abandonTicket,
             Controllers.Ticket.abandonedTicket

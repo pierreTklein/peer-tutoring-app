@@ -1,10 +1,12 @@
 "use strict";
 const io = require("socket.io")();
+const Logger = require("./logger.service");
 /**
  * Broadcast to room
  * @param {string} roomName 
  */
 function broadcast(roomName, event, data) {
+    Logger.info(`Broadcasting in ${roomName}: ${event}`);
     const roomNS = io.in(roomName);
     roomNS.emit(event, data);
 }

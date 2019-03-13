@@ -112,6 +112,17 @@ function abandonedTicket(req, res) {
         }
     });
 }
+/**
+ * Got position in queue.
+ * @param {*} req 
+ * @param {*} res 
+ */
+function gotTicketPosition(req, res) {
+    res.status(200).json({
+        message: Success.TICKET_POSITION,
+        data: req.body.position
+    });
+}
 
 
 module.exports = {
@@ -123,4 +134,5 @@ module.exports = {
     endedTicket: endedTicket,
     ratedTicket: ratedTicket,
     abandonedTicket: abandonedTicket,
+    gotTicketPosition: gotTicketPosition
 };

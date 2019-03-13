@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ITicket, UserType } from "../config";
+import { ITicket, UserType, createdToday } from "../config";
 import { Button, ButtonType } from "../shared";
 import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
@@ -17,14 +17,18 @@ export const UpdateTicketActions: React.FunctionComponent<
   ITicketActionProps
 > = ({ ticket, onTicketUpdated, view }) => {
   const ticketStatus: TicketStatus = getStatus(ticket);
+  const wasCreatedToday = createdToday(ticket);
 
   const hideStart =
-    view === UserType.STUDENT || ticketStatus !== TicketStatus.ASSIGNED;
-  const hideEnd = ticketStatus === TicketStatus.ENDED;
+    view === UserType.STUDENT ||
+    ticketStatus !== TicketStatus.ASSIGNED ||
+    !wasCreatedToday;
+  const hideEnd = ticketStatus === TicketStatus.ENDED || !wasCreatedToday;
   const hideAbandon =
     ticketStatus === TicketStatus.ASKED ||
     ticketStatus === TicketStatus.ENDED ||
-    view === UserType.STUDENT;
+    view === UserType.STUDENT ||
+    !wasCreatedToday;
 
   return (
     <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>

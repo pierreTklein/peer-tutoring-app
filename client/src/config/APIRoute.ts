@@ -20,6 +20,7 @@ export enum APIRoute {
   TICKET_END = "ticket/:id/end",
   TICKET_RATE = "ticket/:id/rate",
   TICKET_ABANDON = "ticket/:id/abandon",
+  TICKET_POSITION = "ticket/:id/position",
 
   //Tutor routes
   TUTOR = "tutor",

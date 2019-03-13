@@ -10,7 +10,7 @@ const Constants = {
 const Services = {
     Ticket: require("../services/ticket.service"),
     Env: require("../services/env.service"),
-    Socket: require("../services/socket.service")
+    Socket: require("../services/socket.service"),
 };
 
 const Middleware = {
@@ -233,9 +233,52 @@ async function assignTicket(req, res, next) {
     next();
 }
 
+async function getPositionInQueue(req, res, next) {
+    const ticket = req.body.ticket;
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0); // last midnight
+    const query = {
+        createdAt: {
+            $gte: midnight
+        },
+        courseId: {
+            $eq: ticket.courseId
+        },
+        // not assigned
+        tutorId: {
+            $exists: false
+        },
+        // not ended
+        endedAt: {
+            $exists: false
+        }
+    };
+    const tickets = (await Services.Ticket.find(query)).sort((t1, t2) => new Date(t1.createdAt).getTime() - new Date(t2.createdAt).getTime());
+    const position = tickets.findIndex((maybeTicket) => maybeTicket.id === ticket.id) + 1;
+    req.body.position = position;
+    next();
+}
+
+/**
+ * 
+ * @param {number} queueUpdateValue by how much the queue has shifted. +1 if people move backwards, or -1 if people move forwards.
+ */
+function broadcastQueueUpdatedEvent(queueUpdateValue) {
+    return (req, res, next) => {
+        const eventName = "queue_update";
+        const ticket = req.body.ticket;
+        const courseId = ticket.courseId;
+        Services.Socket.broadcast(courseId.toString(), eventName, {
+            courseId,
+            queueUpdateValue
+        });
+        next();
+    };
+}
 
 function broadcastTicketUpdateEvent(eventType) {
     return Middleware.Util.asyncMiddleware(async (req, res, next) => {
+        const eventName = "ticket_update";
         const ticket = req.body.ticket;
         const fullTicket = await Services.Ticket.findById(ticket.id, true, true);
         const tutorName = fullTicket.tutorId ? fullTicket.tutorId.firstName : "a tutor";
@@ -262,18 +305,18 @@ function broadcastTicketUpdateEvent(eventType) {
             eventType,
             fullTicket
         };
-        Services.Socket.broadcast(ticket.id, "update", {
+        Services.Socket.broadcast(ticket.id, eventName, {
             ...data,
             message: `The question was ${eventType}`
         });
         if (ticket.studentId) {
-            Services.Socket.broadcast(ticket.studentId, "update", {
+            Services.Socket.broadcast(ticket.studentId, eventName, {
                 ...data,
                 message: MESSAGES.STUDENT[eventType] || MESSAGES.STUDENT.default
             });
         }
         if (ticket.tutorId) {
-            Services.Socket.broadcast(ticket.tutorId, "update", {
+            Services.Socket.broadcast(ticket.tutorId, eventName, {
                 ...data,
                 message: MESSAGES.TUTOR[eventType] || MESSAGES.TUTOR.default
             });
@@ -283,7 +326,10 @@ function broadcastTicketUpdateEvent(eventType) {
 }
 
 module.exports = {
+    broadcastQueueUpdatedEvent: broadcastQueueUpdatedEvent,
     broadcastTicketUpdateEvent: broadcastTicketUpdateEvent,
+
+    getPositionInQueue: Middleware.Util.asyncMiddleware(getPositionInQueue),
     getByQuery: Middleware.Util.asyncMiddleware(getByQuery),
     createTicket: Middleware.Util.asyncMiddleware(createTicket),
     getById: Middleware.Util.asyncMiddleware(getById),

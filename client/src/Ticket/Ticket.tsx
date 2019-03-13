@@ -13,6 +13,7 @@ import theme from "../shared/Styles/theme";
 import { UpdateTicketActions } from "./UpdateTicketActions";
 import LabelledField from "../shared/Elements/LabelledField";
 import Collapsible from "../shared/Elements/Collapsible";
+import { toOrdinalSuffix } from "../util";
 
 interface ITicketProps {
   ticket: ITicket;
@@ -53,6 +54,12 @@ export const Ticket: React.FunctionComponent<
       color = theme.colors.green;
       break;
   }
+
+  let title = `${studentDescription} | ${courseDescription}`;
+  if (ticket.queue && status === TicketStatus.ASKED) {
+    title = `${toOrdinalSuffix(ticket.queue)} in line for ${courseDescription}`;
+  }
+
   return (
     <Panel
       flexDirection={"column"}
@@ -65,7 +72,7 @@ export const Ticket: React.FunctionComponent<
       <Box>
         <Collapsible
           titleColor={theme.colors.white}
-          title={`${studentDescription} | ${courseDescription}`}
+          title={title}
           open={showTicketDetails}
           onToggle={onToggle}
         >

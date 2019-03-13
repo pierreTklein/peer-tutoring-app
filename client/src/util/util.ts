@@ -1,4 +1,4 @@
-import * as QueryString from 'query-string';
+import * as QueryString from "query-string";
 
 function padStart(padNum: number, padValue: string, value: string): string {
   if (value.length < padNum) {
@@ -16,9 +16,9 @@ function getNestedAttr(obj: any, nestedAttr: string[]) {
 }
 
 function getOptionsFromEnum(options: any) {
-  return Object.keys(options).map((o) => ({
+  return Object.keys(options).map(o => ({
     label: options[o],
-    value: options[o],
+    value: options[o]
   }));
 }
 
@@ -27,7 +27,7 @@ function input2date(date: number) {
   const dateFields = [
     dateStr.substr(0, 2),
     dateStr.substr(2, 2),
-    dateStr.substr(4, 4),
+    dateStr.substr(4, 4)
   ];
   const formattedDate = new Date(
     Number(dateFields[2]),
@@ -39,8 +39,8 @@ function input2date(date: number) {
 
 function date2input(date: string) {
   const parsed = new Date(date);
-  const day = padStart(2, '0', String(parsed.getDate()));
-  const month = padStart(2, '0', String(parsed.getMonth() + 1));
+  const day = padStart(2, "0", String(parsed.getDate()));
+  const month = padStart(2, "0", String(parsed.getMonth() + 1));
   const year = parsed.getUTCFullYear();
   return `${month}${day}${year}`;
 }
@@ -57,6 +57,17 @@ function getValueFromQuery(key: string): string | undefined {
   return queries[key];
 }
 
+const toOrdinalSuffix = (num: number) => {
+  const int = Math.round(num),
+    digits = [int % 10, int % 100],
+    ordinals = ["st", "nd", "rd", "th"],
+    oPattern = [1, 2, 3, 4],
+    tPattern = [11, 12, 13, 14, 15, 16, 17, 18, 19];
+  return oPattern.includes(digits[0]) && !tPattern.includes(digits[1])
+    ? int + ordinals[digits[0] - 1]
+    : int + ordinals[3];
+};
+
 export {
   padStart,
   getNestedAttr,
@@ -65,4 +76,5 @@ export {
   input2date,
   date2age,
   date2input,
+  toOrdinalSuffix
 };

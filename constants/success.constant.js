@@ -25,7 +25,7 @@ const TICKET_RATE = "Ticket rate successful.";
 const TICKET_READ = "Ticket retrieval successful.";
 const TICKET_START = "Ticket start successful.";
 const TICKET_ABANDON = "Ticket abandon successful.";
-
+const TICKET_POSITION = "Ticket position retrieval successful.";
 module.exports = {
     ACCOUNT_GET_BY_EMAIL: ACCOUNT_GET_BY_EMAIL,
     ACCOUNT_GET_BY_ID: ACCOUNT_GET_BY_ID,
@@ -50,5 +50,6 @@ module.exports = {
     TICKET_RATE: TICKET_RATE,
     TICKET_READ: TICKET_READ,
     TICKET_START: TICKET_START,
-    TICKET_ABANDON: TICKET_ABANDON
+    TICKET_ABANDON: TICKET_ABANDON,
+    TICKET_POSITION: TICKET_POSITION
 };

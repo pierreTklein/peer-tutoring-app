@@ -14,6 +14,10 @@ export interface ITicketUpdateEvent {
   message: string;
   data: ITicket;
 }
+export interface IQueueUpdateEvent {
+  courseId: string;
+  updateValue: number;
+}
 
 class SocketAPI {
   private socket: SocketIOClient.Socket;
@@ -35,12 +39,20 @@ class SocketAPI {
     }
   }
   public addTicketUpdateEventListener(fn: (data: ITicketUpdateEvent) => void) {
-    this.socket.on("update", fn);
+    this.socket.on("ticket_update", fn);
   }
   public removeTicketUpdateEventListener(
     fn: (data: ITicketUpdateEvent) => void
   ) {
-    this.socket.removeEventListener("update", fn);
+    this.socket.removeEventListener("ticket_update", fn);
+  }
+  public addQueueUpdateEventListener(fn: (data: IQueueUpdateEvent) => void) {
+    this.socket.on("queue_update", fn);
+  }
+  public removeQueueUpdateEventListener(
+    fn: (updateVal: IQueueUpdateEvent) => void
+  ) {
+    this.socket.removeEventListener("queue_update", fn);
   }
 }
 

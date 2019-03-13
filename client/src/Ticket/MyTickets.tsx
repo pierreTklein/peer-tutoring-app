@@ -1,14 +1,22 @@
 import * as React from "react";
 
-import { IAccount, ITicket, UserType, compareTicket } from "../config";
+import {
+  IAccount,
+  ITicket,
+  UserType,
+  compareTicket,
+  getCourseId,
+  createdToday
+} from "../config";
 import { H1, PageContainer } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
-import { Account, SocketConn } from "../api";
+import { Account, SocketConn, IQueueUpdateEvent } from "../api";
 import Ticket from "../api/ticket";
 import { isUserType } from "../util";
 import { TicketActions as ReceiveNewTicketActions } from "./ReceiveNewTicketActions";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { TicketList } from "./TicketList";
+import _ from "lodash";
 
 interface ITicketsContainerState {
   loadingData: boolean;
@@ -34,11 +42,14 @@ export class MyTicketsContainer extends React.Component<
       tutorTicketsCurrent: []
     };
     this.queryTickets = this.queryTickets.bind(this);
+    this.fetchQueuePosition = this.fetchQueuePosition.bind(this);
+    this.getOneQueuePosition = this.getOneQueuePosition.bind(this);
   }
 
   public async componentDidMount() {
     try {
       SocketConn.addTicketUpdateEventListener(this.queryTickets);
+      SocketConn.addQueueUpdateEventListener(this.queryTickets);
       const account = (await Account.getSelf()).data.data;
       this.setState({ account });
       await this.queryTickets();
@@ -52,11 +63,10 @@ export class MyTicketsContainer extends React.Component<
   }
   public componentWillUnmount() {
     SocketConn.removeTicketUpdateEventListener(this.queryTickets);
+    SocketConn.removeQueueUpdateEventListener(this.queryTickets);
   }
 
   public async queryTickets() {
-    const midnight = new Date();
-    midnight.setHours(0, 0, 0, 0); // last midnight
     const { account } = this.state;
     if (!account) {
       return;
@@ -64,6 +74,13 @@ export class MyTicketsContainer extends React.Component<
     try {
       const tickets: ITicket[] = (await Ticket.getSelf(true, true, false)).data
         .data.tickets;
+
+      /** Remove old socket connections */
+      this.state.studentTicketsCurrent.forEach(ticket => {
+        const courseId = getCourseId(ticket.courseId);
+        SocketConn.leaveRoom(courseId);
+      });
+
       const studentTicketsCurrent: ITicket[] = [];
       const studentTicketsPast: ITicket[] = [];
       const tutorTicketsCurrent: ITicket[] = [];
@@ -72,26 +89,25 @@ export class MyTicketsContainer extends React.Component<
         const studentAcc = ticket.studentId as IAccount;
         const tutorAcc = ticket.tutorId as IAccount;
         if (studentAcc._id === account.id) {
-          if (
-            ticket.endedAt ||
-            (ticket.createdAt && new Date(ticket.createdAt) < midnight)
-          ) {
+          if (ticket.endedAt || !createdToday(ticket)) {
             studentTicketsPast.push(ticket);
           } else {
             studentTicketsCurrent.push(ticket);
+            /** Add socket connections to this course */
+            const courseId = getCourseId(ticket.courseId);
+            SocketConn.joinRoom(courseId);
           }
         }
         if (tutorAcc && tutorAcc._id === account.id) {
-          if (
-            ticket.endedAt ||
-            (ticket.createdAt && new Date(ticket.createdAt) < midnight)
-          ) {
+          if (ticket.endedAt || !createdToday(ticket)) {
             tutorTicketsPast.push(ticket);
           } else {
             tutorTicketsCurrent.push(ticket);
           }
         }
       });
+      await this.fetchQueuePosition(studentTicketsCurrent);
+
       studentTicketsCurrent.sort(compareTicket);
       studentTicketsPast.sort(compareTicket);
       tutorTicketsCurrent.sort(compareTicket);
@@ -160,6 +176,28 @@ export class MyTicketsContainer extends React.Component<
         />
       </PageContainer>
     );
+  }
+
+  private async fetchQueuePosition(tickets: ITicket[]) {
+    try {
+      return await Promise.all(
+        tickets.map(async ticket => {
+          ticket.queue = await this.getOneQueuePosition(ticket);
+          return ticket;
+        })
+      );
+    } catch (e) {
+      console.error("Could not fetch queue positions", e);
+      return tickets;
+    }
+  }
+
+  private async getOneQueuePosition(ticket: ITicket) {
+    try {
+      return (await Ticket.getPosition(ticket.id!)).data.data;
+    } catch (e) {
+      console.error("could not fetch queue position", e);
+    }
   }
 }
 
