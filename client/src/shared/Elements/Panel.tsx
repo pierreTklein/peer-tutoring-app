@@ -9,8 +9,12 @@ interface IPanelProps {
 
 export const Panel = styled(Flex)<IPanelProps>`
   background: ${props => props.backgroundColor || theme.colors.white};
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
   border-radius: 9px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 0px 10px;
+  -webkit-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
   cursor: ${props => props.cursor || ""};
 `;
 

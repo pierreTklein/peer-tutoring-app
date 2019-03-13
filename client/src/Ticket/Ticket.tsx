@@ -57,7 +57,6 @@ export const Ticket: React.FunctionComponent<
     <Panel
       flexDirection={"column"}
       alignItems={"left"}
-      mx={"5%"}
       my={"2%"}
       p={"15px"}
       backgroundColor={color + opacity}

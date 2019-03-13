@@ -3,7 +3,7 @@ import { ITicket, UserType } from "../config";
 import { Ticket } from "./Ticket";
 import { Panel } from "../shared";
 import { Flex, Box } from "@rebass/grid";
-import Collapsible from "../shared/Elements/Collapsible";
+import { Collapsible, MaxHeightFlex } from "../shared/Elements";
 
 interface ITicketListProps {
   title: string;
@@ -32,13 +32,7 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
         hidden={hidden}
         open={defaultOpened || false}
       >
-        <Flex
-          style={{
-            maxHeight: "40vh",
-            overflow: "auto"
-          }}
-          flexDirection={"column"}
-        >
+        <MaxHeightFlex flexDirection={"column"} roundedBorder={true}>
           {tickets.length === 0
             ? "You don't have any questions."
             : tickets.map((ticket, index) => (
@@ -51,7 +45,7 @@ export const TicketList: React.FunctionComponent<ITicketListProps> = ({
                   />
                 </Box>
               ))}
-        </Flex>
+        </MaxHeightFlex>
       </Collapsible>
     </Panel>
   );
