@@ -101,10 +101,10 @@ function updateOne(id, ticketDetails) {
     return Ticket.findOneAndUpdate(query, ticketDetails, logger.updateCallbackFactory(TAG, "Ticket"));
 }
 
-async function getNewTicketFIFO(tutorId, courseIds) {
+function getQueue(courseIds, invalidStudentId = undefined, expandTutor = false, expandStudent = false, expandCourse = false) {
     const midnight = new Date();
     midnight.setHours(0, 0, 0, 0); // last midnight
-    const tickets = await Ticket.find({
+    const tickets = Ticket.find({
         createdAt: {
             $gte: midnight
         },
@@ -121,18 +121,22 @@ async function getNewTicketFIFO(tutorId, courseIds) {
             $in: courseIds
         },
         studentId: {
-            $ne: tutorId
+            $ne: invalidStudentId
         }
     }).sort({
         createdAt: 1
     });
+    return handleExpansion(tickets, expandTutor, expandStudent, expandCourse);
+}
 
+async function getNewTicketFIFO(courseIds, tutorId) {
+    const tickets = await getQueue(courseIds, tutorId);
     return tickets.length > 0 ? tickets[0] : null;
 }
 
-function getNewTicketOptimized(tutorId, courseIds) {
+function getNewTicketOptimized(courseIds, tutorId) {
     // TODO: Implement this
-    return getNewTicketFIFO(tutorId, courseIds);
+    return getNewTicketFIFO(courseIds, tutorId);
 }
 
 module.exports = {
@@ -141,6 +145,7 @@ module.exports = {
     findOne: findOne,
     findById: findById,
     updateOne: updateOne,
+    getQueue: getQueue,
     getNewTicketFIFO: getNewTicketFIFO,
     getNewTicketOptimized: getNewTicketOptimized,
 };

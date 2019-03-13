@@ -167,7 +167,7 @@ async function failIfNotTutor(req, res, next) {
     const account = req.body.account;
     if (!account.accountType.includes(Constants.General.TUTOR)) {
         return next({
-            status: 422,
+            status: 403,
             message: Constants.Error.AUTH_403_MESSAGE,
             error: {
                 route: req.path

@@ -1,14 +1,13 @@
 import * as React from "react";
-import { IAccount, UserType, FrontendRoute } from "../config";
-import { Button, ButtonType, H2 } from "../shared";
+import { FrontendRoute } from "../config";
+import { Button, ButtonType, Badge } from "../shared";
 import { Flex, Box } from "@rebass/grid";
-import { isUserType } from "../util";
 import { Ticket } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { Link } from "react-router-dom";
-import { boolean } from "yup";
 
 interface ITicketActionProps {
+  numWaiting?: number;
   hideAssign?: boolean;
   hideRequest?: boolean;
   disableAssign?: boolean;
@@ -35,20 +34,11 @@ export class TicketActions extends React.Component<
       hideAssign,
       hideRequest,
       disableAssign,
-      disableRequest
+      disableRequest,
+      numWaiting = 0
     } = this.props;
     return (
       <Flex width={1} justifyContent={"center"}>
-        <Box hidden={hideAssign}>
-          <Button
-            disabled={disableAssign}
-            onClick={this.onAssignQuestion}
-            buttonType={ButtonType.PRIMARY}
-            isLoading={this.state.loading}
-          >
-            Assign new question
-          </Button>
-        </Box>
         <Box hidden={hideRequest}>
           <Link to={FrontendRoute.CREATE_TICKET}>
             <Button disabled={disableRequest} buttonType={ButtonType.PRIMARY}>
@@ -57,6 +47,19 @@ export class TicketActions extends React.Component<
                 : "Ask a new question"}
             </Button>
           </Link>
+        </Box>
+        <Box hidden={hideAssign}>
+          <Button
+            disabled={disableAssign}
+            onClick={this.onAssignQuestion}
+            buttonType={ButtonType.PRIMARY}
+            isLoading={this.state.loading}
+          >
+            {numWaiting > 0 && (
+              <Badge>{numWaiting < 10 ? numWaiting : "10+"}</Badge>
+            )}
+            Assign new question
+          </Button>
         </Box>
       </Flex>
     );

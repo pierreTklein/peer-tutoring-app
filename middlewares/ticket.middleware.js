@@ -1,7 +1,7 @@
 "use strict";
 
 const _ = require("lodash");
-
+const mongoose = require("mongoose");
 const Constants = {
     Error: require("../constants/error.constant"),
     General: require("../constants/general.constant")
@@ -89,6 +89,25 @@ async function getByUser(req, res, next) {
     req.body.tickets = tickets;
     next();
 }
+
+async function getQueueByTutor(req, res, next) {
+    const courses = req.body.account.tutor.courses;
+    const courseIds = courses.map(c => {
+        if (c instanceof mongoose.Types.ObjectId) {
+            return c;
+        } else if (c.id instanceof mongoose.Types.ObjectId) {
+            return c.id;
+        } else if (c._id instanceof mongoose.Types.ObjectId) {
+            return c._id;
+        } else {
+            return null;
+        }
+    }).filter((cId) => cId !== null);
+    const tickets = await Services.Ticket.getQueue(courseIds, req.body.account.id, req.body.expandTutor, req.body.expandStudent, req.body.expandCourse);
+    req.body.tickets = tickets;
+    next();
+}
+
 
 async function getById(req, res, next) {
     const ticket = await Services.Ticket.findById(req.body.id, req.body.expandTutor, req.body.expandStudent, req.body.expandCourse);
@@ -208,7 +227,7 @@ async function abandonTicket(req, res, next) {
 
 async function getNewTicketFIFO(req, res, next) {
     const tutor = req.user.tutor;
-    const ticket = await Services.Ticket.getNewTicketFIFO(req.user.id, tutor.courses);
+    const ticket = await Services.Ticket.getNewTicketFIFO(tutor.courses, req.user.id);
     if (!ticket) {
         return next({
             status: 400,
@@ -221,7 +240,7 @@ async function getNewTicketFIFO(req, res, next) {
 
 async function getNewTicketOptimized(req, res, next) {
     const tutor = req.user.tutor;
-    const ticket = await Services.Ticket.getNewTicketOptimized(tutor.courses);
+    const ticket = await Services.Ticket.getNewTicketOptimized(tutor.courses, req.user.id);
     req.body.ticket = ticket;
     next();
 }
@@ -334,6 +353,7 @@ module.exports = {
     createTicket: Middleware.Util.asyncMiddleware(createTicket),
     getById: Middleware.Util.asyncMiddleware(getById),
     getByUser: Middleware.Util.asyncMiddleware(getByUser),
+    getQueueByTutor: Middleware.Util.asyncMiddleware(getQueueByTutor),
     getNewTicketFIFO: Middleware.Util.asyncMiddleware(getNewTicketFIFO),
     getNewTicketOptimized: Middleware.Util.asyncMiddleware(getNewTicketOptimized),
     assignTicket: Middleware.Util.asyncMiddleware(assignTicket),

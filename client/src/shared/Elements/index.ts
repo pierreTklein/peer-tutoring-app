@@ -1,4 +1,5 @@
 export * from "./BackgroundImage";
+export * from "./Badge";
 export * from "./Bold";
 export * from "./Button";
 export * from "./Collapsible";

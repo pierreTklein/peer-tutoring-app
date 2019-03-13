@@ -24,6 +24,7 @@ export enum APIRoute {
 
   //Tutor routes
   TUTOR = "tutor",
+  TUTOR_QUEUE = "tutor/:id/queue",
 
   //Course routes
   COURSE = "course"

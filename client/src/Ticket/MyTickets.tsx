@@ -10,7 +10,7 @@ import {
 } from "../config";
 import { H1, PageContainer } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
-import { Account, SocketConn, IQueueUpdateEvent } from "../api";
+import { Account, SocketConn, Tutor } from "../api";
 import Ticket from "../api/ticket";
 import { isUserType } from "../util";
 import { TicketActions as ReceiveNewTicketActions } from "./ReceiveNewTicketActions";
@@ -25,6 +25,7 @@ interface ITicketsContainerState {
   studentTicketsCurrent: ITicket[];
   tutorTicketsPast: ITicket[];
   tutorTicketsCurrent: ITicket[];
+  tutorTicketQueue: ITicket[];
 }
 
 export class MyTicketsContainer extends React.Component<
@@ -39,20 +40,27 @@ export class MyTicketsContainer extends React.Component<
       studentTicketsPast: [],
       studentTicketsCurrent: [],
       tutorTicketsPast: [],
-      tutorTicketsCurrent: []
+      tutorTicketsCurrent: [],
+      tutorTicketQueue: []
     };
     this.queryTickets = this.queryTickets.bind(this);
     this.fetchQueuePosition = this.fetchQueuePosition.bind(this);
     this.getOneQueuePosition = this.getOneQueuePosition.bind(this);
+    this.queryTutorQueue = this.queryTutorQueue.bind(this);
   }
 
   public async componentDidMount() {
     try {
+      /** Mount the event listeners */
       SocketConn.addTicketUpdateEventListener(this.queryTickets);
+      SocketConn.addTicketUpdateEventListener(this.queryTutorQueue);
       SocketConn.addQueueUpdateEventListener(this.queryTickets);
+      SocketConn.addQueueUpdateEventListener(this.queryTutorQueue);
+
       const account = (await Account.getSelf()).data.data;
       this.setState({ account });
       await this.queryTickets();
+      await this.queryTutorQueue();
     } catch (e) {
       if (e && e.data) {
         ValidationErrorGenerator(e.data);
@@ -62,8 +70,11 @@ export class MyTicketsContainer extends React.Component<
     }
   }
   public componentWillUnmount() {
+    /** Unmount the event listeners */
     SocketConn.removeTicketUpdateEventListener(this.queryTickets);
+    SocketConn.removeTicketUpdateEventListener(this.queryTutorQueue);
     SocketConn.removeQueueUpdateEventListener(this.queryTickets);
+    SocketConn.removeQueueUpdateEventListener(this.queryTutorQueue);
   }
 
   public async queryTickets() {
@@ -122,6 +133,21 @@ export class MyTicketsContainer extends React.Component<
       ToastError(e.data);
     }
   }
+
+  public async queryTutorQueue() {
+    const { account } = this.state;
+    if (!account || !isUserType(account, UserType.TUTOR)) {
+      return;
+    }
+    try {
+      const tickets: ITicket[] = (await Tutor.getQueue(account.id)).data.data
+        .tickets;
+      this.setState({ tutorTicketQueue: tickets });
+    } catch (e) {
+      ToastError(e.data);
+    }
+  }
+
   public render() {
     const {
       account,
@@ -129,6 +155,7 @@ export class MyTicketsContainer extends React.Component<
       tutorTicketsCurrent,
       studentTicketsPast,
       tutorTicketsPast,
+      tutorTicketQueue,
       loadingData
     } = this.state;
     const showTutor = (account &&
@@ -139,8 +166,9 @@ export class MyTicketsContainer extends React.Component<
       <PageContainer title={"Questions"} loading={loadingData || !account}>
         <H1 textAlign={"center"}>My questions</H1>
         <ReceiveNewTicketActions
-          hideAssign={!!account && !isUserType(account, UserType.TUTOR)}
-          hideRequest={!!account && !isUserType(account, UserType.STUDENT)}
+          numWaiting={tutorTicketQueue.length}
+          hideAssign={!showTutor}
+          hideRequest={!showStudent}
           disableRequest={studentTicketsCurrent.length > 0}
           onQuestionAssigned={this.queryTickets}
         />

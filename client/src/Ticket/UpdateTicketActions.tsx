@@ -5,108 +5,104 @@ import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { getStatus, TicketStatus } from "../config/TicketStatus";
-import { toast } from "react-toastify";
 
 interface ITicketActionProps {
   view: UserType;
   ticket: ITicket;
   onTicketUpdated: (ticket: ITicket) => void;
 }
-
-export const UpdateTicketActions: React.FunctionComponent<
-  ITicketActionProps
-> = ({ ticket, onTicketUpdated, view }) => {
-  const ticketStatus: TicketStatus = getStatus(ticket);
-  const wasCreatedToday = createdToday(ticket);
-
-  const hideStart =
-    view === UserType.STUDENT ||
-    ticketStatus !== TicketStatus.ASSIGNED ||
-    !wasCreatedToday;
-  const hideEnd = ticketStatus === TicketStatus.ENDED || !wasCreatedToday;
-  const hideAbandon =
-    ticketStatus === TicketStatus.ASKED ||
-    ticketStatus === TicketStatus.ENDED ||
-    view === UserType.STUDENT ||
-    !wasCreatedToday;
-
-  return (
-    <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>
-      <Box hidden={hideStart}>
-        <Button
-          onClick={() => {
-            onStartTicket(ticket, onTicketUpdated);
-          }}
-          buttonType={ButtonType.PRIMARY}
-          tabIndex={1}
-          title={"Start the session"}
-        >
-          Start
-        </Button>
-      </Box>
-      <Box hidden={hideAbandon}>
-        <Button
-          onClick={() => {
-            onAbandonTicket(ticket, onTicketUpdated);
-          }}
-          buttonType={ButtonType.WARNING}
-          tabIndex={1}
-          title={"End session, and return to queue"}
-        >
-          Abandon
-        </Button>
-      </Box>
-      <Box hidden={hideEnd}>
-        <Button
-          onClick={() => {
-            onEndTicket(ticket, onTicketUpdated);
-          }}
-          buttonType={ButtonType.SUCCESS}
-          tabIndex={1}
-          title={"End the session"}
-        >
-          Resolve
-        </Button>
-      </Box>
-    </Flex>
-  );
-};
-
-async function onStartTicket(
-  ticket: ITicket,
-  onTicketUpdated?: (ticket: ITicket) => void
-) {
-  try {
-    await Ticket.start(ticket.id || "");
-    onTicketUpdated && onTicketUpdated(ticket);
-  } catch (e) {
-    ToastError(e.data);
-  }
+interface ITicketActionState {
+  submitting: boolean;
 }
-async function onEndTicket(
-  ticket: ITicket,
-  onTicketUpdated?: (ticket: ITicket) => void
-) {
-  try {
-    await Ticket.end(ticket.id || "");
-    onTicketUpdated && onTicketUpdated(ticket);
-  } catch (e) {
-    if (e && e.data) {
+
+export class UpdateTicketActions extends React.Component<
+  ITicketActionProps,
+  ITicketActionState
+> {
+  constructor(props: ITicketActionProps) {
+    super(props);
+    this.state = {
+      submitting: false
+    };
+    this.updateTicket = this.updateTicket.bind(this);
+  }
+  public render() {
+    const { ticket, onTicketUpdated, view } = this.props;
+    const { submitting } = this.state;
+    const ticketStatus: TicketStatus = getStatus(ticket);
+    const wasCreatedToday = createdToday(ticket);
+
+    const hideStart =
+      view === UserType.STUDENT ||
+      ticketStatus !== TicketStatus.ASSIGNED ||
+      !wasCreatedToday;
+    const hideEnd = ticketStatus === TicketStatus.ENDED || !wasCreatedToday;
+    const hideAbandon =
+      ticketStatus === TicketStatus.ASKED ||
+      ticketStatus === TicketStatus.ENDED ||
+      view === UserType.STUDENT ||
+      !wasCreatedToday;
+
+    return (
+      <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>
+        <Box hidden={hideStart}>
+          <Button
+            onClick={() => {
+              this.updateTicket(ticket, Ticket.start, onTicketUpdated);
+            }}
+            isLoading={submitting}
+            disabled={submitting}
+            buttonType={ButtonType.PRIMARY}
+            tabIndex={1}
+            title={"Start the session"}
+          >
+            Start
+          </Button>
+        </Box>
+        <Box hidden={hideAbandon}>
+          <Button
+            onClick={() => {
+              this.updateTicket(ticket, Ticket.abandon, onTicketUpdated);
+            }}
+            isLoading={submitting}
+            disabled={submitting}
+            buttonType={ButtonType.WARNING}
+            tabIndex={1}
+            title={"End session, and return to queue"}
+          >
+            Abandon
+          </Button>
+        </Box>
+        <Box hidden={hideEnd}>
+          <Button
+            onClick={() => {
+              this.updateTicket(ticket, Ticket.end, onTicketUpdated);
+            }}
+            isLoading={submitting}
+            disabled={submitting}
+            buttonType={ButtonType.SUCCESS}
+            tabIndex={1}
+            title={"End the session"}
+          >
+            Resolve
+          </Button>
+        </Box>
+      </Flex>
+    );
+  }
+  private async updateTicket(
+    ticket: ITicket,
+    action: (id: string) => Promise<any>,
+    cb?: (ticket: ITicket) => void
+  ) {
+    try {
+      this.setState({ submitting: true });
+      await action(ticket.id || "");
+      cb && cb(ticket);
+    } catch (e) {
       ToastError(e.data);
-    } else {
-      toast.error("Unexpected error");
+    } finally {
+      this.setState({ submitting: false });
     }
-  }
-}
-
-async function onAbandonTicket(
-  ticket: ITicket,
-  onTicketUpdated?: (ticket: ITicket) => void
-) {
-  try {
-    await Ticket.abandon(ticket.id || "");
-    onTicketUpdated && onTicketUpdated(ticket);
-  } catch (e) {
-    ToastError(e.data);
   }
 }
