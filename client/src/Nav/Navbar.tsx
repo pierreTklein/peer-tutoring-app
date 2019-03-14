@@ -48,7 +48,7 @@ export default class Navbar extends React.Component<
         >
           <Box alignSelf={"center"} my={"auto"}>
             <Link to={FrontendRoute.HOME_PAGE}>
-              <Image src={Logo} imgHeight={"50px"} />
+              <Image src={Logo} imgHeight={"50px"} alt={"Link to home page"} />
             </Link>
           </Box>
           <Box>
