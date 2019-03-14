@@ -137,7 +137,7 @@ module.exports = {
         //end a ticket
         ticketRouter.route("/:id/abandon").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Constants.General.STUDENT, Constants.General.TUTOR]),
+            Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
             Middleware.Auth.ensureConfirmed,
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Util.failIfNotValid,

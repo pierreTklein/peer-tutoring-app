@@ -101,7 +101,7 @@ function updateOne(id, ticketDetails) {
     return Ticket.findOneAndUpdate(query, ticketDetails, logger.updateCallbackFactory(TAG, "Ticket"));
 }
 
-function getQueue(courseIds, invalidStudentId = undefined, expandTutor = false, expandStudent = false, expandCourse = false) {
+function getQueue(courseIds, tutorId = undefined, expandTutor = false, expandStudent = false, expandCourse = false) {
     const midnight = new Date();
     midnight.setHours(0, 0, 0, 0); // last midnight
     const tickets = Ticket.find({
@@ -121,7 +121,10 @@ function getQueue(courseIds, invalidStudentId = undefined, expandTutor = false, 
             $in: courseIds
         },
         studentId: {
-            $ne: invalidStudentId
+            $ne: tutorId
+        },
+        blacklist: {
+            $nin: [tutorId]
         }
     }).sort({
         createdAt: 1
@@ -131,6 +134,7 @@ function getQueue(courseIds, invalidStudentId = undefined, expandTutor = false, 
 
 async function getNewTicketFIFO(courseIds, tutorId) {
     const tickets = await getQueue(courseIds, tutorId);
+    console.log(tickets, tutorId);
     return tickets.length > 0 ? tickets[0] : null;
 }
 

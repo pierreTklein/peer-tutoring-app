@@ -218,6 +218,9 @@ async function abandonTicket(req, res, next) {
         $unset: {
             tutorId: 1,
             startedAt: 1
+        },
+        $push: {
+            blacklist: req.body.ticket.tutorId
         }
     };
     const ticket = await Services.Ticket.updateOne(req.body.id, updatedValue);
