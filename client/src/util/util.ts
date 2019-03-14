@@ -52,6 +52,17 @@ function date2age(date: string) {
   return Math.abs(ageDt.getUTCFullYear() - 1970);
 }
 
+function date2string(date: Date) {
+  return date.toLocaleString("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric"
+  });
+}
+
 function getValueFromQuery(key: string): string | undefined {
   const queries: any = QueryString.parse(location.search);
   return queries[key];
@@ -76,5 +87,6 @@ export {
   input2date,
   date2age,
   date2input,
+  date2string,
   toOrdinalSuffix
 };

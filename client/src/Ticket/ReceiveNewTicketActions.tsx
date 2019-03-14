@@ -51,7 +51,7 @@ export class TicketActions extends React.Component<
         </Box>
         <Box hidden={hideAssign}>
           <Button
-            disabled={disableAssign}
+            disabled={disableAssign || numWaiting === 0}
             onClick={this.onAssignQuestion}
             buttonType={ButtonType.PRIMARY}
             isLoading={this.state.loading}
@@ -59,7 +59,7 @@ export class TicketActions extends React.Component<
             {numWaiting > 0 && (
               <Badge>{numWaiting < 10 ? numWaiting : "10+"}</Badge>
             )}
-            Assign new question
+            {numWaiting > 0 ? "Get new question" : "Queue is empty"}
           </Button>
         </Box>
       </Flex>
