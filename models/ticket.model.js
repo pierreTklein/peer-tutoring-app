@@ -5,6 +5,10 @@ const TicketSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
     },
+    blacklist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
+    }],
     studentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",

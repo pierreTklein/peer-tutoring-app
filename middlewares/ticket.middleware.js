@@ -218,6 +218,9 @@ async function abandonTicket(req, res, next) {
         $unset: {
             tutorId: 1,
             startedAt: 1
+        },
+        $push: {
+            blacklist: req.body.ticket.tutorId
         }
     };
     const ticket = await Services.Ticket.updateOne(req.body.id, updatedValue);
@@ -307,7 +310,7 @@ function broadcastTicketUpdateEvent(eventType) {
                 assigned: `Your question was assigned to ${tutorName}. Make sure they can find you!`,
                 started: `${tutorName} has started the session.`,
                 ended: `Your question has been fulfilled. Still puzzled? Ask a new question!`,
-                abandoned: `${tutorName} abandoned the question. You will be put at the front of the queue.`,
+                abandoned: `${tutorName} has put you back at the front of the queue.`,
                 rated: `Thank you for rating this session!`,
                 default: `Your question was ${eventType}`
             },
@@ -315,7 +318,7 @@ function broadcastTicketUpdateEvent(eventType) {
                 assigned: `You have been assigned to ${studentName}. Make sure they can find you!`,
                 started: `You have started the session.`,
                 ended: `Another one done.`,
-                abandoned: `You have abandoned the question.`,
+                abandoned: `You yielded the question.`,
                 rated: `Someone has rated your help.`,
                 default: `Your student's question was ${eventType}`
             }

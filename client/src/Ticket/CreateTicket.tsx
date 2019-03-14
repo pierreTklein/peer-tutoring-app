@@ -160,6 +160,7 @@ export class CreateTicketContainer extends React.Component<
     }
     try {
       const ticket: ITicket = {
+        blacklist: [],
         studentId: this.state.account.id,
         courseId: values.course.value,
         question: values.question,

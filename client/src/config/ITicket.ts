@@ -3,6 +3,7 @@ import { ICourse } from "./ICourse";
 
 export interface ITicket {
   queue?: number;
+  blacklist: Array<string | IAccount>;
   tutorId?: string | IAccount;
   studentId: string | IAccount;
   courseId: string | ICourse;

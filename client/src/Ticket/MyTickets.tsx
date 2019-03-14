@@ -130,7 +130,6 @@ export class MyTicketsContainer extends React.Component<
       studentTicketsPast.sort(compareTicket);
       tutorTicketsCurrent.sort(compareTicket);
       tutorTicketsPast.sort(compareTicket);
-      console.log(studentTicketsCurrent, studentTicketsPast);
       this.setState({
         studentTicketsCurrent,
         studentTicketsPast,

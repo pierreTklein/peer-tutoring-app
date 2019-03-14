@@ -13,7 +13,7 @@ import theme from "../shared/Styles/theme";
 import { UpdateTicketActions } from "./UpdateTicketActions";
 import LabelledField from "../shared/Elements/LabelledField";
 import Collapsible from "../shared/Elements/Collapsible";
-import { toOrdinalSuffix } from "../util";
+import { toOrdinalSuffix, date2string } from "../util";
 
 interface ITicketProps {
   ticket: ITicket;
@@ -78,24 +78,26 @@ export const Ticket: React.FunctionComponent<
           open={showTicketDetails}
           onToggle={onToggle}
         >
+          <LabelledField label={"Category"} text={category} />
           <LabelledField label={"Question"} text={question} />
           <LabelledField label={"Status"} text={status} />
-          <LabelledField label={"Tutor"} text={tutorDescription} />
-          <LabelledField label={"Category"} text={category} />
+          {view === UserType.STUDENT && (
+            <LabelledField label={"Tutor"} text={tutorDescription} />
+          )}
           <LabelledField
             label={"Asked"}
             hidden={!createdAt}
-            text={createdAt && new Date(createdAt).toLocaleString("en-US")}
+            text={createdAt && date2string(new Date(createdAt))}
           />
           <LabelledField
             label={"Started"}
             hidden={!startedAt}
-            text={startedAt && new Date(startedAt).toLocaleString("en-US")}
+            text={startedAt && date2string(new Date(startedAt))}
           />
           <LabelledField
             label={"Resolved"}
             hidden={!endedAt}
-            text={endedAt && new Date(endedAt).toLocaleString("en-US")}
+            text={endedAt && date2string(new Date(endedAt))}
           />
         </Collapsible>
       </Box>

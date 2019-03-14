@@ -84,7 +84,7 @@ export class UpdateTicketActions extends React.Component<
             tabIndex={1}
             title={"End session, and return to queue"}
           >
-            Abandon
+            Yield
           </Button>
         </Box>
         <Box hidden={hideEnd}>
