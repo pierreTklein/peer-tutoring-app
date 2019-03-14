@@ -46,6 +46,7 @@ module.exports = {
             Middleware.Util.parseByModel("ticketDetails", Model.Ticket),
             Middleware.Ticket.failIfUserHasOpenTicket,
             Middleware.Ticket.createTicket,
+            Middleware.Ticket.broadcastQueueUpdatedEvent(0),
             Controllers.Ticket.createdTicket
         );
 

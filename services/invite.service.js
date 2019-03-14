@@ -47,7 +47,7 @@ function create(type, email) {
 }
 
 /**
- * Generates JWT for Confirming account
+ * Generates JWT for Inviting account
  * @param {ObjectId} invite
  */
 function generateToken(invite) {

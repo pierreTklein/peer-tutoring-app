@@ -6,7 +6,8 @@ import {
   UserType,
   compareTicket,
   getCourseId,
-  createdToday
+  createdToday,
+  ICourse
 } from "../config";
 import { H1, PageContainer } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
@@ -58,6 +59,12 @@ export class MyTicketsContainer extends React.Component<
       SocketConn.addQueueUpdateEventListener(this.queryTutorQueue);
 
       const account = (await Account.getSelf()).data.data;
+      if (isUserType(account, UserType.TUTOR)) {
+        account.tutor.courses.forEach((course: string | ICourse) => {
+          const courseId = getCourseId(course);
+          SocketConn.joinRoom(courseId);
+        });
+      }
       this.setState({ account });
       await this.queryTickets();
       await this.queryTutorQueue();
@@ -123,6 +130,7 @@ export class MyTicketsContainer extends React.Component<
       studentTicketsPast.sort(compareTicket);
       tutorTicketsCurrent.sort(compareTicket);
       tutorTicketsPast.sort(compareTicket);
+      console.log(studentTicketsCurrent, studentTicketsPast);
       this.setState({
         studentTicketsCurrent,
         studentTicketsPast,
