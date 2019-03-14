@@ -106,6 +106,11 @@ class ManageAccountContainer extends React.Component<
       } Your Account`;
       return (
         <React.Fragment>
+          <MaxWidthBox width={0.9} m={"auto"}>
+            {isUserType(accountDetails, UserType.TUTOR) && (
+              <EditTutorView account={accountDetails} courses={allCourses} />
+            )}
+          </MaxWidthBox>
           <PageContainer title={title} loading={!loaded}>
             <Box>
               <H1 textAlign={"center"}>{title}</H1>
@@ -130,11 +135,6 @@ class ManageAccountContainer extends React.Component<
               )}
             />
           </PageContainer>
-          <MaxWidthBox width={0.9} m={"auto"}>
-            {isUserType(accountDetails, UserType.TUTOR) && (
-              <EditTutorView account={accountDetails} courses={allCourses} />
-            )}
-          </MaxWidthBox>
         </React.Fragment>
       );
     }
