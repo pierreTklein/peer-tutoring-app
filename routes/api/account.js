@@ -47,6 +47,7 @@ module.exports = {
         Middleware.Account.parseAccount,
         Middleware.Account.failIfExists,
         Middleware.Account.addAccount,
+        Middleware.Account.sendConfirmationEmail,
         Controllers.Account.addedAccount
       );
 
