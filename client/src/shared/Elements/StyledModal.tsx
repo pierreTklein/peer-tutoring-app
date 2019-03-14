@@ -1,7 +1,7 @@
-import * as React from 'react';
-import styled from '../Styles/styled-components';
+import * as React from "react";
+import styled from "../Styles/styled-components";
 
-import Modal from 'react-modal';
+import Modal from "react-modal";
 
 const ReactModalAdapter = ({ className, ...props }: any) => {
   const contentClassName = `${className}__content`;
@@ -16,7 +16,12 @@ const ReactModalAdapter = ({ className, ...props }: any) => {
   );
 };
 
-export const StyledModal = styled(ReactModalAdapter)`
+interface IStyledModalProps {
+  width?: string;
+  height?: string;
+}
+
+export const StyledModal = styled(ReactModalAdapter)<IStyledModalProps>`
   &__overlay {
     position: fixed;
     top: 0px;
@@ -28,11 +33,14 @@ export const StyledModal = styled(ReactModalAdapter)`
   }
 
   &__content {
+    margin: auto auto;
     position: absolute;
-    top: 40px;
-    left: 40px;
-    right: 40px;
-    bottom: 40px;
+    width: ${props => props.width || "500px"};
+    height: ${props => props.height || "400px"};
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: #fff;
     overflow: auto;
     -webkit-overflow-scrolling: touch;

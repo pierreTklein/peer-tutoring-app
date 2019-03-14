@@ -130,7 +130,7 @@ class ManageAccountContainer extends React.Component<
               )}
             />
           </PageContainer>
-          <MaxWidthBox width={0.9} m={"auto"}>
+          <MaxWidthBox width={0.9} m={"auto"} hidden={!loaded}>
             {isUserType(accountDetails, UserType.TUTOR) && (
               <EditTutorView account={accountDetails} courses={allCourses} />
             )}

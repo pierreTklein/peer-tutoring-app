@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ITicket, UserType, createdToday } from "../config";
-import { Button, ButtonType } from "../shared";
+import { Button, ButtonType, StyledModal } from "../shared";
 import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
@@ -14,6 +14,7 @@ interface ITicketActionProps {
 }
 interface ITicketActionState {
   submitting: boolean;
+  modalOpen: boolean;
 }
 
 export class UpdateTicketActions extends React.Component<
@@ -23,13 +24,15 @@ export class UpdateTicketActions extends React.Component<
   constructor(props: ITicketActionProps) {
     super(props);
     this.state = {
-      submitting: false
+      submitting: false,
+      modalOpen: false
     };
     this.updateTicket = this.updateTicket.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
   public render() {
     const { ticket, onTicketUpdated, view } = this.props;
-    const { submitting } = this.state;
+    const { submitting, modalOpen } = this.state;
     const ticketStatus: TicketStatus = getStatus(ticket);
     const wasCreatedToday = createdToday(ticket);
 
@@ -46,6 +49,16 @@ export class UpdateTicketActions extends React.Component<
 
     return (
       <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>
+        <StyledModal
+          appElement={document.getElementById("root") || undefined}
+          isOpen={modalOpen}
+          contentLabel="Single Hacker View"
+          onRequestClose={this.handleCloseModal}
+          shouldCloseOnEsc={true}
+          shouldCloseOnOverlayClick={true}
+        >
+          Are you sure?
+        </StyledModal>
         <Box hidden={hideStart}>
           <Button
             onClick={() => {
@@ -109,5 +122,8 @@ export class UpdateTicketActions extends React.Component<
     } finally {
       this.setState({ submitting: false });
     }
+  }
+  private handleCloseModal() {
+    this.setState({ modalOpen: false });
   }
 }
