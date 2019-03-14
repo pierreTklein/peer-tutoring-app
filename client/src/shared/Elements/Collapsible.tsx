@@ -45,7 +45,12 @@ export class Collapsible extends React.Component<IProps, IState> {
         {...rest}
       >
         <Summary>
-          <H2 color={titleColor || theme.colors.primary}>{title}</H2>
+          <H2
+            color={titleColor || theme.colors.primary}
+            marginBottom={"inherit"}
+          >
+            {title}
+          </H2>
         </Summary>
         {children}
       </Details>
