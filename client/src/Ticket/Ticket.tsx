@@ -78,10 +78,10 @@ export const Ticket: React.FunctionComponent<
           open={showTicketDetails}
           onToggle={onToggle}
         >
+          <LabelledField label={"Question"} text={question} />
           <LabelledField label={"Status"} text={status} />
           <LabelledField label={"Tutor"} text={tutorDescription} />
           <LabelledField label={"Category"} text={category} />
-          <LabelledField label={"Question"} text={question} />
           <LabelledField
             label={"Asked"}
             hidden={!createdAt}

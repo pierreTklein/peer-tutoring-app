@@ -9,7 +9,7 @@ import {
   createdToday,
   ICourse
 } from "../config";
-import { H1, PageContainer } from "../shared/Elements";
+import { H1, PageContainer, H2 } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import { Account, SocketConn, Tutor } from "../api";
 import Ticket from "../api/ticket";
@@ -170,9 +170,14 @@ export class MyTicketsContainer extends React.Component<
       isUserType(account, UserType.TUTOR)) as boolean;
     const showStudent = (account &&
       isUserType(account, UserType.STUDENT)) as boolean;
+    const hasNoCourses =
+      showTutor && account && account.tutor.courses.length === 0;
     return (
       <PageContainer title={"Questions"} loading={loadingData || !account}>
         <H1 textAlign={"center"}>My questions</H1>
+        {hasNoCourses && (
+          <H2 textAlign={"center"}>Add a course to your account profile</H2>
+        )}
         <ReceiveNewTicketActions
           numWaiting={tutorTicketQueue.length}
           hideAssign={!showTutor}
