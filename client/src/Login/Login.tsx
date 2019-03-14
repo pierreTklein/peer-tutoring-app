@@ -48,7 +48,7 @@ export class LoginContainer extends React.Component<{}, ILoginState> {
     return (
       <PageContainer title={"Log In"}>
         <Box alignSelf={"flex-start"}>
-          <H1 fontSize={"24px"}>Sign in / Register</H1>
+          <H1 fontSize={"24px"}>Log In / Register</H1>
         </Box>
         <Formik
           enableReinitialize={true}
@@ -109,7 +109,7 @@ export class LoginContainer extends React.Component<{}, ILoginState> {
               isLoading={fp.isSubmitting}
               disabled={fp.isSubmitting}
             >
-              Sign in
+              Log in
             </Button>
           </Box>
           <Box pl={"5px"}>
@@ -122,7 +122,7 @@ export class LoginContainer extends React.Component<{}, ILoginState> {
               <Button
                 type="button"
                 buttonType={ButtonType.SECONDARY}
-                isLoading={fp.isSubmitting}
+                disabled={fp.isSubmitting}
               >
                 Register
               </Button>
