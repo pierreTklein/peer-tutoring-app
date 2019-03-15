@@ -28,23 +28,28 @@ export const StyledModal = styled(ReactModalAdapter)<IStyledModalProps>`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.1);
     z-index: 20;
   }
 
   &__content {
     margin: auto auto;
     position: absolute;
-    width: ${props => props.width || "500px"};
-    height: ${props => props.height || "400px"};
+    height: ${props => props.height || "160px"};
+    width: ${props => props.width || "300px"};
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background: #fff;
-    overflow: auto;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
     -webkit-overflow-scrolling: touch;
-    border-radius: 4px;
+    overflow: auto;
     outline: none;
     padding: 20px;
   }
