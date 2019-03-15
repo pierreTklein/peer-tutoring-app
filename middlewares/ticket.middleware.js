@@ -129,9 +129,20 @@ async function createTicket(req, res, next) {
     next();
 }
 
-async function failIfNotAssigned(req, res, next) {
+function failIfNotAssigned(req, res, next) {
     const ticket = req.body.ticket;
     if (!ticket.tutorId) {
+        return next({
+            status: 403,
+            message: Constants.Error.TICKET_403_MESSAGE
+        });
+    }
+    next();
+}
+
+function failIfAssigned(req, res, next) {
+    const ticket = req.body.ticket;
+    if (ticket.tutorId) {
         return next({
             status: 403,
             message: Constants.Error.TICKET_403_MESSAGE
@@ -370,4 +381,5 @@ module.exports = {
     failIfEnded: failIfEnded,
     failIfNotEnded: failIfNotEnded,
     failIfNotAssigned: failIfNotAssigned,
+    failIfAssigned: failIfAssigned,
 };
