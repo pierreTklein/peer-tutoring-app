@@ -57,9 +57,9 @@ export const Ticket: React.FunctionComponent<
 
   let title = `${studentDescription} | ${courseDescription}`;
   if (ticket.queue && status === TicketStatus.ASKED) {
-    title = `${toOrdinalSuffix(ticket.queue)} in line for ${courseDescription}`;
+    title = `${toOrdinalSuffix(ticket.queue)} in line | ${courseDescription}`;
   } else if (view === UserType.STUDENT) {
-    title = `${category || ""} question for ${courseDescription}`;
+    title = `${category || ""} | ${courseDescription}`;
   }
 
   return (
@@ -73,6 +73,7 @@ export const Ticket: React.FunctionComponent<
     >
       <Box>
         <Collapsible
+          titleWeight={"lighter"}
           titleColor={theme.colors.white}
           title={title}
           open={showTicketDetails}

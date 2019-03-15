@@ -6,6 +6,7 @@ import Summary from "./Summary";
 
 interface IProps extends React.HTMLAttributes<HTMLDetailsElement> {
   title: string;
+  titleWeight?: string;
   titleColor?: string;
   open: boolean;
   onToggle?: (isOpen: boolean) => void;
@@ -33,7 +34,15 @@ export class Collapsible extends React.Component<IProps, IState> {
     this.onToggle = this.onToggle.bind(this);
   }
   public render() {
-    const { title, titleColor, children, open, onToggle, ...rest } = this.props;
+    const {
+      titleWeight,
+      title,
+      titleColor,
+      children,
+      open,
+      onToggle,
+      ...rest
+    } = this.props;
     return (
       <Details
         ref={elem => (this.nv = elem as HTMLDetailsElement)}
@@ -46,6 +55,7 @@ export class Collapsible extends React.Component<IProps, IState> {
       >
         <Summary>
           <H2
+            weight={titleWeight}
             color={titleColor || theme.colors.primary}
             marginBottom={"inherit"}
           >
