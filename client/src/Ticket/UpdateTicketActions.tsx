@@ -45,7 +45,12 @@ export class UpdateTicketActions extends React.Component<
       !wasCreatedToday;
 
     return (
-      <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>
+      <Flex
+        width={1}
+        justifyContent={"left"}
+        flexWrap={"wrap"}
+        mt={hideStart && hideAbandon && hideEnd ? "" : "5px"}
+      >
         <Box hidden={hideStart}>
           <Button
             onClick={() => {

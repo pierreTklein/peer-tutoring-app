@@ -18,6 +18,7 @@ export const H2 = styled.h3<IH2Props>`
   margin-left: ${props => props.marginLeft || "initial"};
   margin-bottom: ${props => props.marginBottom || "12px"};
   margin-top: ${props => props.marginTop || "initial"};
+  overflow-wrap: break-word;
 `;
 
 export default H2;

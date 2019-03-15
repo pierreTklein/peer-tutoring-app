@@ -71,7 +71,7 @@ export const Ticket: React.FunctionComponent<
       backgroundColor={color + opacity}
       {...rest}
     >
-      <Box>
+      <Box ml={"5px"}>
         <Collapsible
           titleWeight={"lighter"}
           titleColor={theme.colors.white}
