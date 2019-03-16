@@ -65,7 +65,12 @@ export class UpdateTicketActions extends React.Component<
       "This question has been adequately answered, or is no longer applicable.";
 
     return (
-      <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>
+      <Flex 
+        width={1} 
+        justifyContent={"left"} 
+        flexWrap={"wrap"}
+        mt={hideStart && hideAbandon && hideEnd ? "" : "5px"}
+      >
         <ConfirmationModal {...modalContents} />
         <Box hidden={hideStart}>
           <Button

@@ -99,6 +99,7 @@ module.exports = {
             Middleware.Auth.ensureAuthorized([Constants.General.TUTOR]),
             Middleware.Auth.ensureConfirmed,
             Middleware.Ticket.getById,
+            Middleware.Ticket.failIfAssigned,
             Middleware.Ticket.assignTicket,
             Middleware.Ticket.broadcastQueueUpdatedEvent(-1),
             Middleware.Ticket.broadcastTicketUpdateEvent("assigned"),
