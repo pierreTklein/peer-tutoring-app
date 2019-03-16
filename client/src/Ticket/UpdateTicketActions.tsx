@@ -58,9 +58,11 @@ export class UpdateTicketActions extends React.Component<
       view === UserType.STUDENT ||
       !wasCreatedToday;
 
-    const startSessionTitle = "Start this session";
-    const abandonSessionTitle = "Yield this question and send it to the queue";
-    const endSessionTitle = "Resolve this question";
+    const startSessionTitle = "Start this session.";
+    const abandonSessionTitle =
+      "Abandon this question and send it to the front of the queue.";
+    const endSessionTitle =
+      "This question has been adequately answered, or is no longer applicable.";
 
     return (
       <Flex width={1} justifyContent={"left"} flexWrap={"wrap"}>

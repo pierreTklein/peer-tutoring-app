@@ -33,19 +33,19 @@ const ConfirmationModal: React.FunctionComponent<IConfModalProps> = ({
     >
       <Flex
         flexDirection={"column"}
-        justifyContent={"space-around"}
-        alignSelf={"stretch"}
         style={{
           height: "inherit"
         }}
       >
-        <Box flex={1}>
-          <H2>{title}</H2>
+        <Box>
+          <H2 textAlign={"center"} marginBottom={"0px"}>
+            {title}
+          </H2>
         </Box>
-        <Box flex={1}>
-          <Paragraph>{body}</Paragraph>
+        <Box my={"auto"}>
+          <div style={{ textAlign: "center" }}>{body}</div>
         </Box>
-        <Box mb={"0"} flex={1}>
+        <Box mb={"0"}>
           <Flex justifyContent={"center"} mb={"0"} alignItems={"flex-end"}>
             <Box>
               <Button buttonType={ButtonType.SECONDARY} onClick={onDeny}>
