@@ -1,9 +1,8 @@
 import * as React from "react";
 
-import { PrewrapBox, StyledModal, H2 } from ".";
+import { StyledModal, H2 } from ".";
 import { Flex, Box } from "@rebass/grid";
 import Button, { ButtonType } from "./Button";
-import Paragraph from "./Paragraph";
 
 export interface IConfModalProps {
   title: string;
