@@ -1,8 +1,10 @@
 import { FieldProps } from "formik";
 import * as React from "react";
 import { Label, LabelText, Input } from "../";
+import { InputLocation } from "../../Styles";
 
 export interface IEmailProps {
+  location?: InputLocation;
   label?: string;
   required?: boolean;
   id?: string;
@@ -14,7 +16,16 @@ export interface IEmailProps {
 export const Email: React.StatelessComponent<
   IEmailProps & FieldProps
 > = props => {
-  const { id, isTight, value, label, required, isDisabled, field } = props;
+  const {
+    location,
+    id,
+    isTight,
+    value,
+    label,
+    required,
+    isDisabled,
+    field
+  } = props;
   return (
     <Label>
       <LabelText label={label} required={required} />
@@ -27,6 +38,7 @@ export const Email: React.StatelessComponent<
         isTight={isTight}
         value={value}
         disabled={isDisabled}
+        location={location}
         {...field}
       />
     </Label>

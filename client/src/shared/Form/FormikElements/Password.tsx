@@ -1,8 +1,10 @@
 import { FieldProps } from "formik";
 import * as React from "react";
 import { Label, LabelText, Input } from "../";
+import { InputLocation } from "../../Styles";
 
 export interface IPasswordProps {
+  location?: InputLocation;
   label?: string;
   required?: boolean;
   id?: string;
@@ -14,7 +16,16 @@ export interface IPasswordProps {
 export const Password: React.StatelessComponent<
   IPasswordProps & FieldProps
 > = props => {
-  const { id, isTight, value, label, required, isDisabled, field } = props;
+  const {
+    id,
+    location,
+    isTight,
+    value,
+    label,
+    required,
+    isDisabled,
+    field
+  } = props;
   return (
     <Label>
       <LabelText label={label} required={required} />
@@ -25,6 +36,7 @@ export const Password: React.StatelessComponent<
         placeholder={"Password..."}
         id={id}
         isTight={isTight}
+        location={location}
         value={value}
         disabled={isDisabled}
         {...field}

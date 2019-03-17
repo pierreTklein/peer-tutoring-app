@@ -28,6 +28,7 @@ import { Link } from "react-router-dom";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { toast } from "react-toastify";
 import { getOptionsFromEnum } from "../util";
+import { InputLocation } from "../shared";
 
 export interface IInviteContainerState {
   submitting: boolean;
@@ -90,13 +91,29 @@ export class InviteContainer extends React.Component<
               {fp.values.invites &&
                 fp.values.invites.map((invite: IInviteInfo, index: number) => (
                   <React.Fragment key={index}>
-                    <MaxWidthBox width={[1, 0.5]} pr={[0, "10px"]}>
+                    <MaxWidthBox
+                      width={[0.15, 0.1]}
+                      mt={"29px"}
+                      pr={[0, "10px"]}
+                    >
+                      <Button
+                        type="button"
+                        isNarrow={true}
+                        buttonType={ButtonType.DANGER}
+                        disabled={index === 0}
+                        onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                      >
+                        –
+                      </Button>
+                    </MaxWidthBox>
+                    <MaxWidthBox width={[0.85, 0.45]}>
                       <FastField
                         name={`invites.${index}.email`}
                         label={"Email Address"}
                         placeholder={"Email..."}
                         value={invite.email}
                         component={FormikElements.Email}
+                        location={InputLocation.LEFT}
                         required={true}
                       />
                       <ErrorMessage
@@ -104,12 +121,13 @@ export class InviteContainer extends React.Component<
                         name={`invites.${index}.email`}
                       />
                     </MaxWidthBox>
-                    <MaxWidthBox width={[0.85, 0.4]} pl={[0, "10px"]}>
+                    <MaxWidthBox width={[1, 0.45]}>
                       <FastField
                         name={`invites.${index}.accountType`}
                         label={"Account Type"}
                         value={invite.accountType}
                         component={FormikElements.Select}
+                        location={InputLocation.RIGHT}
                         options={getOptionsFromEnum(UserType)}
                         isMulti={true}
                         required={true}
@@ -119,25 +137,12 @@ export class InviteContainer extends React.Component<
                         name={`invites.${index}.accountType`}
                       />
                     </MaxWidthBox>
-                    <MaxWidthBox
-                      width={[0.15, 0.1]}
-                      mt={"29px"}
-                      pl={[0, "10px"]}
-                    >
-                      <Button
-                        type="button"
-                        isNarrow={true}
-                        buttonType={ButtonType.DANGER}
-                        onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
-                      >
-                        –
-                      </Button>
-                    </MaxWidthBox>
                   </React.Fragment>
                 ))}
               <Flex width={1} justifyContent={"center"}>
-                <Box pr={"5px"}>
+                <Box pr={"10px"} width={0.5}>
                   <Button
+                    style={{ float: "right" }}
                     type="button"
                     buttonType={ButtonType.SECONDARY}
                     disabled={fp.isSubmitting}
@@ -148,7 +153,7 @@ export class InviteContainer extends React.Component<
                     Add another
                   </Button>
                 </Box>
-                <Box pl={"5px"}>
+                <Box pl={"10px"} width={0.5}>
                   <Button
                     type="submit"
                     isLoading={fp.isSubmitting}

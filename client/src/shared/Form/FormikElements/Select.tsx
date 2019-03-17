@@ -2,6 +2,7 @@ import { FieldProps } from "formik";
 import * as React from "react";
 import { Label, LabelText, StyledCreatableSelect, StyledSelect } from "..";
 import { ValueType, ActionMeta } from "react-select/lib/types";
+import { InputLocation } from "../../Styles";
 
 interface IStylizedSelectFormikProps {
   label: string;
@@ -10,6 +11,7 @@ interface IStylizedSelectFormikProps {
   placeholder?: string;
   value?: string | string[];
   creatable: boolean;
+  location?: InputLocation;
   required?: boolean;
   isDisabled?: boolean;
   isLoading?: boolean;
@@ -22,6 +24,7 @@ const StylizedSelectFormikComponent: React.StatelessComponent<
     className: "react-select-container",
     classNamePrefix: "react-select",
     onChange: handleChangeFactory(props),
+    location: props.location,
     options: props.options,
     isMulti: props.isMulti,
     placeholder: props.placeholder || "Select...",
