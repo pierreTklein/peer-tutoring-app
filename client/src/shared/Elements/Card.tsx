@@ -1,20 +1,29 @@
-import { Flex } from '@rebass/grid';
-import styled from '../Styles/styled-components';
+import { Flex } from "@rebass/grid";
+import styled from "../Styles/styled-components";
+import theme from "../Styles/theme";
 
 interface ICardProps {
+  backgroundColor?: string;
   disabled?: boolean;
 }
 
 export const Card = styled(Flex)<ICardProps>`
-  height: 300px;
+  background: ${props => props.backgroundColor || theme.colors.white};
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  -webkit-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+
+  height: 100px;
   max-width: 250px;
   margin: 15px;
-  background-color: ${(props) => props.theme.colors.greyLighter};
   position: relative;
   padding: 20px;
-  box-shadow: 5px 5px 20px ${(props) => props.theme.colors.greyLight};
+  transition: transform 0.2s; /* Animation */
 
-  ${(props) =>
+  ${props =>
     props.disabled
       ? `
         cursor: not-allowed;
@@ -31,9 +40,7 @@ export const Card = styled(Flex)<ICardProps>`
       `
       : `
   &:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 20px ${props.theme.colors.grey};
-    transition: 0.1s all ease-in;
+    transform: scale(1.01);
   }
   `}
 `;

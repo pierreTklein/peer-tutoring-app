@@ -3,19 +3,18 @@ import { AxiosResponse } from "axios";
 import * as React from "react";
 import { toast } from "react-toastify";
 
-import {
-  FrontendRoute,
-  FrontendRoute as routes,
-  IAccount,
-  UserType
-} from "../config";
+import { IAccount, UserType } from "../config";
 
 import { APIResponse, Auth, Account } from "../api";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import WithToasterContainer from "../shared/HOC/withToaster";
 import View, { IDashboardCard } from "./View";
+import { PageContainer, H1, H2 } from "../shared";
+import { isUserType } from "../util";
+import MyTicketsContainer from "../Ticket/MyTickets";
 
 export interface IDashboardState {
+  loading: boolean;
   account?: IAccount;
 }
 
@@ -25,7 +24,10 @@ export interface IDashboardState {
 class Dashboard extends React.Component<{}, IDashboardState> {
   constructor(props: {}) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: false
+    };
+    this.staffCards = this.staffCards.bind(this);
   }
 
   public async componentDidMount() {
@@ -37,10 +39,26 @@ class Dashboard extends React.Component<{}, IDashboardState> {
       this.setState({ account });
     } catch (e) {
       ValidationErrorGenerator(e.data);
+    } finally {
+      this.setState({ loading: false });
     }
   }
   public render() {
-    return <View cards={this.generateCards()} title={"Dashboard"} />;
+    const { account, loading } = this.state;
+    if (!account) {
+      return <PageContainer title={"No account found"} loading={loading} />;
+    } else if (isUserType(account, UserType.STAFF)) {
+      return (
+        <PageContainer title={"Admin Dashboard"} loading={loading}>
+          <H1 marginLeft={"0px"} textAlign={"center"}>
+            Admin Dashboard
+          </H1>
+          <View cards={this.generateCards()} />
+        </PageContainer>
+      );
+    } else {
+      return <MyTicketsContainer />;
+    }
   }
   private generateCards(): IDashboardCard[] {
     const { account } = this.state;
@@ -48,32 +66,18 @@ class Dashboard extends React.Component<{}, IDashboardState> {
     if (!account) {
       return [];
     }
+    if (isUserType(account, UserType.STAFF)) {
+      cards.push(...this.staffCards());
+    }
     return cards;
   }
-
-  private tutorCards() {
+  private staffCards(): IDashboardCard[] {
     return [
       {
-        title: "Start O.H.",
-        route: "/",
+        title: "Invite User",
+        route: "/account/invite",
         imageSrc: ""
       }
-      // {
-      //   title: "Current tickets",
-      //   route: string,
-      //   imageSrc: any,
-      //   validation: () => boolean,
-      //   hidden: boolean,
-      //   disabled: boolean
-      // },
-      // {
-      //   title: "Past tickets",
-      //   route: string,
-      //   imageSrc: any,
-      //   validation: () => boolean,
-      //   hidden: boolean,
-      //   disabled: boolean
-      // }
     ];
   }
 }

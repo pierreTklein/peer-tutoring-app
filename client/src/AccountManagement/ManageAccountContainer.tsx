@@ -138,14 +138,7 @@ class ManageAccountContainer extends React.Component<
         </React.Fragment>
       );
     }
-
-    switch (mode) {
-      case ManageAccountModes.CREATE:
-        return <Redirect to={FrontendRoute.HOME_PAGE} />;
-
-      case ManageAccountModes.EDIT:
-        return <Redirect to={FrontendRoute.HOME_PAGE} />;
-    }
+    return <Redirect to={FrontendRoute.HOME_PAGE} />;
   }
 
   private renderForm() {}

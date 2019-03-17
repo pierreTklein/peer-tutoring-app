@@ -7,7 +7,8 @@ import {
   compareTicket,
   getCourseId,
   createdToday,
-  ICourse
+  ICourse,
+  FrontendRoute
 } from "../config";
 import { H1, PageContainer, H2 } from "../shared/Elements";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
@@ -18,6 +19,7 @@ import { TicketActions as ReceiveNewTicketActions } from "./ReceiveNewTicketActi
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { TicketList } from "./TicketList";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 interface ITicketsContainerState {
   loadingData: boolean;
@@ -175,7 +177,11 @@ export class MyTicketsContainer extends React.Component<
       <PageContainer title={"Questions"} loading={loadingData || !account}>
         <H1 textAlign={"center"}>My questions</H1>
         {hasNoCourses && (
-          <H2 textAlign={"center"}>Add a course to your account profile</H2>
+          <H2 textAlign={"center"}>
+            <Link to={FrontendRoute.EDIT_ACCOUNT_PAGE}>
+              Add a course to your account profile.
+            </Link>
+          </H2>
         )}
         <ReceiveNewTicketActions
           numWaiting={tutorTicketQueue.length}

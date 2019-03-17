@@ -80,6 +80,7 @@ function parseAccount(req, res, next) {
         accountType: req.body.accountType,
         courses: req.body.courses,
         password: Services.Account.hashPassword(req.body.password),
+        confirmed: !!req.body.invite
     };
 
     delete req.body.firstName;
@@ -358,6 +359,7 @@ async function setAccountType(req, res, next) {
         const inviteObj = await Services.Invite.findById(req.body.decodedToken.InviteId);
         if (inviteObj) {
             req.body.accountType = inviteObj.accountType;
+            req.body.confirmed = true;
             return next();
         } else {
             //Either the token was already used, it's invalid, or user does not exist.
@@ -390,6 +392,14 @@ async function sendConfirmationEmail(req, res, next) {
     }
 }
 
+async function sendConfirmationEmailIfNotInvited(req, res, next) {
+    if (!req.body.invite) {
+        return await sendConfirmationEmail(req, res, next);
+    } else {
+        return next();
+    }
+}
+
 module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
@@ -410,6 +420,7 @@ module.exports = {
     verifyConfirmationToken: verifyConfirmationToken,
     getAccountFromConfirmationToken: getAccountFromConfirmationToken,
     sendConfirmationEmail: Middleware.Util.asyncMiddleware(sendConfirmationEmail),
+    sendConfirmationEmailIfNotInvited: Middleware.Util.asyncMiddleware(sendConfirmationEmailIfNotInvited),
     confirmAccount: Middleware.Util.asyncMiddleware(confirmAccount),
 
     verifyInviteTokenIfExists: verifyInviteTokenIfExists,

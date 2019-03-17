@@ -9,6 +9,7 @@ export enum FrontendRoute {
   CREATE_ACCOUNT_PAGE = "/account/new",
   EDIT_ACCOUNT_PAGE = "/account/edit",
   CONFIRM_ACCOUNT = "/account/confirm",
+  INVITE_ACCOUNT = "/account/invite",
   CONFIRM_ACCOUNT_RESEND = "/account/confirm/resend",
 
   CREATE_TICKET = "/question/new"

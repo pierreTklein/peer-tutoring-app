@@ -24,6 +24,14 @@ const colors = {
   danger: theme.colors.red
 };
 
+const colorsDark = {
+  primary: theme.colors.primaryDark,
+  success: theme.colors.greenDark,
+  secondary: theme.colors.greyDark,
+  warning: theme.colors.yellowDark,
+  danger: theme.colors.redDark
+};
+
 export const Button = styled.button<IButtonProps>`
   background-color: ${props => colors[props.buttonType]};
   font-size: 14px;
@@ -47,11 +55,7 @@ export const Button = styled.button<IButtonProps>`
         background-color: ${props.theme.colors.greyLight};
       `
       : `&:hover {
-          background-color: ${
-            props.buttonType === ButtonType.PRIMARY
-              ? props.theme.colors.primaryDark
-              : props.theme.colors.greyDark
-          };
+          background-color: ${colorsDark[props.buttonType]};
         }
     `}
 

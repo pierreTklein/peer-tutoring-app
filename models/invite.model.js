@@ -5,11 +5,11 @@ const Constants = {
 };
 
 const inviteSchema = new mongoose.Schema({
-    accountType: {
+    accountType: [{
         type: String,
         enum: Constants.General.USER_TYPES,
         default: Constants.General.STUDENT
-    },
+    }],
     email: {
         type: String,
         required: true

@@ -66,39 +66,24 @@ function generateToken(invite) {
  * @param {string} token the reset token
  * @returns {string} the string, of form: [http|https]://{domain}/account/create?token={token}
  */
-function generateInviteTokenLink(httpOrHttps, domain, token) {
-    const link = `${httpOrHttps}://${domain}/account/create?token=${token}`;
+function generateInviteTokenLink(address, token) {
+    const link = `${address}/account/new?token=${token}`;
     return link;
 }
 /**
  * Generates the mailData for the account invite Email.
  * @param {string} address The hostname that this service is running on
  * @param {string} receiverEmail The receiver of the email
- * @param {string} accountType the user type
+ * @param {string[]} accountType the user type
  * @param {string} token The account invite token
  */
 function generateInviteMailData(address, receiverEmail, accountType, token) {
-    const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
-    const tokenLink = generateInviteTokenLink(httpOrHttps, address, token);
-    let emailSubject = "";
+    const tokenLink = generateInviteTokenLink(address, token);
+    let emailSubject = `You've been invited to create a ${accountType.join(", ")} account for ${Constants.SERVICE_NAME}`;
     if (token === undefined || tokenLink === undefined) {
         return undefined;
     }
-
-    switch (accountType) {
-        case Constants.STAFF:
-            emailSubject = Constants.EMAIL_SUBJECTS[Constants.STAFF];
-            break;
-        case Constants.STUDENT:
-            emailSubject = Constants.EMAIL_SUBJECTS[Constants.STUDENT];
-            break;
-        case Constants.TUTOR:
-            emailSubject = Constants.EMAIL_SUBJECTS[Constants.TUTOR];
-            break;
-    }
-
-    const handlebarPath = path.join(__dirname, `../assets/email/AccountInvitation.hbs`);
-
+    const handlebarPath = path.join(__dirname, `../assets/email/AccountInvite.hbs`);
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
         to: receiverEmail,
