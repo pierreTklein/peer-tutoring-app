@@ -134,7 +134,6 @@ function getQueue(courseIds, tutorId = undefined, expandTutor = false, expandStu
 
 async function getNewTicketFIFO(courseIds, tutorId) {
     const tickets = await getQueue(courseIds, tutorId);
-    console.log(tickets, tutorId);
     return tickets.length > 0 ? tickets[0] : null;
 }
 
