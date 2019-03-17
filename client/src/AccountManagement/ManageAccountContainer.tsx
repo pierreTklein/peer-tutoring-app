@@ -176,6 +176,7 @@ class ManageAccountContainer extends React.Component<
           label={CONSTANTS.PRONOUN_LABEL}
           value={fp.values.pronoun}
           component={FormikElements.Input}
+          placeholder={"Your preferred pronoun"}
         />
         <ErrorMessage component={FormikElements.Error} name="pronoun" />
         <FastField
@@ -191,7 +192,11 @@ class ManageAccountContainer extends React.Component<
         <FastField
           component={FormikElements.Password}
           inputType={"password"}
-          label={CONSTANTS.PASSWORD_LABEL}
+          label={
+            mode === ManageAccountModes.CREATE
+              ? CONSTANTS.PASSWORD_LABEL
+              : CONSTANTS.OLD_PASSWORD_LABEL
+          }
           name={"password"}
           required={mode === ManageAccountModes.CREATE}
           value={fp.values.password}

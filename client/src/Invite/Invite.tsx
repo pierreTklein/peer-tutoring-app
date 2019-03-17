@@ -94,6 +94,7 @@ export class InviteContainer extends React.Component<
                       <FastField
                         name={`invites.${index}.email`}
                         label={"Email Address"}
+                        placeholder={"Email..."}
                         value={invite.email}
                         component={FormikElements.Email}
                         required={true}

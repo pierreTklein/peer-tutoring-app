@@ -22,6 +22,7 @@ export const Password: React.StatelessComponent<
         name="password"
         type="password"
         onChange={handleChange(props)}
+        placeholder={"Password..."}
         id={id}
         isTight={isTight}
         value={value}

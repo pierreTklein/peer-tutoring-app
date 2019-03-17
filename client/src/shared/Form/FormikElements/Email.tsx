@@ -22,6 +22,7 @@ export const Email: React.StatelessComponent<
         name="email"
         type="email"
         onChange={handleChange(props)}
+        placeholder={"Email..."}
         id={id}
         isTight={isTight}
         value={value}
