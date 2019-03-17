@@ -2,7 +2,6 @@ export * from "./Autosuggest";
 export * from "./Checkbox";
 export * from "./EmailInput";
 export * from "./FileInput";
-export * from "./FileUpload";
 export * from "./Form";
 export * from "./Input";
 export * from "./Label";

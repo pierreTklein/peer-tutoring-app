@@ -6,7 +6,8 @@ import {
   FormikProps,
   FormikActions,
   FieldArray,
-  Field
+  Field,
+  FieldArrayRenderProps
 } from "formik";
 import * as QueryString from "query-string";
 import * as React from "react";
@@ -28,7 +29,8 @@ import { Link } from "react-router-dom";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { toast } from "react-toastify";
 import { getOptionsFromEnum } from "../util";
-import { InputLocation } from "../shared";
+import { InputLocation, ReadFileBtn } from "../shared";
+import _ from "lodash";
 
 export interface IInviteContainerState {
   submitting: boolean;
@@ -66,14 +68,14 @@ export class InviteContainer extends React.Component<
               .of(
                 object().shape({
                   email: string()
-                    .email()
-                    .required("Required"), // these constraints take precedence
+                    .required("Required")
+                    .email("Must be a valid email"),
                   accountType: array()
                     .required("Required")
-                    .min(1, "Select an account type") // these constraints take precedence
+                    .min(1, "Select an account type")
                 })
               )
-              .required("Must have one invite") // these constraints are shown if and only if inner constraints are satisfied
+              .required("Must have one invite")
               .min(1, "Minimum of one invite")
           })}
           render={this.renderFormik}
@@ -82,14 +84,15 @@ export class InviteContainer extends React.Component<
     );
   }
   private renderFormik(fp: FormikProps<any>) {
+    const invites = fp.values.invites;
     return (
       <Form onSubmit={fp.handleSubmit}>
         <FieldArray
           name="invites"
           render={arrayHelpers => (
             <Flex flexWrap={"wrap"} width={1}>
-              {fp.values.invites &&
-                fp.values.invites.map((invite: IInviteInfo, index: number) => (
+              {invites &&
+                invites.map((invite: IInviteInfo, index: number) => (
                   <React.Fragment key={index}>
                     <MaxWidthBox
                       width={[0.15, 0.1]}
@@ -140,9 +143,8 @@ export class InviteContainer extends React.Component<
                   </React.Fragment>
                 ))}
               <Flex width={1} justifyContent={"center"}>
-                <Box pr={"10px"} width={0.5}>
+                <Box>
                   <Button
-                    style={{ float: "right" }}
                     type="button"
                     buttonType={ButtonType.SECONDARY}
                     disabled={fp.isSubmitting}
@@ -150,25 +152,62 @@ export class InviteContainer extends React.Component<
                       arrayHelpers.push({ email: "", accountType: [] })
                     }
                   >
-                    Add another
+                    Add row
                   </Button>
                 </Box>
-                <Box pl={"10px"} width={0.5}>
-                  <Button
-                    type="submit"
-                    isLoading={fp.isSubmitting}
+                <Box>
+                  <ReadFileBtn
+                    buttonType={ButtonType.SECONDARY}
                     disabled={fp.isSubmitting}
-                    buttonType={ButtonType.PRIMARY}
+                    onFileUploaded={this.readFileFactory(
+                      arrayHelpers,
+                      invites.length
+                    )}
                   >
-                    Submit
-                  </Button>
+                    Add by CSV
+                  </ReadFileBtn>
                 </Box>
               </Flex>
             </Flex>
           )}
         />
+        <SubmitBtn
+          isLoading={fp.isSubmitting}
+          disabled={fp.isSubmitting}
+          buttonType={ButtonType.PRIMARY}
+        >
+          Submit
+        </SubmitBtn>
       </Form>
     );
+  }
+
+  private readFileFactory(arrayHelpers: FieldArrayRenderProps, arrLen: number) {
+    return (file: File) => {
+      const fr = new FileReader();
+      fr.readAsText(file);
+      fr.onloadend = () => {
+        const rows: string[] = String(fr.result)
+          .split("\n")
+          .sort();
+        const deduped = _.uniq(rows);
+        deduped.forEach(row => {
+          const cols = row.split(",");
+          if (!(cols[0] === "email" || cols[1] === "accountType")) {
+            // all rows except header
+            const email = cols[0];
+            const accountType =
+              cols[1] && cols[1] !== ""
+                ? (cols[1] as UserType)
+                : UserType.TUTOR;
+            arrayHelpers.insert(arrLen - 1, {
+              email,
+              accountType: [{ label: accountType, value: accountType }]
+            });
+          }
+        });
+      };
+    };
   }
 
   private async onSubmit(

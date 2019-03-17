@@ -1,6 +1,6 @@
-import { FieldProps } from 'formik';
-import * as React from 'react';
-import { FileInput } from './';
+import { FieldProps } from "formik";
+import * as React from "react";
+import { FileInput } from "..";
 
 interface IUploadComponent {
   placeholder?: string;
@@ -8,8 +8,8 @@ interface IUploadComponent {
 
 export const FileUpload: React.StatelessComponent<
   IUploadComponent & FieldProps
-> = (props) => {
-  const placeholder = props.placeholder ? props.placeholder : '';
+> = props => {
+  const placeholder = props.placeholder ? props.placeholder : "";
   return (
     <FileInput
       type="file"

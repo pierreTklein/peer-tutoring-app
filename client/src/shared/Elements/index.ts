@@ -21,6 +21,7 @@ export * from "./Panel";
 export * from "./Paragraph";
 export * from "./Pillbox";
 export * from "./PrewrapBox";
+export * from "./ReadFileBtn";
 export * from "./RoundedBox";
 export * from "./StyledModal";
 export * from "./Section";
