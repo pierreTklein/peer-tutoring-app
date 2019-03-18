@@ -36,7 +36,7 @@ function triggerNotification(title: string, message: string) {
   };
 }
 
-export function desktopNotification(title: string, message: string) {
+export async function desktopNotification(title: string, message: string) {
   // Let's check if the browser supports notifications
   if (!("Notification" in window)) {
     console.log("This browser does not support desktop notification");
@@ -51,13 +51,11 @@ export function desktopNotification(title: string, message: string) {
 
   // Otherwise, we need to ask the user for permission
   else if (Notification.permission !== "denied") {
-    Notification.requestPermission().then(function(permission) {
-      // If the user accepts, let's create a notification
-      if (permission === "granted") {
-        triggerNotification(title, message);
-        return true;
-      }
-    });
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      triggerNotification(title, message);
+      return true;
+    }
   }
   return false;
   // At last, if the user has denied notifications, and you
