@@ -18,9 +18,11 @@ import ConfirmAccountContainer from "./ConfirmAccount/Confirmed";
 import NotConfirmedContainer from "./ConfirmAccount/NotConfirmed";
 import InviteContainer from "./Invite/Invite";
 import Dashboard from "./Dashboard/Dashboard";
+import { requestPermission } from "./util/notifications";
 
 class App extends Component {
   render() {
+    requestPermission();
     return (
       <BrowserRouter>
         <Switch>

@@ -14,6 +14,9 @@ export const IS_LOCALHOST = Boolean(
     )
 );
 
+export const URL = IS_LOCALHOST ? LOCAL_URL : PROD_URL;
+export const API_URL = IS_LOCALHOST ? LOCAL_API_URL : PROD_API_URL;
+
 export const CACHE_USER_KEY = "userInfo";
 
 // LabelTextComponent page

@@ -5,7 +5,10 @@ import { MaxWidthBox, Panel, H1 } from "./";
 import Helmet from "react-helmet";
 import { SocketConn, ITicketUpdateEvent, EventType } from "../../api";
 import { toast } from "react-toastify";
-import { playNotification } from "../../util/audio";
+import {
+  playNotification,
+  desktopNotification
+} from "../../util/notifications";
 
 interface IPageContainerProps {
   title: string;
@@ -90,10 +93,13 @@ export class PageContainer extends React.Component<
         toastFn = toast.info;
     }
     playNotification();
-    toastFn(message || "", {
-      toastId: "update",
-      autoClose: 10000
-    });
+    const success = desktopNotification(eventType, message || "");
+    if (!success) {
+      toastFn(message || "", {
+        toastId: "update",
+        autoClose: 10000
+      });
+    }
   }
 }
 

@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 import { getOptionsFromEnum } from "../util";
 import { InputLocation, ReadFileBtn } from "../shared";
 import _ from "lodash";
+import MediaQuery from "react-responsive";
 
 export interface IInviteContainerState {
   submitting: boolean;
@@ -90,90 +91,99 @@ export class InviteContainer extends React.Component<
         <FieldArray
           name="invites"
           render={arrayHelpers => (
-            <Flex flexWrap={"wrap"} width={1}>
-              {invites &&
-                invites.map((invite: IInviteInfo, index: number) => (
-                  <React.Fragment key={index}>
-                    <MaxWidthBox
-                      width={[0.15, 0.1]}
-                      mt={"29px"}
-                      pr={[0, "10px"]}
-                    >
+            <MediaQuery minDeviceWidth={700}>
+              {matches => (
+                <Flex flexWrap={"wrap"} width={1}>
+                  {invites &&
+                    invites.map((invite: IInviteInfo, index: number) => (
+                      <React.Fragment key={index}>
+                        <MaxWidthBox
+                          width={[0.15, 0.1]}
+                          mt={"29px"}
+                          pr={[0, "10px"]}
+                        >
+                          <Button
+                            type="button"
+                            isNarrow={true}
+                            buttonType={ButtonType.DANGER}
+                            disabled={index === 0}
+                            onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                          >
+                            –
+                          </Button>
+                        </MaxWidthBox>
+                        <MaxWidthBox width={[0.85, 0.45]}>
+                          <FastField
+                            name={`invites.${index}.email`}
+                            label={"Email Address"}
+                            placeholder={"Email..."}
+                            value={invite.email}
+                            component={FormikElements.Email}
+                            location={
+                              matches ? InputLocation.LEFT : InputLocation.FULL
+                            }
+                            required={true}
+                          />
+                          <ErrorMessage
+                            component={FormikElements.Error}
+                            name={`invites.${index}.email`}
+                          />
+                        </MaxWidthBox>
+                        <MaxWidthBox width={[1, 0.45]}>
+                          <FastField
+                            name={`invites.${index}.accountType`}
+                            label={"Account Type"}
+                            value={invite.accountType}
+                            component={FormikElements.Select}
+                            location={
+                              matches ? InputLocation.RIGHT : InputLocation.FULL
+                            }
+                            options={getOptionsFromEnum(UserType)}
+                            isMulti={true}
+                            required={true}
+                          />
+                          <ErrorMessage
+                            component={FormikElements.Error}
+                            name={`invites.${index}.accountType`}
+                          />
+                        </MaxWidthBox>
+                      </React.Fragment>
+                    ))}
+                  <Flex width={1} justifyContent={"center"}>
+                    <Box>
                       <Button
                         type="button"
-                        isNarrow={true}
-                        buttonType={ButtonType.DANGER}
-                        disabled={index === 0}
-                        onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                        buttonType={ButtonType.SECONDARY}
+                        disabled={fp.isSubmitting}
+                        onClick={() =>
+                          arrayHelpers.push({ email: "", accountType: [] })
+                        }
                       >
-                        –
+                        Add row
                       </Button>
-                    </MaxWidthBox>
-                    <MaxWidthBox width={[0.85, 0.45]}>
-                      <FastField
-                        name={`invites.${index}.email`}
-                        label={"Email Address"}
-                        placeholder={"Email..."}
-                        value={invite.email}
-                        component={FormikElements.Email}
-                        location={InputLocation.LEFT}
-                        required={true}
-                      />
-                      <ErrorMessage
-                        component={FormikElements.Error}
-                        name={`invites.${index}.email`}
-                      />
-                    </MaxWidthBox>
-                    <MaxWidthBox width={[1, 0.45]}>
-                      <FastField
-                        name={`invites.${index}.accountType`}
-                        label={"Account Type"}
-                        value={invite.accountType}
-                        component={FormikElements.Select}
-                        location={InputLocation.RIGHT}
-                        options={getOptionsFromEnum(UserType)}
-                        isMulti={true}
-                        required={true}
-                      />
-                      <ErrorMessage
-                        component={FormikElements.Error}
-                        name={`invites.${index}.accountType`}
-                      />
-                    </MaxWidthBox>
-                  </React.Fragment>
-                ))}
-              <Flex width={1} justifyContent={"center"}>
-                <Box>
-                  <Button
-                    type="button"
-                    buttonType={ButtonType.SECONDARY}
-                    disabled={fp.isSubmitting}
-                    onClick={() =>
-                      arrayHelpers.push({ email: "", accountType: [] })
-                    }
-                  >
-                    Add row
-                  </Button>
-                </Box>
-                <Box>
-                  <ReadFileBtn
-                    buttonType={ButtonType.SECONDARY}
-                    disabled={fp.isSubmitting}
-                    onFileUploaded={this.readFileFactory(
-                      arrayHelpers,
-                      invites.length
-                    )}
-                  >
-                    Add by CSV
-                  </ReadFileBtn>
-                </Box>
-              </Flex>
-            </Flex>
+                    </Box>
+                    <Box>
+                      <ReadFileBtn
+                        buttonType={ButtonType.SECONDARY}
+                        isLoading={fp.isSubmitting || this.state.submitting}
+                        disabled={fp.isSubmitting || this.state.submitting}
+                        onFileUploaded={this.readFileFactory(
+                          arrayHelpers,
+                          invites.length
+                        )}
+                      >
+                        Add by CSV
+                      </ReadFileBtn>
+                    </Box>
+                  </Flex>
+                </Flex>
+              )}
+            </MediaQuery>
           )}
         />
         <SubmitBtn
-          isLoading={fp.isSubmitting}
-          disabled={fp.isSubmitting}
+          isLoading={fp.isSubmitting || this.state.submitting}
+          disabled={fp.isSubmitting || this.state.submitting}
           buttonType={ButtonType.PRIMARY}
         >
           Submit
@@ -184,6 +194,7 @@ export class InviteContainer extends React.Component<
 
   private readFileFactory(arrayHelpers: FieldArrayRenderProps, arrLen: number) {
     return (file: File) => {
+      this.setState({ submitting: true });
       const fr = new FileReader();
       fr.readAsText(file);
       fr.onloadend = () => {
@@ -206,6 +217,7 @@ export class InviteContainer extends React.Component<
             });
           }
         });
+        this.setState({ submitting: false });
       };
     };
   }

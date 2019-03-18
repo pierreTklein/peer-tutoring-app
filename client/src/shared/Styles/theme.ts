@@ -10,11 +10,12 @@ const theme = {
     yellowDark: "#af890c",
     red: "#d21d27",
     redDark: "#99131b",
+    black: "#000000",
 
     greyLighter: "#F4F4F4",
     greyLight: "#BCBCBC",
     grey: "#939598",
-    greyDark: "#4D4D4D",
+    greyDark: "#232323",
     primaryLight: "#80c2dd",
     primary: "#25AAE1",
     primaryDark: "#008cba",

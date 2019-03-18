@@ -74,7 +74,7 @@ export const Ticket: React.FunctionComponent<
       <Box ml={"5px"}>
         <Collapsible
           titleWeight={"lighter"}
-          titleColor={theme.colors.white}
+          titleColor={theme.colors.greyDark}
           title={title}
           open={showTicketDetails}
           onToggle={onToggle}

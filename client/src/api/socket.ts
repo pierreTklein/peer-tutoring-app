@@ -1,12 +1,12 @@
 import openSocket from "socket.io-client";
-import { ITicket, IS_LOCALHOST, LOCAL_URL, PROD_URL } from "../config";
+import { ITicket, URL } from "../config";
 
 export enum EventType {
-  ASSIGNED = "assigned",
-  STARTED = "started",
-  ENDED = "ended",
-  ABANDONED = "abandoned",
-  RATED = "rated"
+  ASSIGNED = "Question Assigned",
+  STARTED = "Question Started",
+  ENDED = "Question Ended",
+  ABANDONED = "Question Yielded",
+  RATED = "Question Rated"
 }
 
 export interface ITicketUpdateEvent {
@@ -23,7 +23,7 @@ class SocketAPI {
   private socket: SocketIOClient.Socket;
   private roomsJoined: { [key: string]: boolean } = {};
   constructor() {
-    const uri = IS_LOCALHOST ? LOCAL_URL : PROD_URL;
+    const uri = URL;
     this.socket = openSocket(uri);
   }
   public joinRoom(room: string) {
