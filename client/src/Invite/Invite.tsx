@@ -32,10 +32,14 @@ import { getOptionsFromEnum } from "../util";
 import { InputLocation, ReadFileBtn } from "../shared";
 import _ from "lodash";
 import MediaQuery from "react-responsive";
+import ProgressBar from "../shared/Elements/ProgressBar";
+import { InviteRow } from "./InviteRow";
 
 export interface IInviteContainerState {
+  uploadingCSV: boolean;
   submitting: boolean;
   success: boolean;
+  loadingPercent: number;
 }
 
 export class InviteContainer extends React.Component<
@@ -45,11 +49,14 @@ export class InviteContainer extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
+      uploadingCSV: false,
       submitting: false,
-      success: false
+      success: false,
+      loadingPercent: 0
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.renderFormik = this.renderFormik.bind(this);
+    this.renderFieldArray = this.renderFieldArray.bind(this);
   }
   public render() {
     if (this.state.success && !this.state.submitting) {
@@ -90,96 +97,7 @@ export class InviteContainer extends React.Component<
       <Form onSubmit={fp.handleSubmit}>
         <FieldArray
           name="invites"
-          render={arrayHelpers => (
-            <MediaQuery minDeviceWidth={700}>
-              {matches => (
-                <Flex flexWrap={"wrap"} width={1}>
-                  {invites &&
-                    invites.map((invite: IInviteInfo, index: number) => (
-                      <React.Fragment key={index}>
-                        <MaxWidthBox
-                          width={[0.15, 0.1]}
-                          mt={"29px"}
-                          pr={[0, "10px"]}
-                        >
-                          <Button
-                            type="button"
-                            isNarrow={true}
-                            buttonType={ButtonType.DANGER}
-                            disabled={index === 0}
-                            onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
-                          >
-                            –
-                          </Button>
-                        </MaxWidthBox>
-                        <MaxWidthBox width={[0.85, 0.45]}>
-                          <FastField
-                            name={`invites.${index}.email`}
-                            label={"Email Address"}
-                            placeholder={"Email..."}
-                            value={invite.email}
-                            component={FormikElements.Email}
-                            location={
-                              matches ? InputLocation.LEFT : InputLocation.FULL
-                            }
-                            required={true}
-                          />
-                          <ErrorMessage
-                            component={FormikElements.Error}
-                            name={`invites.${index}.email`}
-                          />
-                        </MaxWidthBox>
-                        <MaxWidthBox width={[1, 0.45]}>
-                          <FastField
-                            name={`invites.${index}.accountType`}
-                            label={"Account Type"}
-                            value={invite.accountType}
-                            component={FormikElements.Select}
-                            location={
-                              matches ? InputLocation.RIGHT : InputLocation.FULL
-                            }
-                            options={getOptionsFromEnum(UserType)}
-                            isMulti={true}
-                            required={true}
-                          />
-                          <ErrorMessage
-                            component={FormikElements.Error}
-                            name={`invites.${index}.accountType`}
-                          />
-                        </MaxWidthBox>
-                      </React.Fragment>
-                    ))}
-                  <Flex width={1} justifyContent={"center"}>
-                    <Box>
-                      <Button
-                        type="button"
-                        buttonType={ButtonType.SECONDARY}
-                        disabled={fp.isSubmitting}
-                        onClick={() =>
-                          arrayHelpers.push({ email: "", accountType: [] })
-                        }
-                      >
-                        Add row
-                      </Button>
-                    </Box>
-                    <Box>
-                      <ReadFileBtn
-                        buttonType={ButtonType.SECONDARY}
-                        isLoading={fp.isSubmitting || this.state.submitting}
-                        disabled={fp.isSubmitting || this.state.submitting}
-                        onFileUploaded={this.readFileFactory(
-                          arrayHelpers,
-                          invites.length
-                        )}
-                      >
-                        Add by CSV
-                      </ReadFileBtn>
-                    </Box>
-                  </Flex>
-                </Flex>
-              )}
-            </MediaQuery>
-          )}
+          render={arrayHelpers => this.renderFieldArray(arrayHelpers, invites)}
         />
         <SubmitBtn
           isLoading={fp.isSubmitting || this.state.submitting}
@@ -188,21 +106,75 @@ export class InviteContainer extends React.Component<
         >
           Submit
         </SubmitBtn>
+        {(this.state.uploadingCSV || this.state.submitting) && (
+          <Flex>
+            <ProgressBar percentage={this.state.loadingPercent} />
+          </Flex>
+        )}
       </Form>
     );
   }
 
+  private renderFieldArray(
+    arrayHelpers: FieldArrayRenderProps,
+    invites: IInviteInfo[]
+  ) {
+    return (
+      <MediaQuery minDeviceWidth={700}>
+        {matches => (
+          <Flex flexWrap={"wrap"} width={1}>
+            {invites &&
+              invites.map((invite: IInviteInfo, index: number) => (
+                <InviteRow
+                  key={index}
+                  invite={invite}
+                  index={index}
+                  isLargeView={matches}
+                  onRemoveRow={() => arrayHelpers.remove(index)}
+                />
+              ))}
+            <Flex width={1} justifyContent={"center"}>
+              <Box>
+                <Button
+                  type="button"
+                  buttonType={ButtonType.SECONDARY}
+                  disabled={this.state.submitting}
+                  onClick={() =>
+                    arrayHelpers.push({ email: "", accountType: [] })
+                  }
+                >
+                  Add row
+                </Button>
+              </Box>
+              <Box>
+                <ReadFileBtn
+                  buttonType={ButtonType.SECONDARY}
+                  isLoading={this.state.uploadingCSV}
+                  disabled={this.state.submitting || this.state.uploadingCSV}
+                  onFileUploaded={this.readFileFactory(
+                    arrayHelpers,
+                    invites.length
+                  )}
+                >
+                  Add by CSV
+                </ReadFileBtn>
+              </Box>
+            </Flex>
+          </Flex>
+        )}
+      </MediaQuery>
+    );
+  }
+
   private readFileFactory(arrayHelpers: FieldArrayRenderProps, arrLen: number) {
-    return (file: File) => {
-      this.setState({ submitting: true });
+    return async (file: File) => {
+      this.setState({ uploadingCSV: true });
       const fr = new FileReader();
       fr.readAsText(file);
       fr.onloadend = () => {
-        const rows: string[] = String(fr.result)
-          .split("\n")
-          .sort();
+        const rows: string[] = (fr.result as String).split("\n").sort();
         const deduped = _.uniq(rows);
-        deduped.forEach(row => {
+        deduped.forEach((row, index) => {
           const cols = row.split(",");
           if (!(cols[0] === "email" || cols[1] === "accountType")) {
             // all rows except header
@@ -211,13 +183,13 @@ export class InviteContainer extends React.Component<
               cols[1] && cols[1] !== ""
                 ? (cols[1] as UserType)
                 : UserType.TUTOR;
-            arrayHelpers.insert(arrLen - 1, {
+            arrayHelpers.push({
               email,
               accountType: [{ label: accountType, value: accountType }]
             });
           }
         });
-        this.setState({ submitting: false });
+        this.setState({ uploadingCSV: false });
       };
     };
   }
@@ -238,8 +210,10 @@ export class InviteContainer extends React.Component<
     this.setState({ submitting: true });
     try {
       await Promise.all(
-        invites.map(async invite => {
-          return await Account.invite(invite);
+        invites.map(async (invite, index) => {
+          const result = await Account.invite(invite);
+          this.setState({ loadingPercent: (index / invites.length) * 100 });
+          return result;
         })
       );
       this.setState({ success: true });

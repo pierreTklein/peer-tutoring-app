@@ -18,7 +18,11 @@ export const ReadFileBtn: React.StatelessComponent<IReadFileBtn> = props => {
     >
       <Button buttonType={ButtonType.SECONDARY} type={"button"} {...rest}>
         {children}
-        <FileInput type="file" onChange={handleChange(props)} />
+        <FileInput
+          type="file"
+          onChange={handleChange(props)}
+          disabled={props.disabled}
+        />
       </Button>
     </div>
   );

@@ -68,17 +68,9 @@ export const Button = styled.button<IButtonProps>`
   ${props =>
     props.isLoading &&
     `
-    color: ${
-      props.buttonType === ButtonType.PRIMARY
-        ? props.theme.colors.primary
-        : props.theme.colors.grey
-    };
+    color: ${props.theme.colors.greyLight};
     &:hover {
-      color: ${
-        props.buttonType === ButtonType.PRIMARY
-          ? props.theme.colors.primaryLight
-          : props.theme.colors.greyLight
-      };
+      color: ${props.theme.colors.greyLight};
     }
     &:before {
       content: '';
@@ -91,11 +83,7 @@ export const Button = styled.button<IButtonProps>`
       margin-top: -10px;
       margin-left: -10px;
       border-radius: 50%;
-      border: 3px solid ${
-        props.buttonType === ButtonType.PRIMARY
-          ? props.theme.colors.primaryLight
-          : props.theme.colors.greyLight
-      };
+      border: 3px solid ${props.theme.colors.grey};
       border-top-color: ${props.theme.colors.white};
       animation: spinner .8s ease infinite;
     }`}

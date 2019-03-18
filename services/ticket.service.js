@@ -137,9 +137,34 @@ async function getNewTicketFIFO(courseIds, tutorId) {
     return tickets.length > 0 ? tickets[0] : null;
 }
 
-function getNewTicketOptimized(courseIds, tutorId) {
-    // TODO: Implement this
-    return getNewTicketFIFO(courseIds, tutorId);
+async function getNewTicketOptimized(courseIds, tutorId) {
+    /**
+     * Get the most recent completed ticket.
+     *  If there is no most recent completed ticket from today, then FIFO.
+     * Get the queue of tickets that matches the most recent ticket's course.
+     *  If there is no queue, then FIFO.
+     * Assign the first from the returned queue.
+     */
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0); // last midnight
+    const mostRecent = await Ticket.findOne({
+        createdAt: {
+            $gte: midnight
+        },
+        tutorId: tutorId,
+
+    }).sort({
+        createdAt: -1
+    });
+    if (!mostRecent) {
+        return getNewTicketFIFO(courseIds, tutorId);
+    }
+
+    const tickets = await getQueue([mostRecent.courseId], tutorId);
+    if (tickets.length === 0) {
+        return getNewTicketFIFO(courseIds, tutorId);
+    }
+    return tickets.length > 0 ? tickets[0] : null;
 }
 
 module.exports = {

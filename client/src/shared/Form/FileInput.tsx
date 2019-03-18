@@ -6,7 +6,7 @@ export const FileInput = styled.input`
   left: 0;
   top: 0;
   opacity: 0;
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
 export default FileInput;
