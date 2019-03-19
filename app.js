@@ -4,6 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const cors = require("cors");
+const helmet = require("helmet");
 const Services = {
   log: require("./services/logger.service"),
   db: require("./services/database.service"),
@@ -35,6 +36,7 @@ app.use(
     credentials: true
   })
 );
+app.use(helmet());
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);
 app.use(express.json());
