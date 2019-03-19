@@ -2,6 +2,10 @@
 
 const _ = require("lodash");
 const mongoose = require("mongoose");
+const AsyncLock = require("async-lock");
+const lock = new AsyncLock();
+
+
 const Constants = {
     Error: require("../constants/error.constant"),
     General: require("../constants/general.constant")
@@ -259,6 +263,23 @@ async function getNewTicketOptimized(req, res, next) {
     next();
 }
 
+async function assignNewTicketMutexSafe(req, res, next) {
+    const tutor = req.user.tutor;
+    await lock.acquire("assignTicket", async () => {
+        const ticket = await Services.Ticket.getNewTicketFIFO(tutor.courses, req.user.id);
+        if (!ticket) {
+            return next({
+                status: 400,
+                message: Constants.Error.TICKET_ASSIGN_400_MESSAGE
+            });
+        }
+        req.body.ticket = await Services.Ticket.updateOne(ticket.id, {
+            tutorId: req.user.id
+        });
+    });
+    next();
+}
+
 async function assignTicket(req, res, next) {
     req.body.ticket = await Services.Ticket.updateOne(req.body.ticket.id, {
         tutorId: req.user.id
@@ -370,6 +391,7 @@ module.exports = {
     getQueueByTutor: Middleware.Util.asyncMiddleware(getQueueByTutor),
     getNewTicketFIFO: Middleware.Util.asyncMiddleware(getNewTicketFIFO),
     getNewTicketOptimized: Middleware.Util.asyncMiddleware(getNewTicketOptimized),
+    assignNewTicketMutexSafe: Middleware.Util.asyncMiddleware(assignNewTicketMutexSafe),
     assignTicket: Middleware.Util.asyncMiddleware(assignTicket),
     abandonTicket: Middleware.Util.asyncMiddleware(abandonTicket),
     startTicket: Middleware.Util.asyncMiddleware(startTicket),

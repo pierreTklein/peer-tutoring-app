@@ -82,6 +82,7 @@ app.get("*", (req, res) => {
 //Custom error handler
 app.use((err, req, res, next) => {
   // log the error...
+  Services.log.error(err);
   const status = err.status ? err.status : 500;
   const message = err.message ? err.message : "Internal Server Error";
   //Only show bad error when we're not in production
