@@ -65,9 +65,9 @@ export class UpdateTicketActions extends React.Component<
       "This question has been adequately answered, or is no longer applicable.";
 
     return (
-      <Flex 
-        width={1} 
-        justifyContent={"left"} 
+      <Flex
+        width={1}
+        justifyContent={"left"}
         flexWrap={"wrap"}
         mt={hideStart && hideAbandon && hideEnd ? "" : "5px"}
       >
@@ -143,6 +143,7 @@ export class UpdateTicketActions extends React.Component<
         toast.error("There was an unexpected error.");
       }
     } finally {
+      this.handleCloseModal();
       this.setState({ submitting: false });
     }
   }
