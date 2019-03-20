@@ -45,6 +45,10 @@
         "NO_REPLY_EMAIL": {
             "description": "The email you want your emails to be sent from",
             "value": ""
+        },
+        "TZ": {
+            "description": "The timezone you are running your service in",
+            "value": "America/New_York"
         }
     },
     "addons": [
