@@ -5,21 +5,19 @@ import Logo from "../assets/images/logo/logo_full_color.svg";
 import { FrontendRoute } from "../config/frontendRoutes";
 import { Image, Button, ButtonType } from "../shared/Elements";
 import { isLoggedIn } from "../util/UserInfoHelperFunctions";
-import LogoutBtn from "./LogoutButton";
 import Nav from "./Nav";
-import { Link } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
+import { Auth } from "../api";
+import ToastError from "../shared/Form/validationErrorGenerator";
 
 interface INavbarState {
   loggedIn: boolean;
 }
-interface INavbarProps {
+interface INavbarProps extends RouteComponentProps {
   showDivider?: boolean;
 }
 
-export default class Navbar extends React.Component<
-  INavbarProps,
-  INavbarState
-> {
+class Navbar extends React.Component<INavbarProps, INavbarState> {
   private mounted: boolean;
   constructor(props: INavbarProps) {
     super(props);
@@ -28,6 +26,7 @@ export default class Navbar extends React.Component<
     };
     this.mounted = false;
     this.checkLoggedIn = this.checkLoggedIn.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
   public componentDidMount() {
     this.mounted = true;
@@ -60,7 +59,12 @@ export default class Navbar extends React.Component<
                   </Link>
                 </Box>
                 <Box alignSelf={"center"} my={"auto"}>
-                  <LogoutBtn />
+                  <Button
+                    onClick={this.handleLogout}
+                    buttonType={ButtonType.PRIMARY}
+                  >
+                    Logout
+                  </Button>
                 </Box>
               </Flex>
             )}
@@ -78,4 +82,16 @@ export default class Navbar extends React.Component<
       }
     });
   }
+  private async handleLogout() {
+    try {
+      await Auth.logout();
+      this.props.history.push(FrontendRoute.LOGIN_PAGE);
+    } catch (e) {
+      if (e && e.data) {
+        ToastError(e.data);
+      }
+    }
+  }
 }
+
+export default withRouter<INavbarProps>(Navbar);
