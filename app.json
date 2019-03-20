@@ -18,42 +18,6 @@
             "description": "The deployment frontend address",
             "value": "app.mchacks.ca"
         },
-        "DB_ADDRESS_PROD": {
-            "description": "The mongodb connection string for the deployment database",
-            "value": ""
-        },
-        "DB_USER_PROD": {
-            "description": "",
-            "value": ""
-        },
-        "DB_PASS_PROD": {
-            "description": "",
-            "value": ""
-        },
-        "DB_ADDRESS_DEV": {
-            "description": "The mongodb connection string for the deployment database",
-            "value": ""
-        },
-        "DB_USER_DEV": {
-            "description": "",
-            "value": ""
-        },
-        "DB_PASS_DEV": {
-            "description": "",
-            "value": ""
-        },
-        "DB_ADDRESS_TEST": {
-            "description": "The mongodb connection string for the deployment database",
-            "value": ""
-        },
-        "DB_USER_TEST": {
-            "description": "",
-            "value": ""
-        },
-        "DB_PASS_TEST": {
-            "description": "",
-            "value": ""
-        },
         "COOKIE_SECRET": {
             "description": "The cookie secret for your application",
             "generator": "secret"
@@ -62,12 +26,16 @@
             "description": "The reset password secret for your application",
             "generator": "secret"
         },
+        "JWT_CONFIRM_ACC_SECRET": {
+            "description": "The confirm password secret for your application",
+            "generator": "secret"
+        },
         "JWT_INVITE_SECRET": {
             "description": "The invite secret for your application",
             "generator": "secret"
         },
         "SENDGRID_API_KEY": {
-            "description": "The sendgrid api key for your application",
+            "description": "The sendgrid api key for your application (follow https://devcenter.heroku.com/articles/sendgrid for more information)",
             "value": ""
         },
         "NO_REPLY_EMAIL": {
@@ -76,7 +44,7 @@
         }
     },
     "addons": [
-        "mongolab"
+        "mongolab", "sendgrid:starter"
     ],
     "keywords": ["peer-tutoring", "node", "express", "mongo"]
 }

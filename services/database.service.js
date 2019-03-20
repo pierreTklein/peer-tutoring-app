@@ -35,14 +35,23 @@ function getPassFromEnvironment() {
         process.env.DB_PASS_TEST;
 }
 
+function getMongodbURI() {
+    const user = getUserFromEnvironment();
+    const pass = getPassFromEnvironment();
+    const address = getAddressFromEnvironment();
+    const uri = process.env.MONGODB_URI;
+    if (uri) {
+        return uri;
+    } else {
+        return (!!user && !!pass) ? `mongodb://${user}:${pass}@${address}` : `mongodb://${address}`;
+    }
+}
+
 
 module.exports = {
     connect: function (app, callback) {
         mongoose.Promise = Q.promise;
-        const user = getUserFromEnvironment();
-        const pass = getPassFromEnvironment();
-        const address = getAddressFromEnvironment();
-        const url = (!!user && !!pass) ? `mongodb://${user}:${pass}@${address}` : `mongodb://${address}`;
+        const url = getMongodbURI();
         logger.info(`${TAG} Connecting to db on ${url}`);
         mongoose.connect(url, {
             useNewUrlParser: true,
