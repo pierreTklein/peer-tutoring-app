@@ -5,7 +5,8 @@ const Constants = require("../constants/general.constant");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const Services = {
-    Email: require("./email.service")
+    Email: require("./email.service"),
+    Env: require("./env.service")
 };
 
 
@@ -89,7 +90,9 @@ function generateInviteMailData(address, receiverEmail, accountType, token) {
         to: receiverEmail,
         subject: emailSubject,
         html: Services.Email.renderEmail(handlebarPath, {
-            link: tokenLink
+            link: tokenLink,
+            serviceName: process.env.SERVICE_NAME,
+            frontendAddress: Services.Env.frontendAddress()
         })
     };
     return mailData;

@@ -2,6 +2,10 @@
     "name": "Peer-tutoring",
     "description": "Application for managing peer-tutoring services",
     "env": {
+        "SERVICE_NAME": {
+            "description": "What is the name of your service?",
+            "value": "CSUS Helpdesk"
+        },
         "PORT": {
             "description": "The port on which to run the server",
             "value": "3000"

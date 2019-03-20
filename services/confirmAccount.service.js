@@ -3,7 +3,8 @@
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const Services = {
-    Email: require("./email.service")
+    Email: require("./email.service"),
+    Env: require("./env.service")
 };
 
 function generateToken(accountId) {
@@ -44,7 +45,9 @@ function generateConfirmAccountEmail(address, receiverEmail, token) {
         to: receiverEmail,
         subject: "Request to Confirm Account",
         html: Services.Email.renderEmail(handlebarPath, {
-            link: tokenLink
+            link: tokenLink,
+            serviceName: process.env.SERVICE_NAME,
+            frontendAddress: Services.Env.frontendAddress()
         })
     };
     return mailData;

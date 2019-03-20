@@ -4,7 +4,8 @@ const PasswordReset = require("../models/passwordResetToken.model");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const Services = {
-    Email: require("./email.service")
+    Email: require("./email.service"),
+    Env: require("./env.service")
 };
 
 
@@ -103,7 +104,9 @@ function generateResetPasswordEmail(address, receiverEmail, token) {
         to: receiverEmail,
         subject: "Request to reset password",
         html: Services.Email.renderEmail(handlebarPath, {
-            link: tokenLink
+            link: tokenLink,
+            serviceName: process.env.SERVICE_NAME,
+            frontendAddress: Services.Env.frontendAddress()
         })
     };
     return mailData;
