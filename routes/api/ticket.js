@@ -76,6 +76,7 @@ module.exports = {
             Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
             Middleware.Validator.Ticket.SearchTicketValidator,
             Middleware.Util.failIfNotValid,
+            Middleware.Ticket.setExpandValues(false, false, true),
             Middleware.Ticket.getByQuery,
             Middleware.Ticket.calculateStats,
             Controllers.Ticket.gotStats

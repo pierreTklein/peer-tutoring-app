@@ -50,6 +50,15 @@ async function failIfUserHasOpenTicket(req, res, next) {
     }
 }
 
+function setExpandValues(expandTutor, expandStudent, expandCourse) {
+    return (req, res, next) => {
+        req.body.expandtutor = expandTutor;
+        req.body.expandStudent = expandStudent;
+        req.body.expandCourse = expandCourse;
+        next();
+    };
+}
+
 async function getByQuery(req, res, next) {
     let query = {
         createdAt: _.omitBy({
@@ -412,4 +421,5 @@ module.exports = {
     failIfAssigned: failIfAssigned,
 
     calculateStats: calculateStats,
+    setExpandValues: setExpandValues
 };

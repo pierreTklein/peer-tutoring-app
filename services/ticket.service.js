@@ -202,13 +202,14 @@ function calculateStats(tickets) {
     };
     tickets.forEach((ticket) => {
         const createdAt = new Date(ticket.createdAt);
+        const courseName = `${ticket.courseId.dept} ${ticket.courseId.code}`;
         if (ticket.startedAt) {
             const startedAt = new Date(ticket.startedAt);
             totalWait += (startedAt.getTime() - createdAt.getTime());
             addToObj(stats.freqTutors, ticket.tutorId.toString());
         }
         addToObj(stats.freqStudents, ticket.studentId.toString());
-        addToObj(stats.freqCourses, ticket.courseId.toString());
+        addToObj(stats.freqCourses, courseName);
 
         totalAbandon += ticket.blacklist ? ticket.blacklist.length : 0;
 
@@ -216,8 +217,8 @@ function calculateStats(tickets) {
         stats.freqHour[createdAt.getHours()].total += 1;
         stats.freqDay[createdAt.getDay()].total += 1;
 
-        addToObj(stats.freqHour[createdAt.getHours()].course, ticket.courseId);
-        addToObj(stats.freqDay[createdAt.getDay()].course, ticket.courseId);
+        addToObj(stats.freqHour[createdAt.getHours()].course, courseName);
+        addToObj(stats.freqDay[createdAt.getDay()].course, courseName);
 
         addToObj(stats.freqHour[createdAt.getHours()].category, ticket.category);
         addToObj(stats.freqDay[createdAt.getDay()].category, ticket.category);
