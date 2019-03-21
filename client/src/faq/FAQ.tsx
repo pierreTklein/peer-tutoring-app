@@ -1,21 +1,10 @@
-import { Flex, Box } from "@rebass/grid";
 import * as React from "react";
 
 import { SERVICE_NAME, SERVICE_LOCATION } from "../config/constants";
 
-import {
-  Card,
-  H1,
-  H2,
-  Image,
-  LinkDuo,
-  PageContainer,
-  Panel,
-  Paragraph
-} from "../shared/Elements";
+import { H1, LinkDuo, PageContainer } from "../shared/Elements";
 import { FrontendRoute } from "../config";
 import { Link } from "react-router-dom";
-import theme from "../shared/Styles/theme";
 import Question from "./Question";
 
 interface IFAQProps {}
