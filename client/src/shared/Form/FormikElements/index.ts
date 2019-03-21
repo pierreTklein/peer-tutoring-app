@@ -7,3 +7,4 @@ export * from "./LongTextInput";
 export * from "./Password";
 export * from "./Select";
 export * from "./FileUpload";
+export * from "./DateRange";

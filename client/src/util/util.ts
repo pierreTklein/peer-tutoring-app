@@ -37,7 +37,7 @@ function input2date(date: number) {
   return formattedDate.toString();
 }
 
-function date2input(date: string) {
+function date2input(date: string | Date) {
   const parsed = new Date(date);
   const day = padStart(2, "0", String(parsed.getDate()));
   const month = padStart(2, "0", String(parsed.getMonth() + 1));

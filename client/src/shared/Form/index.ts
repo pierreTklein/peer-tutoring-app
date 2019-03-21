@@ -3,6 +3,7 @@ export * from "./Checkbox";
 export * from "./EmailInput";
 export * from "./FileInput";
 export * from "./Form";
+export * from "./DayPicker";
 export * from "./Input";
 export * from "./Label";
 export * from "./LabelText";

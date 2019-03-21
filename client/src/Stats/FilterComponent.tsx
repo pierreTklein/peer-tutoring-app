@@ -26,17 +26,23 @@ export class FilterComponent extends React.Component<
     this.onSubmit = this.onSubmit.bind(this);
   }
   public render() {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    oneWeekAgo.setHours(0, 0, 0, 0);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() - 7);
+    tomorrow.setHours(0, 0, 0, 0);
     return (
       <Formik
         enableReinitialize={true}
         initialValues={{
-          startDate: "",
-          endDate: ""
+          startDate: date2input(oneWeekAgo),
+          endDate: date2input(tomorrow)
         }}
         onSubmit={this.onSubmit}
         validationSchema={object().shape({
-          startDate: string().required("Required"),
-          endDate: string().required("Required")
+          startDate: string(),
+          endDate: string()
         })}
         render={this.renderFormik}
       />
@@ -47,33 +53,31 @@ export class FilterComponent extends React.Component<
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <Form onSubmit={fp.handleSubmit}>
-            <Flex flexWrap={"wrap"} width={1}>
-              <MaxWidthBox width={[1, 0.5]}>
+            <Flex flexWrap={"wrap"} width={1} justifyContent={"center"}>
+              <MaxWidthBox width={[1, 0.25]}>
                 <FastField
                   name={"startDate"}
                   component={FormikElements.FormattedNumber}
                   label={"Start Date"}
                   placeholder="MM/DD/YYYY"
                   format="##/##/####"
-                  required={true}
                   location={matches ? InputLocation.LEFT : InputLocation.FULL}
-                  value={fp.values.email}
+                  value={fp.values.startDate}
                 />
                 <ErrorMessage
                   component={FormikElements.Error}
                   name="startDate"
                 />
               </MaxWidthBox>
-              <MaxWidthBox width={[1, 0.5]}>
+              <MaxWidthBox width={[1, 0.25]}>
                 <FastField
                   name={"endDate"}
                   component={FormikElements.FormattedNumber}
                   label={"End Date"}
                   placeholder="MM/DD/YYYY"
                   format="##/##/####"
-                  required={true}
                   location={matches ? InputLocation.RIGHT : InputLocation.FULL}
-                  value={fp.values.email}
+                  value={fp.values.endDate}
                 />
                 <ErrorMessage component={FormikElements.Error} name="endDate" />
               </MaxWidthBox>
