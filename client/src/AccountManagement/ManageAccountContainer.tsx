@@ -100,7 +100,7 @@ class ManageAccountContainer extends React.Component<
   public render() {
     const { mode, formSubmitted, loaded } = this.state;
     if (!formSubmitted) {
-      const { mode, accountDetails, allCourses } = this.state;
+      const { accountDetails, allCourses } = this.state;
       const title = `${
         mode === ManageAccountModes.CREATE ? "Create" : "Edit"
       } Your Account`;
@@ -141,7 +141,6 @@ class ManageAccountContainer extends React.Component<
     return <Redirect to={FrontendRoute.HOME_PAGE} />;
   }
 
-  private renderForm() {}
   private renderFormik(fp: FormikProps<any>) {
     const { mode } = this.state;
     return (
