@@ -12,7 +12,9 @@ export enum FrontendRoute {
   INVITE_ACCOUNT = "/account/invite",
   CONFIRM_ACCOUNT_RESEND = "/account/confirm/resend",
 
-  CREATE_TICKET = "/question/new"
+  CREATE_TICKET = "/question/new",
+
+  FAQ = "/faq"
 }
 
 export default FrontendRoute;

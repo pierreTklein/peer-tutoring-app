@@ -34,3 +34,7 @@ export const LAST_NAME_LABEL = "Last Name";
 export const PRONOUN_LABEL = "Preferred Pronoun";
 export const OLD_PASSWORD_LABEL = "Old password";
 export const NEW_PASSWORD_LABEL = "New password";
+
+export const SERVICE_NAME = "CSUS Helpdesk";
+export const SERVICE_LOCATION =
+  "https://www.google.com/maps/place/Trottier+Bldg,+3630+Rue+University,+Montreal,+QC+H3A+2B2,+Canada/";

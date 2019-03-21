@@ -51,23 +51,42 @@ class Navbar extends React.Component<INavbarProps, INavbarState> {
             </Link>
           </Box>
           <Box>
-            {this.state.loggedIn && (
-              <Flex>
+            <Flex>
+              <Box alignSelf={"center"} my={"auto"}>
+                <Link to={FrontendRoute.FAQ}>
+                  <Button buttonType={ButtonType.PRIMARY} isNarrow={true}>
+                    FAQ
+                  </Button>
+                </Link>
+              </Box>
+              {this.state.loggedIn && (
+                <React.Fragment>
+                  <Box alignSelf={"center"} my={"auto"}>
+                    <Link to={FrontendRoute.EDIT_ACCOUNT_PAGE}>
+                      <Button buttonType={ButtonType.PRIMARY} isNarrow={true}>
+                        Account
+                      </Button>
+                    </Link>
+                  </Box>
+                  <Box alignSelf={"center"} my={"auto"}>
+                    <Button
+                      onClick={this.handleLogout}
+                      buttonType={ButtonType.PRIMARY}
+                      isNarrow={true}
+                    >
+                      Logout
+                    </Button>
+                  </Box>
+                </React.Fragment>
+              )}
+              {!this.state.loggedIn && (
                 <Box alignSelf={"center"} my={"auto"}>
-                  <Link to={FrontendRoute.EDIT_ACCOUNT_PAGE}>
-                    <Button buttonType={ButtonType.PRIMARY}>Account</Button>
+                  <Link to={FrontendRoute.LOGIN_PAGE}>
+                    <Button buttonType={ButtonType.PRIMARY}>Login</Button>
                   </Link>
                 </Box>
-                <Box alignSelf={"center"} my={"auto"}>
-                  <Button
-                    onClick={this.handleLogout}
-                    buttonType={ButtonType.PRIMARY}
-                  >
-                    Logout
-                  </Button>
-                </Box>
-              </Flex>
-            )}
+              )}
+            </Flex>
           </Box>
         </Flex>
       </Nav>

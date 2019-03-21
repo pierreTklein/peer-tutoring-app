@@ -80,7 +80,7 @@ function generateInviteTokenLink(address, token) {
  */
 function generateInviteMailData(address, receiverEmail, accountType, token) {
     const tokenLink = generateInviteTokenLink(address, token);
-    let emailSubject = `You've been invited to create a ${accountType.join(", ")} account for ${Constants.SERVICE_NAME}`;
+    let emailSubject = `You've been invited to create a ${accountType.join(", ")} account for ${process.env.SERVICE_NAME}`;
     if (token === undefined || tokenLink === undefined) {
         return undefined;
     }

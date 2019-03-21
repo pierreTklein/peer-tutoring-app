@@ -19,6 +19,7 @@ import NotConfirmedContainer from "./ConfirmAccount/NotConfirmed";
 import InviteContainer from "./Invite/Invite";
 import Dashboard from "./Dashboard/Dashboard";
 import { requestPermission } from "./util/notifications";
+import FAQContainer from "./faq/FAQ";
 
 class App extends Component {
   render() {
@@ -90,6 +91,11 @@ class App extends Component {
             exact={true}
             path={FrontendRoute.CONFIRM_ACCOUNT_RESEND}
             component={withNavbar(withAuthRedirect(NotConfirmedContainer))}
+          />
+          <Route
+            exact={true}
+            path={FrontendRoute.FAQ}
+            component={withNavbar(FAQContainer)}
           />
           <Route
             path={FrontendRoute.HOME_PAGE}
