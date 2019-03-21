@@ -1,12 +1,11 @@
-import { Box, Flex } from "@rebass/grid";
+import { Box } from "@rebass/grid";
 import * as React from "react";
 
 import { ITicketStats } from "../config";
-import { H1, PageContainer, Panel, H2 } from "../shared/Elements";
+import { H1, PageContainer } from "../shared/Elements";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { Ticket } from "../api";
-import { FootTraffic, FootTrafficView } from "./FootTraffic";
-import { dayOfWeekAsString, hourAsString } from "../util";
+import { FootTrafficView } from "./FootTraffic";
 import OverviewStatsView from "./OverviewView";
 import GraphView from "./GraphView";
 

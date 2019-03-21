@@ -3,7 +3,6 @@ import * as React from "react";
 
 import { ITicketStats } from "../config";
 import { Panel, H2 } from "../shared/Elements";
-import { NumberStat } from "./NumberStat";
 import { FootTrafficView, FootTraffic } from "./FootTraffic";
 import { dayOfWeekAsString, hourAsString } from "../util";
 
