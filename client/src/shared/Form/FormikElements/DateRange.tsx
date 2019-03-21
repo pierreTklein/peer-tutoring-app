@@ -1,58 +1,43 @@
-import { FieldProps } from "formik";
 import * as React from "react";
-import { NumberFormatValues } from "react-number-format";
-import { NumberFormatInput, Label, LabelText } from "..";
+import { Label, LabelText } from "..";
 import { InputLocation } from "../../Styles";
-import { DayPicker } from "../DayPicker";
-import { Modifier } from "react-day-picker";
+import { DatePicker } from "../DayPicker";
+import { Modifier, DateUtils } from "react-day-picker";
+import { FieldProps } from "formik";
 
-interface IDateRangeProps {
+interface IDateRangeProps extends FieldProps {
   label: string;
   format: string;
   location?: InputLocation;
-  value?: [];
+  value: {
+    from: Date;
+    to: Date;
+  };
   required?: boolean;
 }
 
-interface IDateRangeState {
-  from: Modifier;
-  to: Modifier;
-}
+export const DateRange: React.FunctionComponent<IDateRangeProps> = props => {
+  let { value } = props;
+  const modifiers = { start: value.from, end: value.to };
+  return (
+    <Label>
+      <LabelText label={props.label} required={props.required} />
+      <DatePicker
+        selectedDays={{ from: value.from, to: value.to }}
+        modifiers={modifiers}
+        onDayClick={handleChange(props)}
+      />
+    </Label>
+  );
+};
 
-export class DateRange extends React.Component<
-  IDateRangeProps,
-  IDateRangeState
-> {
-  constructor(props: IDateRangeProps) {
-    super(props);
-    this.state = {
-      from: undefined,
-      to: undefined
-    };
-  }
-  public render() {
-    const { from, to } = this.state;
-    const modifiers = { start: from, end: to };
-    return (
-      <Label>
-        <LabelText label={this.props.label} required={this.props.required} />
-        <DayPicker
-          className="Selectable"
-          selectedDays={[from, to]}
-          modifiers={modifiers}
-        />
-      </Label>
-    );
-  }
-}
-/**
- * Function factory that generates function to handle changes in user's choice.
- * @param props The props passed into the Textarea component.
- * @returns the function that handles changes to the choices provided by the user.
- */
-function handleChange({ field, form }: FieldProps) {
-  return (value: NumberFormatValues) => {
-    form.setFieldValue(field.name, value.value);
+function handleChange(props: IDateRangeProps) {
+  return (day: Date) => {
+    // @ts-ignore
+    const range = DateUtils.addDayToRange(day, props.value);
+    const field = props.field;
+    const form = props.form;
+    form.setFieldValue(field.name, range);
   };
 }
 
