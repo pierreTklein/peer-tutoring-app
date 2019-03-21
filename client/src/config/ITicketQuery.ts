@@ -3,8 +3,8 @@ export interface ITicketQuery {
   createAfter?: Date;
   started?: boolean;
   ended?: boolean;
-  endedBefore?: Date;
-  endedAfter?: Date;
+  endBefore?: Date;
+  endAfter?: Date;
   assigned?: boolean;
   tutorId?: string;
   studentId?: string;

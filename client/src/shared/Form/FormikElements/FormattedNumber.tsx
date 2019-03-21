@@ -1,11 +1,13 @@
-import { FieldProps } from 'formik';
-import * as React from 'react';
-import { NumberFormatValues } from 'react-number-format';
-import { NumberFormatInput } from '..';
+import { FieldProps } from "formik";
+import * as React from "react";
+import { NumberFormatValues } from "react-number-format";
+import { NumberFormatInput } from "..";
+import { InputLocation } from "../../Styles";
 
 interface INumberFormatFormikComponent {
   label: string;
   format: string;
+  location?: InputLocation;
   placeholder?: string;
   value?: string;
   required?: boolean;
@@ -13,8 +15,8 @@ interface INumberFormatFormikComponent {
 
 const NumberFormatFormikComponent: React.StatelessComponent<
   INumberFormatFormikComponent & FieldProps
-> = (props) => {
-  const placeholder = props.placeholder ? props.placeholder : '';
+> = props => {
+  const placeholder = props.placeholder ? props.placeholder : "";
   return (
     <NumberFormatInput
       onValueChange={handleChange(props)}
@@ -23,6 +25,7 @@ const NumberFormatFormikComponent: React.StatelessComponent<
       format={props.format}
       value={props.value}
       required={props.required}
+      location={props.location}
     />
   );
 };

@@ -105,7 +105,6 @@ export const FootTraffic: React.FunctionComponent<IFootTrafficProps> = ({
         fill={color}
       />
     );
-    console.log(v);
   });
 
   return (

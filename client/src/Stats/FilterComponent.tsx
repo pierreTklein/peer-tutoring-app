@@ -1,0 +1,95 @@
+import { ErrorMessage, FastField, Formik, FormikProps } from "formik";
+import * as React from "react";
+import { object, string } from "yup";
+
+import { ButtonType, MaxWidthBox } from "../shared/Elements";
+import { Form, SubmitBtn } from "../shared/Form";
+import * as FormikElements from "../shared/Form/FormikElements";
+import { ITicketQuery } from "../config/ITicketQuery";
+import MediaQuery from "react-responsive";
+import { InputLocation } from "../shared";
+import { Flex } from "@rebass/grid";
+import { date2input, input2date } from "../util";
+
+interface IFilterComponentProps {
+  onSubmit: (query: ITicketQuery) => Promise<void>;
+}
+
+export class FilterComponent extends React.Component<
+  IFilterComponentProps,
+  {}
+> {
+  constructor(props: IFilterComponentProps) {
+    super(props);
+    this.state = {};
+    this.renderFormik = this.renderFormik.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+  public render() {
+    return (
+      <Formik
+        enableReinitialize={true}
+        initialValues={{
+          startDate: "",
+          endDate: ""
+        }}
+        onSubmit={this.onSubmit}
+        validationSchema={object().shape({
+          startDate: string().required("Required"),
+          endDate: string().required("Required")
+        })}
+        render={this.renderFormik}
+      />
+    );
+  }
+  private renderFormik(fp: FormikProps<any>) {
+    return (
+      <MediaQuery minDeviceWidth={700}>
+        {matches => (
+          <Form onSubmit={fp.handleSubmit}>
+            <Flex flexWrap={"wrap"} width={1}>
+              <MaxWidthBox width={[1, 0.5]}>
+                <FastField
+                  name={"startDate"}
+                  component={FormikElements.FormattedNumber}
+                  label={"Start Date"}
+                  placeholder="MM/DD/YYYY"
+                  format="##/##/####"
+                  required={true}
+                  location={matches ? InputLocation.LEFT : InputLocation.FULL}
+                  value={fp.values.email}
+                />
+                <ErrorMessage
+                  component={FormikElements.Error}
+                  name="startDate"
+                />
+              </MaxWidthBox>
+              <MaxWidthBox width={[1, 0.5]}>
+                <FastField
+                  name={"endDate"}
+                  component={FormikElements.FormattedNumber}
+                  label={"End Date"}
+                  placeholder="MM/DD/YYYY"
+                  format="##/##/####"
+                  required={true}
+                  location={matches ? InputLocation.RIGHT : InputLocation.FULL}
+                  value={fp.values.email}
+                />
+                <ErrorMessage component={FormikElements.Error} name="endDate" />
+              </MaxWidthBox>
+            </Flex>
+            <SubmitBtn buttonType={ButtonType.PRIMARY}>Get Stats</SubmitBtn>
+          </Form>
+        )}
+      </MediaQuery>
+    );
+  }
+  private onSubmit(values: any) {
+    this.props.onSubmit({
+      createBefore: new Date(input2date(values.endDate)),
+      endAfter: new Date(input2date(values.startDate))
+    });
+  }
+}
+
+export default FilterComponent;

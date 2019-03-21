@@ -8,6 +8,8 @@ import { Ticket } from "../api";
 import { FootTrafficView } from "./FootTraffic";
 import OverviewStatsView from "./OverviewView";
 import GraphView from "./GraphView";
+import FilterComponent from "./FilterComponent";
+import { ITicketQuery } from "../config/ITicketQuery";
 
 export interface ILoginState {
   loadingData: boolean;
@@ -30,10 +32,15 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
         freqCourses: {}
       }
     };
+    this.onFetchStats = this.onFetchStats.bind(this);
   }
   public async componentDidMount() {
+    await this.onFetchStats({});
+  }
+
+  public async onFetchStats(query: ITicketQuery) {
     try {
-      const data = (await Ticket.stats({})).data.data;
+      const data = (await Ticket.stats(query)).data.data;
       this.setState({ data });
     } catch (e) {
       if (e && e.data) {
@@ -53,6 +60,9 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
         loading={loadingData}
       >
         <H1 textAlign={"center"}>Service Statistics</H1>
+        <Box width={1}>
+          <FilterComponent onSubmit={this.onFetchStats} />
+        </Box>
         <Box width={1}>
           <OverviewStatsView data={data} />
         </Box>
