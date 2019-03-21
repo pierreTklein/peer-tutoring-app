@@ -80,7 +80,8 @@ function parseAccount(req, res, next) {
         accountType: req.body.accountType,
         courses: req.body.courses,
         password: Services.Account.hashPassword(req.body.password),
-        confirmed: !!req.body.invite
+        confirmed: !!req.body.invite,
+        pronoun: req.body.pronoun
     };
 
     delete req.body.firstName;
@@ -89,6 +90,7 @@ function parseAccount(req, res, next) {
     delete req.body.password;
     delete req.body.accountType;
     delete req.body.courses;
+    delete req.body.pronoun;
 
     req.body.account = account;
 
