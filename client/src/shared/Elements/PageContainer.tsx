@@ -13,6 +13,7 @@ import {
 interface IPageContainerProps {
   title: string;
   loading?: boolean;
+  maxWidth?: string | number;
 }
 
 interface IPageContainerState {
@@ -32,7 +33,7 @@ export class PageContainer extends React.Component<
     this.onTicketUpdateEvent = this.onTicketUpdateEvent.bind(this);
   }
   public render() {
-    const { title, loading, children } = this.props;
+    const { title, loading, maxWidth, children } = this.props;
     const { notification } = this.state;
     const titlePrepend = notification ? "*" : "";
     return (
@@ -47,11 +48,11 @@ export class PageContainer extends React.Component<
             {title} | CSUS Helpdesk
           </title>
         </Helmet>
-        <MaxWidthBox width={0.9} m={"auto"}>
+        <MaxWidthBox width={0.9} m={"auto"} maxWidth={maxWidth}>
           <Panel
             alignItems={"center"}
             flexDirection={"column"}
-            p={"5%"}
+            p={"3%"}
             mb={"5%"}
           >
             {!loading ? (

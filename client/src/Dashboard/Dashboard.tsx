@@ -75,8 +75,11 @@ class Dashboard extends React.Component<{}, IDashboardState> {
     return [
       {
         title: "Invite User",
-        route: "/account/invite",
-        imageSrc: ""
+        route: "/account/invite"
+      },
+      {
+        title: "Course Stats",
+        route: "/stats"
       }
     ];
   }

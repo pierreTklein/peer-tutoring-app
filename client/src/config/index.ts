@@ -4,6 +4,7 @@ export * from "./IAccount";
 export * from "./ICourse";
 export * from "./IInviteInfo";
 export * from "./ITicket";
+export * from "./ITicketStats";
 export * from "./ITutor";
 export * from "./authToken";
 export * from "./constants";

@@ -20,6 +20,7 @@ import InviteContainer from "./Invite/Invite";
 import Dashboard from "./Dashboard/Dashboard";
 import { requestPermission } from "./util/notifications";
 import FAQContainer from "./faq/FAQ";
+import StatsContainer from "./Stats/StatsContainer";
 
 class App extends Component {
   render() {
@@ -96,6 +97,17 @@ class App extends Component {
             exact={true}
             path={FrontendRoute.FAQ}
             component={withNavbar(FAQContainer)}
+          />
+          <Route
+            exact={true}
+            path={FrontendRoute.TICKET_STATS}
+            component={withNavbar(
+              withAuthRedirect(StatsContainer, {
+                redirTo: FrontendRoute.CONFIRM_ACCOUNT_RESEND,
+                AuthVerification: (account: IAccount) =>
+                  account.confirmed && isUserType(account, UserType.STAFF)
+              })
+            )}
           />
           <Route
             path={FrontendRoute.HOME_PAGE}

@@ -1,35 +1,22 @@
 import { Box, Flex } from "@rebass/grid";
 import {
-  ErrorMessage,
-  FastField,
   Formik,
   FormikProps,
   FormikActions,
   FieldArray,
-  Field,
   FieldArrayRenderProps
 } from "formik";
-import * as QueryString from "query-string";
 import * as React from "react";
 import { Redirect } from "react-router";
 import { object, string, array } from "yup";
 
 import { FrontendRoute, IInviteInfo, UserType } from "../config";
-import {
-  Button,
-  ButtonType,
-  H1,
-  PageContainer,
-  MaxWidthBox
-} from "../shared/Elements";
+import { Button, ButtonType, H1, PageContainer } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";
-import * as FormikElements from "../shared/Form/FormikElements";
-import { Auth, Account } from "../api";
-import { Link } from "react-router-dom";
+import { Account } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { toast } from "react-toastify";
-import { getOptionsFromEnum } from "../util";
-import { InputLocation, ReadFileBtn } from "../shared";
+import { ReadFileBtn } from "../shared";
 import _ from "lodash";
 import MediaQuery from "react-responsive";
 import ProgressBar from "../shared/Elements/ProgressBar";
@@ -151,10 +138,7 @@ export class InviteContainer extends React.Component<
                   buttonType={ButtonType.SECONDARY}
                   isLoading={this.state.uploadingCSV}
                   disabled={this.state.submitting || this.state.uploadingCSV}
-                  onFileUploaded={this.readFileFactory(
-                    arrayHelpers,
-                    invites.length
-                  )}
+                  onFileUploaded={this.readFileFactory(arrayHelpers)}
                 >
                   Add by CSV
                 </ReadFileBtn>
@@ -166,7 +150,7 @@ export class InviteContainer extends React.Component<
     );
   }
 
-  private readFileFactory(arrayHelpers: FieldArrayRenderProps, arrLen: number) {
+  private readFileFactory(arrayHelpers: FieldArrayRenderProps) {
     return async (file: File) => {
       this.setState({ uploadingCSV: true });
       const fr = new FileReader();
@@ -174,7 +158,7 @@ export class InviteContainer extends React.Component<
       fr.onloadend = () => {
         const rows: string[] = (fr.result as String).split("\n").sort();
         const deduped = _.uniq(rows);
-        deduped.forEach((row, index) => {
+        deduped.forEach(row => {
           const cols = row.split(",");
           if (!(cols[0] === "email" || cols[1] === "accountType")) {
             // all rows except header

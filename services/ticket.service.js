@@ -167,6 +167,19 @@ async function getNewTicketOptimized(courseIds, tutorId) {
     return tickets.length > 0 ? tickets[0] : null;
 }
 
+function statObject() {
+    this.course = {};
+    this.category = {};
+    this.total = 0;
+}
+
+function addToObj(obj, k) {
+    if (!obj[k]) {
+        obj[k] = 0;
+    }
+    obj[k] += 1;
+}
+
 /**
  * 
  * @param {Ticket[]} tickets 
@@ -174,18 +187,16 @@ async function getNewTicketOptimized(courseIds, tutorId) {
 function calculateStats(tickets) {
     let totalWait = 0;
     let totalAbandon = 0;
-    const uniqueStudents = new Set();
-    const uniqueTutors = new Set();
-    const uniqueCourses = new Set();
+
     const stats = {
         total: 0,
         avgWait: 0,
         avgAbandon: 0,
-        freqHour: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        freqDay: [0, 0, 0, 0, 0, 0, 0],
-        uniqueStudents: 0,
-        uniqueTutors: 0,
-        uniqueCourses: 0,
+        freqHour: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
+        freqDay: [0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
+        freqStudents: {},
+        freqTutors: {},
+        freqCourses: {},
         freqCourse: {},
         freqCategory: {}
     };
@@ -194,32 +205,24 @@ function calculateStats(tickets) {
         if (ticket.startedAt) {
             const startedAt = new Date(ticket.startedAt);
             totalWait += (startedAt.getTime() - createdAt.getTime());
-            uniqueTutors.add(ticket.tutorId.toString());
+            addToObj(stats.freqTutors, ticket.tutorId.toString());
         }
-        uniqueStudents.add(ticket.studentId.toString());
-        uniqueCourses.add(ticket.courseId.toString());
+        addToObj(stats.freqStudents, ticket.studentId.toString());
+        addToObj(stats.freqCourses, ticket.courseId.toString());
 
         totalAbandon += ticket.blacklist ? ticket.blacklist.length : 0;
 
         stats.total += 1;
-        stats.freqHour[createdAt.getHours()] += 1;
-        stats.freqDay[createdAt.getDay()] += 1;
+        stats.freqHour[createdAt.getHours()].total += 1;
+        stats.freqDay[createdAt.getDay()].total += 1;
 
-        if (stats.freqCourse[ticket.courseId]) {
-            stats.freqCourse[ticket.courseId] += 1;
-        } else {
-            stats.freqCourse[ticket.courseId] = 1;
-        }
+        addToObj(stats.freqHour[createdAt.getHours()].course, ticket.courseId);
+        addToObj(stats.freqDay[createdAt.getDay()].course, ticket.courseId);
 
-        if (stats.freqCategory[ticket.category]) {
-            stats.freqCategory[ticket.category] += 1;
-        } else {
-            stats.freqCategory[ticket.category] = 1;
-        }
+        addToObj(stats.freqHour[createdAt.getHours()].category, ticket.category);
+        addToObj(stats.freqDay[createdAt.getDay()].category, ticket.category);
+
     });
-    stats.uniqueStudents = uniqueStudents.size;
-    stats.uniqueTutors = uniqueTutors.size;
-    stats.uniqueCourses = uniqueCourses.size;
     stats.avgWait = totalWait / Math.max(tickets.length, 1); // ms
     stats.avgAbandon = totalAbandon / Math.max(tickets.length, 1);
     return stats;

@@ -13,6 +13,7 @@ export enum FrontendRoute {
   CONFIRM_ACCOUNT_RESEND = "/account/confirm/resend",
 
   CREATE_TICKET = "/question/new",
+  TICKET_STATS = "/stats",
 
   FAQ = "/faq"
 }

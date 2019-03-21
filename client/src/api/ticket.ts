@@ -1,5 +1,5 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
-import { APIRoute, ITicket } from "../config";
+import { APIRoute, ITicket, ITicketStats } from "../config";
 import API from "./api";
 import APIResponse from "./APIResponse";
 import { ITicketQuery } from "../config/ITicketQuery";
@@ -9,6 +9,7 @@ class TicketAPI {
     API.createEntity(APIRoute.TICKET);
     API.createEntity(APIRoute.TICKET_SELF);
     API.createEntity(APIRoute.TICKET_ASSIGN_UNK);
+    API.createEntity(APIRoute.TICKET_STATS);
     API.createEntity(APIRoute.TICKET_ASSIGN, ":id");
     API.createEntity(APIRoute.TICKET_START, ":id");
     API.createEntity(APIRoute.TICKET_END, ":id");
@@ -35,6 +36,12 @@ class TicketAPI {
 
   public search(query: ITicketQuery) {
     return API.getEndpoint(APIRoute.TICKET).getAll({
+      params: query
+    });
+  }
+
+  public stats(query: ITicketQuery): AxiosPromise<APIResponse<ITicketStats>> {
+    return API.getEndpoint(APIRoute.TICKET_STATS).getAll({
       params: query
     });
   }

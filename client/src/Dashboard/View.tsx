@@ -17,7 +17,7 @@ interface IDashboardView {
 export interface IDashboardCard {
   title: string;
   route: string;
-  imageSrc: any;
+  imageSrc?: any;
   validation?: () => boolean;
   hidden?: boolean;
   disabled?: boolean;
@@ -39,10 +39,10 @@ const DashboardView: React.FunctionComponent<IDashboardView> = ({ cards }) => {
             flexDirection={"column"}
             disabled={card.disabled}
           >
-            <H2 fontSize={"28px"} marginBottom={"30px"} textAlign={"center"}>
+            <H2 fontSize={"28px"} marginBottom={"0px"} textAlign={"center"}>
               {card.title}
             </H2>
-            <Image src={card.imageSrc} imgHeight={"125px"} />
+            {card.imageSrc && <Image src={card.imageSrc} imgHeight={"125px"} />}
           </Card>
         </LinkDuo>
       ))}

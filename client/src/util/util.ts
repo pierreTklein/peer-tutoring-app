@@ -79,14 +79,38 @@ const toOrdinalSuffix = (num: number) => {
     : int + ordinals[3];
 };
 
+function dayOfWeekAsString(dayIndex: number) {
+  return ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."][dayIndex];
+}
+function hourAsString(hourIndex: number) {
+  if (hourIndex < 10) {
+    return `0${hourIndex}:00`;
+  } else {
+    return `${hourIndex}:00`;
+  }
+}
+
+function dictToArray(dict: { [key: string]: any }) {
+  const list = [];
+  for (var key in dict) {
+    if (dict.hasOwnProperty(key)) {
+      list.push({ key, value: dict[key] });
+    }
+  }
+  return list;
+}
+
 export {
-  padStart,
-  getNestedAttr,
-  getOptionsFromEnum,
-  getValueFromQuery,
-  input2date,
   date2age,
   date2input,
   date2string,
+  dayOfWeekAsString,
+  dictToArray,
+  getNestedAttr,
+  getOptionsFromEnum,
+  getValueFromQuery,
+  hourAsString,
+  input2date,
+  padStart,
   toOrdinalSuffix
 };

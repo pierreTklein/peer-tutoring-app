@@ -16,7 +16,6 @@ export const Card = styled(Flex)<ICardProps>`
   -moz-box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
 
-  height: 100px;
   max-width: 250px;
   margin: 15px;
   position: relative;
