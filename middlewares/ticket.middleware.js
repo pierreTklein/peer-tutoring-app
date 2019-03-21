@@ -79,6 +79,12 @@ async function getByQuery(req, res, next) {
     next();
 }
 
+async function calculateStats(req, res, next) {
+    const tickets = req.body.tickets;
+    req.body.stats = Services.Ticket.calculateStats(tickets);
+    next();
+}
+
 async function getByUser(req, res, next) {
     let query = {
         $or: [{
@@ -404,4 +410,6 @@ module.exports = {
     failIfNotEnded: failIfNotEnded,
     failIfNotAssigned: failIfNotAssigned,
     failIfAssigned: failIfAssigned,
+
+    calculateStats: calculateStats,
 };

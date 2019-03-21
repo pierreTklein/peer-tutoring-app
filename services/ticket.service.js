@@ -167,6 +167,64 @@ async function getNewTicketOptimized(courseIds, tutorId) {
     return tickets.length > 0 ? tickets[0] : null;
 }
 
+/**
+ * 
+ * @param {Ticket[]} tickets 
+ */
+function calculateStats(tickets) {
+    let totalWait = 0;
+    let totalAbandon = 0;
+    const uniqueStudents = new Set();
+    const uniqueTutors = new Set();
+    const uniqueCourses = new Set();
+    const stats = {
+        total: 0,
+        avgWait: 0,
+        avgAbandon: 0,
+        freqHour: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        freqDay: [0, 0, 0, 0, 0, 0, 0],
+        uniqueStudents: 0,
+        uniqueTutors: 0,
+        uniqueCourses: 0,
+        freqCourse: {},
+        freqCategory: {}
+    };
+    tickets.forEach((ticket) => {
+        const createdAt = new Date(ticket.createdAt);
+        if (ticket.startedAt) {
+            const startedAt = new Date(ticket.startedAt);
+            totalWait += (startedAt.getTime() - createdAt.getTime());
+            uniqueTutors.add(ticket.tutorId.toString());
+        }
+        uniqueStudents.add(ticket.studentId.toString());
+        uniqueCourses.add(ticket.courseId.toString());
+
+        totalAbandon += ticket.blacklist ? ticket.blacklist.length : 0;
+
+        stats.total += 1;
+        stats.freqHour[createdAt.getHours()] += 1;
+        stats.freqDay[createdAt.getDay()] += 1;
+
+        if (stats.freqCourse[ticket.courseId]) {
+            stats.freqCourse[ticket.courseId] += 1;
+        } else {
+            stats.freqCourse[ticket.courseId] = 1;
+        }
+
+        if (stats.freqCategory[ticket.category]) {
+            stats.freqCategory[ticket.category] += 1;
+        } else {
+            stats.freqCategory[ticket.category] = 1;
+        }
+    });
+    stats.uniqueStudents = uniqueStudents.size;
+    stats.uniqueTutors = uniqueTutors.size;
+    stats.uniqueCourses = uniqueCourses.size;
+    stats.avgWait = totalWait / Math.max(tickets.length, 1); // ms
+    stats.avgAbandon = totalAbandon / Math.max(tickets.length, 1);
+    return stats;
+}
+
 module.exports = {
     find: find,
     addOne: addOne,
@@ -176,4 +234,5 @@ module.exports = {
     getQueue: getQueue,
     getNewTicketFIFO: getNewTicketFIFO,
     getNewTicketOptimized: getNewTicketOptimized,
+    calculateStats: calculateStats
 };

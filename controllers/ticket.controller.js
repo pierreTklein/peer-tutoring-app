@@ -31,6 +31,18 @@ function gotTicket(req, res) {
 }
 
 /**
+ * Retrieved ticket stats.
+ * @param {*} req 
+ * @param {*} res 
+ */
+function gotStats(req, res) {
+    res.status(200).json({
+        message: Success.TICKET_STATS,
+        data: req.body.stats
+    });
+}
+
+/**
  * Created single ticket.
  * @param {*} req 
  * @param {*} res 
@@ -134,5 +146,6 @@ module.exports = {
     endedTicket: endedTicket,
     ratedTicket: ratedTicket,
     abandonedTicket: abandonedTicket,
-    gotTicketPosition: gotTicketPosition
+    gotTicketPosition: gotTicketPosition,
+    gotStats: gotStats,
 };

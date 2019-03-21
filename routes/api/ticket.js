@@ -71,6 +71,16 @@ module.exports = {
             Controllers.Ticket.assignedTicket,
         );
 
+        ticketRouter.route("/stats").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
+            Middleware.Validator.Ticket.SearchTicketValidator,
+            Middleware.Util.failIfNotValid,
+            Middleware.Ticket.getByQuery,
+            Middleware.Ticket.calculateStats,
+            Controllers.Ticket.gotStats
+        );
+
         //get specific ticket
         ticketRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
@@ -81,6 +91,7 @@ module.exports = {
             Middleware.Ticket.getById,
             Controllers.Ticket.gotTicket
         );
+
         //end a ticket
         ticketRouter.route("/:id/position").get(
             Middleware.Auth.ensureAuthenticated(),
