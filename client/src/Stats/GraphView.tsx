@@ -16,7 +16,7 @@ export const GraphView: React.FunctionComponent<IGraphViewProps> = ({
   view
 }) => {
   return (
-    <Panel width={1} flexDirection={"column"} my={"10px"} p={"15px"}>
+    <Panel width={1} flexDirection={"column"} mt={"20px"} p={"15px"}>
       <H2>{view}:</H2>
       <Flex width={1} alignItems={"center"} flexWrap={"wrap"}>
         <Box width={[1, "50%"]} p={"10px"}>

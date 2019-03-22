@@ -14,6 +14,7 @@ interface IPageContainerProps {
   title: string;
   loading?: boolean;
   maxWidth?: string | number;
+  backgroundColor?: string;
 }
 
 interface IPageContainerState {
@@ -33,7 +34,7 @@ export class PageContainer extends React.Component<
     this.onTicketUpdateEvent = this.onTicketUpdateEvent.bind(this);
   }
   public render() {
-    const { title, loading, maxWidth, children } = this.props;
+    const { title, loading, maxWidth, children, backgroundColor } = this.props;
     const { notification } = this.state;
     const titlePrepend = notification ? "*" : "";
     return (
@@ -54,6 +55,7 @@ export class PageContainer extends React.Component<
             flexDirection={"column"}
             p={"3%"}
             mb={"5%"}
+            backgroundColor={backgroundColor}
           >
             {!loading ? (
               children

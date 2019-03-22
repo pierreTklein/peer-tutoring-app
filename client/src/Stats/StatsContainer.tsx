@@ -72,6 +72,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
         title={"Service Statistics"}
         maxWidth={"1260px"}
         loading={loadingData}
+        backgroundColor={"aliceblue"}
       >
         <StyledModal
           appElement={document.getElementById("root") || undefined}
