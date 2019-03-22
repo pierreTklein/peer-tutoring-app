@@ -1,6 +1,6 @@
 import { ErrorMessage, FastField, Formik, FormikProps } from "formik";
 import * as React from "react";
-import { object, string } from "yup";
+import { object, string, date } from "yup";
 
 import { ButtonType, MaxWidthBox } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";
@@ -24,6 +24,7 @@ export class FilterComponent extends React.Component<
     this.state = {};
     this.renderFormik = this.renderFormik.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
   public render() {
     const oneWeekAgo = new Date();
@@ -41,8 +42,8 @@ export class FilterComponent extends React.Component<
         }}
         onSubmit={this.onSubmit}
         validationSchema={object().shape({
-          startDate: string(),
-          endDate: string()
+          startDate: date(),
+          endDate: date()
         })}
         render={this.renderFormik}
       />
@@ -54,7 +55,7 @@ export class FilterComponent extends React.Component<
         {matches => (
           <Form onSubmit={fp.handleSubmit}>
             <Flex flexWrap={"wrap"} width={1} justifyContent={"center"}>
-              <MaxWidthBox width={[1, 0.125]}>
+              <MaxWidthBox width={[1, 0.25, 0.2, 0.125]}>
                 <FastField
                   name={"startDate"}
                   component={FormikElements.FormattedNumber}
@@ -63,13 +64,14 @@ export class FilterComponent extends React.Component<
                   format="##/##/####"
                   location={matches ? InputLocation.LEFT : InputLocation.FULL}
                   value={fp.values.startDate}
+                  keyDownUpdate={this.onKeyDown}
                 />
                 <ErrorMessage
                   component={FormikElements.Error}
                   name="startDate"
                 />
               </MaxWidthBox>
-              <MaxWidthBox width={[1, 0.125]}>
+              <MaxWidthBox width={[1, 0.25, 0.2, 0.125]}>
                 <FastField
                   name={"endDate"}
                   component={FormikElements.FormattedNumber}
@@ -78,6 +80,7 @@ export class FilterComponent extends React.Component<
                   format="##/##/####"
                   location={matches ? InputLocation.RIGHT : InputLocation.FULL}
                   value={fp.values.endDate}
+                  keyDownUpdate={this.onKeyDown}
                 />
                 <ErrorMessage component={FormikElements.Error} name="endDate" />
               </MaxWidthBox>
@@ -100,6 +103,24 @@ export class FilterComponent extends React.Component<
       createBefore: new Date(input2date(values.endDate)),
       endAfter: new Date(input2date(values.startDate))
     });
+  }
+  private onKeyDown(
+    e: React.KeyboardEvent<HTMLInputElement>,
+    oldValue: number
+  ): string {
+    const date = new Date(input2date(oldValue));
+    switch (e.keyCode) {
+      case 38:
+        e.preventDefault();
+        date.setDate(date.getDate() + 1);
+        return date2input(date);
+      case 40:
+        e.preventDefault();
+        date.setDate(date.getDate() - 1);
+        return date2input(date);
+      default:
+        return String(oldValue);
+    }
   }
 }
 
