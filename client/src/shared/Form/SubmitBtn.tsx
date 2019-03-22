@@ -1,15 +1,23 @@
-import { Box, Flex } from '@rebass/grid';
-import * as React from 'react';
+import { Box, Flex, FlexProps } from "@rebass/grid";
+import * as React from "react";
 
-import { Button, IButtonProps } from '../Elements';
+import { Button, IButtonProps } from "../Elements";
 
-export const SubmitBtn: React.StatelessComponent<
-  IButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = (props) => (
-  <Flex justifyContent={'center'} mb={'20px'}>
+interface ISubmitBtnProps
+  extends IButtonProps,
+    React.ButtonHTMLAttributes<HTMLButtonElement> {
+  marginBottom?: string | number;
+}
+
+export const SubmitBtn: React.StatelessComponent<ISubmitBtnProps> = ({
+  marginBottom,
+  children,
+  ...rest
+}) => (
+  <Flex justifyContent={"center"} mb={marginBottom || "20px"}>
     <Box>
-      <Button type={'submit'} {...props}>
-        {props.children}
+      <Button type={"submit"} {...rest}>
+        {children}
       </Button>
     </Box>
   </Flex>

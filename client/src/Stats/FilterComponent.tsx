@@ -8,7 +8,7 @@ import * as FormikElements from "../shared/Form/FormikElements";
 import { ITicketQuery } from "../config/ITicketQuery";
 import MediaQuery from "react-responsive";
 import { InputLocation } from "../shared";
-import { Flex } from "@rebass/grid";
+import { Flex, Box } from "@rebass/grid";
 import { date2input, input2date } from "../util";
 
 interface IFilterComponentProps {
@@ -81,8 +81,15 @@ export class FilterComponent extends React.Component<
                 />
                 <ErrorMessage component={FormikElements.Error} name="endDate" />
               </MaxWidthBox>
+              <Box alignSelf={"center"} mt={"10px"}>
+                <SubmitBtn
+                  marginBottom={matches ? "0px" : undefined}
+                  buttonType={ButtonType.PRIMARY}
+                >
+                  Get Stats
+                </SubmitBtn>
+              </Box>
             </Flex>
-            <SubmitBtn buttonType={ButtonType.PRIMARY}>Get Stats</SubmitBtn>
           </Form>
         )}
       </MediaQuery>
