@@ -43,7 +43,16 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
     this.onFetchStats = this.onFetchStats.bind(this);
   }
   public async componentDidMount() {
-    await this.onFetchStats({});
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    oneWeekAgo.setHours(0, 0, 0, 0);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    await this.onFetchStats({
+      createBefore: tomorrow,
+      endAfter: oneWeekAgo
+    });
   }
 
   public async onFetchStats(query: ITicketQuery) {
@@ -67,9 +76,10 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
       modalTitle,
       modalData
     } = this.state;
+    const title = "Service Statistics";
     return (
       <PageContainer
-        title={"Service Statistics"}
+        title={title}
         maxWidth={"1260px"}
         loading={loadingData}
         backgroundColor={"aliceblue"}
@@ -85,7 +95,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
         >
           <PieChartContainer title={modalTitle} data={dictToArray(modalData)} />
         </StyledModal>
-        <H1 textAlign={"center"}>Service Statistics</H1>
+        <H1 textAlign={"center"}>{title}</H1>
         <Box width={1}>
           <FilterComponent onSubmit={this.onFetchStats} />
         </Box>
