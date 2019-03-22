@@ -54,7 +54,7 @@ export class FilterComponent extends React.Component<
         {matches => (
           <Form onSubmit={fp.handleSubmit}>
             <Flex flexWrap={"wrap"} width={1} justifyContent={"center"}>
-              <MaxWidthBox width={[1, 0.25]}>
+              <MaxWidthBox width={[1, 0.125]}>
                 <FastField
                   name={"startDate"}
                   component={FormikElements.FormattedNumber}
@@ -69,7 +69,7 @@ export class FilterComponent extends React.Component<
                   name="startDate"
                 />
               </MaxWidthBox>
-              <MaxWidthBox width={[1, 0.25]}>
+              <MaxWidthBox width={[1, 0.125]}>
                 <FastField
                   name={"endDate"}
                   component={FormikElements.FormattedNumber}

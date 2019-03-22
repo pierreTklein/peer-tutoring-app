@@ -7,15 +7,23 @@ interface INumberStatProps {
   title: string;
   data: number;
   dataUnit?: string;
+  onClick?: () => void;
 }
 
 export const NumberStat: React.FunctionComponent<INumberStatProps> = ({
   data,
   title,
-  dataUnit
+  dataUnit,
+  onClick
 }) => {
   return (
-    <Panel width={1} p={"15px"} flexDirection={"column"}>
+    <Panel
+      width={1}
+      p={"15px"}
+      flexDirection={"column"}
+      onClick={onClick}
+      cursor={onClick ? "pointer" : ""}
+    >
       <Box alignSelf={"center"}>
         <H2 color={theme.colors.greyDark}>
           {data.toFixed(0)} {dataUnit}

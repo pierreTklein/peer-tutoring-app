@@ -2,18 +2,23 @@ import { Box } from "@rebass/grid";
 import * as React from "react";
 
 import { ITicketStats } from "../config";
-import { H1, PageContainer } from "../shared/Elements";
+import { H1, PageContainer, StyledModal } from "../shared/Elements";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { Ticket } from "../api";
 import { FootTrafficView } from "./FootTraffic";
-import OverviewStatsView from "./OverviewView";
+import OverviewView from "./OverviewView";
 import GraphView from "./GraphView";
 import FilterComponent from "./FilterComponent";
 import { ITicketQuery } from "../config/ITicketQuery";
+import { PieChartContainer } from "./PieChartContainer";
+import { dictToArray } from "../util";
 
 export interface ILoginState {
   loadingData: boolean;
   data: ITicketStats;
+  isModalOpen: boolean;
+  modalTitle: string;
+  modalData: object;
 }
 
 export class StatsContainer extends React.Component<{}, ILoginState> {
@@ -30,7 +35,10 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
         freqStudents: {},
         freqTutors: {},
         freqCourses: {}
-      }
+      },
+      isModalOpen: false,
+      modalTitle: "",
+      modalData: {}
     };
     this.onFetchStats = this.onFetchStats.bind(this);
   }
@@ -52,19 +60,45 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
   }
 
   public render() {
-    const { data, loadingData } = this.state;
+    const {
+      data,
+      loadingData,
+      isModalOpen,
+      modalTitle,
+      modalData
+    } = this.state;
     return (
       <PageContainer
         title={"Service Statistics"}
         maxWidth={"1260px"}
         loading={loadingData}
       >
+        <StyledModal
+          appElement={document.getElementById("root") || undefined}
+          isOpen={isModalOpen}
+          contentLabel={modalTitle}
+          onRequestClose={() => this.setState({ isModalOpen: false })}
+          shouldCloseOnEsc={true}
+          shouldCloseOnOverlayClick={true}
+          height={"345px"}
+        >
+          <PieChartContainer title={modalTitle} data={dictToArray(modalData)} />
+        </StyledModal>
         <H1 textAlign={"center"}>Service Statistics</H1>
         <Box width={1}>
           <FilterComponent onSubmit={this.onFetchStats} />
         </Box>
         <Box width={1}>
-          <OverviewStatsView data={data} />
+          <OverviewView
+            data={data}
+            onDataClicked={(title, data) =>
+              this.setState({
+                modalTitle: title,
+                modalData: data,
+                isModalOpen: true
+              })
+            }
+          />
         </Box>
         <Box width={1}>
           <GraphView data={data} view={FootTrafficView.COURSE} />

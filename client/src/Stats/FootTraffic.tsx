@@ -11,6 +11,7 @@ import { H2, Panel } from "../shared";
 import { Box } from "@rebass/grid";
 import theme from "../shared/Styles/theme";
 import _ from "lodash";
+import { COLORS } from "../config";
 
 export enum FootTrafficView {
   COURSE = "Courses",
@@ -41,13 +42,6 @@ export const FootTraffic: React.FunctionComponent<IFootTrafficProps> = ({
   indexToName = i => i,
   view
 }) => {
-  const COLORS = [
-    theme.colors.green,
-    theme.colors.grey,
-    theme.colors.red,
-    theme.colors.primaryLight,
-    theme.colors.purple
-  ];
   const itemKeys: string[] = [];
   data.forEach(v => {
     switch (view) {
