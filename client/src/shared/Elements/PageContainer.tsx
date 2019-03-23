@@ -79,7 +79,10 @@ export class PageContainer extends React.Component<
     this.setState({ notification: true });
   }
 
-  private onTicketUpdateEvent({ eventType, message }: ITicketUpdateEvent) {
+  private async onTicketUpdateEvent({
+    eventType,
+    message
+  }: ITicketUpdateEvent) {
     this.onServerNotification();
     let toastFn;
     switch (eventType) {
@@ -96,7 +99,7 @@ export class PageContainer extends React.Component<
         toastFn = toast.info;
     }
     playNotification();
-    const success = desktopNotification(eventType, message || "");
+    const success = await desktopNotification(eventType, message || "");
     if (!success) {
       toastFn(message || "", {
         toastId: "update",

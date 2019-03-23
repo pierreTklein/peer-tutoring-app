@@ -27,8 +27,7 @@ function triggerNotification(title: string, message: string) {
   const notification = new Notification(title, {
     badge,
     body: message,
-    icon,
-    requireInteraction: true
+    icon
   });
   notification.onclick = (event: Event) => {
     event.preventDefault(); // prevent the browser from focusing the Notification's tab

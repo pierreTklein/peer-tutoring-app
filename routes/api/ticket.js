@@ -67,7 +67,7 @@ module.exports = {
             Middleware.Auth.ensureConfirmed,
             Middleware.Ticket.assignNewTicketMutexSafe,
             Middleware.Ticket.broadcastQueueUpdatedEvent(-1),
-            Middleware.Ticket.broadcastTicketUpdateEvent("assigned"),
+            Middleware.Ticket.broadcastTicketUpdateEvent("Question Assigned"),
             Controllers.Ticket.assignedTicket,
         );
 
@@ -113,7 +113,7 @@ module.exports = {
             Middleware.Ticket.failIfAssigned,
             Middleware.Ticket.assignTicket,
             Middleware.Ticket.broadcastQueueUpdatedEvent(-1),
-            Middleware.Ticket.broadcastTicketUpdateEvent("assigned"),
+            Middleware.Ticket.broadcastTicketUpdateEvent("Question Assigned"),
             Controllers.Ticket.assignedTicket,
         );
 
@@ -128,7 +128,7 @@ module.exports = {
             Middleware.Ticket.failIfNotAssigned,
             Middleware.Ticket.failIfStarted,
             Middleware.Ticket.startTicket,
-            Middleware.Ticket.broadcastTicketUpdateEvent("started"),
+            Middleware.Ticket.broadcastTicketUpdateEvent("Question Started"),
             Controllers.Ticket.startedTicket
         );
 
@@ -142,7 +142,7 @@ module.exports = {
             Middleware.Ticket.getById,
             Middleware.Ticket.failIfEnded,
             Middleware.Ticket.endTicket,
-            Middleware.Ticket.broadcastTicketUpdateEvent("ended"),
+            Middleware.Ticket.broadcastTicketUpdateEvent("Question Ended"),
             Controllers.Ticket.endedTicket
         );
 
@@ -157,7 +157,7 @@ module.exports = {
             Middleware.Ticket.failIfNotAssigned,
             Middleware.Ticket.failIfEnded,
             Middleware.Ticket.broadcastQueueUpdatedEvent(1),
-            Middleware.Ticket.broadcastTicketUpdateEvent("abandoned"),
+            Middleware.Ticket.broadcastTicketUpdateEvent("Question Yielded"),
             Middleware.Ticket.abandonTicket,
             Controllers.Ticket.abandonedTicket
         );
@@ -171,7 +171,7 @@ module.exports = {
             Middleware.Util.failIfNotValid,
             Middleware.Ticket.getById,
             Middleware.Ticket.rateTicket,
-            Middleware.Ticket.broadcastTicketUpdateEvent("rated"),
+            Middleware.Ticket.broadcastTicketUpdateEvent("Question Rated"),
             Controllers.Ticket.ratedTicket
         );
 
