@@ -21,9 +21,12 @@ import Dashboard from "./Dashboard/Dashboard";
 import { requestPermission } from "./util/notifications";
 import FAQContainer from "./faq/FAQ";
 import StatsContainer from "./Stats/StatsContainer";
+import ReactGA from "react-ga";
 
 class App extends Component {
   render() {
+    ReactGA.initialize("UA-92583033-4");
+    ReactGA.pageview(window.location.pathname + window.location.search);
     requestPermission();
     return (
       <BrowserRouter>
