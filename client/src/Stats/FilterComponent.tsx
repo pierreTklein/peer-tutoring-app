@@ -101,7 +101,7 @@ export class FilterComponent extends React.Component<
   private onSubmit(values: any) {
     this.props.onSubmit({
       createBefore: new Date(input2date(values.endDate)),
-      endAfter: new Date(input2date(values.startDate))
+      createAfter: new Date(input2date(values.startDate))
     });
   }
   private onKeyDown(

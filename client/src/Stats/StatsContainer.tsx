@@ -51,7 +51,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
     tomorrow.setHours(0, 0, 0, 0);
     await this.onFetchStats({
       createBefore: tomorrow,
-      endAfter: oneWeekAgo
+      createAfter: oneWeekAgo
     });
   }
 
