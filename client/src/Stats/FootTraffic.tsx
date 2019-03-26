@@ -34,13 +34,15 @@ interface IFootTrafficProps {
   indexToName?: (index: number) => string | number;
   xLabel?: string;
   yLabel?: string;
+  syncId?: string;
 }
 
 export const FootTraffic: React.FunctionComponent<IFootTrafficProps> = ({
   data,
   title,
   indexToName = i => i,
-  view
+  view,
+  syncId
 }) => {
   const itemKeys: string[] = [];
   data.forEach(v => {
@@ -115,6 +117,7 @@ export const FootTraffic: React.FunctionComponent<IFootTrafficProps> = ({
           <AreaChart
             data={formattedData}
             margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+            syncId={syncId}
           >
             {lines}
             <XAxis dataKey="name" />

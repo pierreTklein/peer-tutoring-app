@@ -12,7 +12,7 @@ import { Flex, Box } from "@rebass/grid";
 import { date2input, input2date } from "../util";
 
 interface IFilterComponentProps {
-  onSubmit: (query: ITicketQuery) => Promise<void>;
+  onSubmit: (query: ITicketQuery) => Promise<void> | void;
 }
 
 export class FilterComponent extends React.Component<

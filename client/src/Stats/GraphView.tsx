@@ -23,6 +23,7 @@ export const GraphView: React.FunctionComponent<IGraphViewProps> = ({
           <FootTraffic
             data={data.freqDay}
             title={"Foot traffic per week"}
+            syncId="week_data"
             xLabel={"Day"}
             view={view}
             indexToName={dayOfWeekAsString}
@@ -34,6 +35,7 @@ export const GraphView: React.FunctionComponent<IGraphViewProps> = ({
             title={"Foot traffic per hour"}
             indexToName={hourAsString}
             view={view}
+            syncId="hour_data"
             xLabel={"Hour"}
           />
         </Box>

@@ -4,7 +4,8 @@ import {
   PieChart,
   Pie,
   Cell,
-  PieLabelRenderProps
+  PieLabelRenderProps,
+  ContentRenderer
 } from "recharts";
 import { H2, Panel } from "../shared";
 import { Box } from "@rebass/grid";
@@ -15,6 +16,7 @@ interface IPieChartContainerProps {
   data: object[];
   title: string;
 }
+const RADIAN = Math.PI / 180;
 
 export const PieChartContainer: React.FunctionComponent<
   IPieChartContainerProps
@@ -38,6 +40,8 @@ export const PieChartContainer: React.FunctionComponent<
               cx={"50%"}
               cy={"50%"}
               outerRadius={"90%"}
+              label={renderCustomizedLabel}
+              labelLine={false}
             >
               {data.map((entry, index) => (
                 <Cell
@@ -50,5 +54,37 @@ export const PieChartContainer: React.FunctionComponent<
         </ResponsiveContainer>
       </Box>
     </Panel>
+  );
+};
+
+const renderCustomizedLabel: ContentRenderer<PieLabelRenderProps> = ({
+  cx = 0,
+  cy = 0,
+  midAngle = 0,
+  innerRadius = 0,
+  outerRadius = 0,
+  percent = 0,
+  name
+}: PieLabelRenderProps) => {
+  console.log(cx, cy, midAngle, innerRadius, outerRadius, percent, name);
+  cx = Number(cx);
+  cy = Number(cy);
+  innerRadius = Number(innerRadius);
+  outerRadius = Number(outerRadius);
+
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+    >
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
   );
 };
