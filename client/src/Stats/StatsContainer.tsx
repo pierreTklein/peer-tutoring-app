@@ -1,7 +1,7 @@
 import { Box } from "@rebass/grid";
 import * as React from "react";
 
-import { ITicketStats } from "../config";
+import { ITicketStats, ITicket } from "../config";
 import { H1, PageContainer, StyledModal } from "../shared/Elements";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { Ticket } from "../api";
@@ -19,17 +19,28 @@ export interface ILoginState {
   isModalOpen: boolean;
   modalTitle: string;
   modalData: object;
+  query: ITicketQuery;
 }
 
 export class StatsContainer extends React.Component<{}, ILoginState> {
   constructor(props: {}) {
     super(props);
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    oneWeekAgo.setHours(0, 0, 0, 0);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
     this.state = {
       loadingData: true,
       data: {
         total: 0,
         avgWait: 0,
         avgAbandon: 0,
+        avgComplete: 0,
+        avgSessionTime: 0,
+        totalNoTutor: 0,
+        totalNotEnded: 0,
         freqHour: [],
         freqDay: [],
         freqStudents: {},
@@ -38,24 +49,20 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
       },
       isModalOpen: false,
       modalTitle: "",
-      modalData: {}
+      modalData: {},
+      query: {
+        createBefore: tomorrow,
+        createAfter: oneWeekAgo
+      }
     };
     this.onFetchStats = this.onFetchStats.bind(this);
   }
   public async componentDidMount() {
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-    oneWeekAgo.setHours(0, 0, 0, 0);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-    await this.onFetchStats({
-      createBefore: tomorrow,
-      createAfter: oneWeekAgo
-    });
+    await this.onFetchStats(this.state.query);
   }
 
   public async onFetchStats(query: ITicketQuery) {
+    this.setState({ query });
     try {
       const data = (await Ticket.stats(query)).data.data;
       this.setState({ data });
@@ -80,7 +87,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
     return (
       <PageContainer
         title={title}
-        maxWidth={"1260px"}
+        maxWidth={"1200px"}
         loading={loadingData}
         backgroundColor={"aliceblue"}
       >

@@ -11,12 +11,14 @@ export interface IConfModalProps {
   onRequestClose: () => void;
   onConfirm: () => void;
   onDeny: () => void;
+  isLoading?: boolean;
 }
 
 const ConfirmationModal: React.FunctionComponent<IConfModalProps> = ({
   title,
   body,
   isOpen,
+  isLoading,
   onRequestClose,
   onConfirm,
   onDeny
@@ -47,10 +49,20 @@ const ConfirmationModal: React.FunctionComponent<IConfModalProps> = ({
         <Box mb={"0"}>
           <Flex justifyContent={"center"} mb={"0"} alignItems={"flex-end"}>
             <Box>
-              <Button buttonType={ButtonType.SECONDARY} onClick={onDeny}>
+              <Button
+                buttonType={ButtonType.SECONDARY}
+                onClick={onDeny}
+                isLoading={isLoading}
+                disabled={isLoading}
+              >
                 Cancel
               </Button>
-              <Button buttonType={ButtonType.PRIMARY} onClick={onConfirm}>
+              <Button
+                buttonType={ButtonType.PRIMARY}
+                onClick={onConfirm}
+                isLoading={isLoading}
+                disabled={isLoading}
+              >
                 Confirm
               </Button>
             </Box>

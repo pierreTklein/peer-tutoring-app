@@ -2,6 +2,10 @@ export interface ITicketStats {
   total: number;
   avgWait: number;
   avgAbandon: number;
+  avgComplete: number;
+  avgSessionTime: number;
+  totalNoTutor: number;
+  totalNotEnded: number;
   freqHour: Array<{
     total: 0;
     course: {

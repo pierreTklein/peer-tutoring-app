@@ -22,14 +22,30 @@ export const OverviewView: React.FunctionComponent<IOverviewViewProps> = ({
           <NumberStat title={"Total Questions"} data={data.total} />
         </Box>
         <Box p={"10px"}>
-          <NumberStat title={"Avg. Abandons"} data={data.avgAbandon} />
-        </Box>
-        <Box p={"10px"}>
           <NumberStat
             title={"Avg. Wait Time"}
             data={data.avgWait / 1000 / 60}
             dataUnit={"min"}
           />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat
+            title={"Avg. Session Time"}
+            data={data.avgSessionTime / 1000 / 60}
+            dataUnit={"min"}
+          />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat title={"Avg. Abandons"} data={data.avgAbandon} />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat title={"Avg. Ended"} data={data.avgComplete} />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat title={"Total Not Ended"} data={data.totalNotEnded} />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat title={"Total No Tutor"} data={data.totalNoTutor} />
         </Box>
         <Box p={"10px"}>
           <NumberStat

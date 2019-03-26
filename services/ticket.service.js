@@ -187,11 +187,17 @@ function addToObj(obj, k) {
 function calculateStats(tickets) {
     let totalWait = 0;
     let totalAbandon = 0;
+    let totalComplete = 0;
+    let totalSessionTime = 0;
 
     const stats = {
         total: 0,
         avgWait: 0,
         avgAbandon: 0,
+        avgComplete: 0,
+        avgSessionTime: 0,
+        totalNoTutor: 0,
+        totalNotEnded: 0,
         freqHour: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
         freqDay: [0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
         freqStudents: {},
@@ -206,8 +212,32 @@ function calculateStats(tickets) {
         if (ticket.startedAt) {
             const startedAt = new Date(ticket.startedAt);
             totalWait += (startedAt.getTime() - createdAt.getTime());
-            addToObj(stats.freqTutors, ticket.tutorId.toString());
+        } else if (ticket.assignedAt) {
+            const assignedAt = new Date(ticket.assignedAt);
+            totalWait += (assignedAt.getTime() - createdAt.getTime());
+        } else if (ticket.endedAt) {
+            const endedAt = new Date(ticket.endedAt);
+            totalWait += (endedAt.getTime() - createdAt.getTime());
         }
+
+        if (ticket.tutorId) {
+            addToObj(stats.freqTutors, ticket.tutorId.toString());
+        } else {
+            stats.numNoTutor += 1;
+        }
+
+        if (ticket.endedAt) {
+            totalComplete += 1;
+        } else {
+            stats.totalNotEnded += 1;
+        }
+
+        if (ticket.endedAt && ticket.startedAt) {
+            const startedAt = new Date(ticket.startedAt);
+            const endedAt = new Date(ticket.endedAt);
+            totalSessionTime += (endedAt.getTime() - startedAt.getTime());
+        }
+
         addToObj(stats.freqStudents, ticket.studentId.toString());
         addToObj(stats.freqCourses, courseName);
 
@@ -226,6 +256,9 @@ function calculateStats(tickets) {
     });
     stats.avgWait = totalWait / Math.max(tickets.length, 1); // ms
     stats.avgAbandon = totalAbandon / Math.max(tickets.length, 1);
+    stats.avgComplete = totalComplete / Math.max(tickets.length, 1); // ms
+    stats.avgSessionTime = totalSessionTime / Math.max(tickets.length, 1); // ms
+
     return stats;
 }
 

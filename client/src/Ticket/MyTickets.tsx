@@ -67,6 +67,10 @@ export class MyTicketsContainer extends React.Component<
           SocketConn.joinRoom(courseId);
         });
       }
+      const id = account.id || account._id || undefined;
+      if (id) {
+        SocketConn.joinRoom(id);
+      }
       this.setState({ account });
       await this.queryTickets();
       await this.queryTutorQueue();

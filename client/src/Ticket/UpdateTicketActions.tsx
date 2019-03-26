@@ -71,7 +71,7 @@ export class UpdateTicketActions extends React.Component<
         flexWrap={"wrap"}
         mt={hideStart && hideAbandon && hideEnd ? "" : "5px"}
       >
-        <ConfirmationModal {...modalContents} />
+        <ConfirmationModal {...modalContents} isLoading={submitting} />
         <Box hidden={hideStart}>
           <Button
             onClick={() => {
@@ -132,6 +132,9 @@ export class UpdateTicketActions extends React.Component<
     action: (id: string) => Promise<any>,
     cb?: (ticket: ITicket) => void
   ) {
+    if (this.state.submitting) {
+      return;
+    }
     try {
       this.setState({ submitting: true });
       await action(ticket.id || "");
