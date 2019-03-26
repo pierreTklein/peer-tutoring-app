@@ -39,10 +39,7 @@ export const OverviewView: React.FunctionComponent<IOverviewViewProps> = ({
           <NumberStat title={"Avg. Abandons"} data={data.avgAbandon} />
         </Box>
         <Box p={"10px"}>
-          <NumberStat title={"Avg. Ended"} data={data.avgComplete} />
-        </Box>
-        <Box p={"10px"}>
-          <NumberStat title={"Total Not Ended"} data={data.totalNotEnded} />
+          <NumberStat title={"Total Ended"} data={data.totalComplete} />
         </Box>
         <Box p={"10px"}>
           <NumberStat title={"Total No Tutor"} data={data.totalNoTutor} />

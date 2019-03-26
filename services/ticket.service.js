@@ -187,15 +187,14 @@ function addToObj(obj, k) {
 function calculateStats(tickets) {
     let totalWait = 0;
     let totalAbandon = 0;
-    let totalComplete = 0;
     let totalSessionTime = 0;
 
     const stats = {
         total: 0,
         avgWait: 0,
         avgAbandon: 0,
-        avgComplete: 0,
         avgSessionTime: 0,
+        totalComplete: 0,
         totalNoTutor: 0,
         totalNotEnded: 0,
         freqHour: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
@@ -223,11 +222,11 @@ function calculateStats(tickets) {
         if (ticket.tutorId) {
             addToObj(stats.freqTutors, ticket.tutorId.toString());
         } else {
-            stats.numNoTutor += 1;
+            stats.totalNoTutor += 1;
         }
 
         if (ticket.endedAt) {
-            totalComplete += 1;
+            stats.totalComplete += 1;
         } else {
             stats.totalNotEnded += 1;
         }
@@ -256,7 +255,6 @@ function calculateStats(tickets) {
     });
     stats.avgWait = totalWait / Math.max(tickets.length, 1); // ms
     stats.avgAbandon = totalAbandon / Math.max(tickets.length, 1);
-    stats.avgComplete = totalComplete / Math.max(tickets.length, 1); // ms
     stats.avgSessionTime = totalSessionTime / Math.max(tickets.length, 1); // ms
 
     return stats;

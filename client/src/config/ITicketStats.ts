@@ -2,7 +2,7 @@ export interface ITicketStats {
   total: number;
   avgWait: number;
   avgAbandon: number;
-  avgComplete: number;
+  totalComplete: number;
   avgSessionTime: number;
   totalNoTutor: number;
   totalNotEnded: number;

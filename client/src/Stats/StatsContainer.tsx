@@ -37,7 +37,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
         total: 0,
         avgWait: 0,
         avgAbandon: 0,
-        avgComplete: 0,
+        totalComplete: 0,
         avgSessionTime: 0,
         totalNoTutor: 0,
         totalNotEnded: 0,
