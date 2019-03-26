@@ -112,6 +112,7 @@ module.exports = {
         Middleware.Auth.ensureAuthorized([Constants.General.STAFF]),
         Middleware.Validator.Account.inviteAccountValidator,
         Middleware.Util.failIfNotValid,
+        Middleware.Account.failIfEmailExists,
         Middleware.Account.inviteAccount,
         Controllers.Account.invitedAccount
       );
