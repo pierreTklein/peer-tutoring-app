@@ -10,9 +10,9 @@ interface ICourseProps {
 
 export const Course: React.FunctionComponent<ICourseProps> = ({ course }) => {
   return (
-    <Panel flexDirection={"column"} alignItems={"left"} m={"2%"} p={"15px"}>
+    <Panel flexDirection={"column"} m={"2%"} p={"15px"}>
       <Box>
-        <H2 marginLeft="0px">
+        <H2 marginBottom={"0px"}>
           {course.dept} {course.code}: {course.name}
         </H2>
       </Box>
