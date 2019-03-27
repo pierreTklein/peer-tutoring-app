@@ -32,7 +32,7 @@ class ConfirmAccountContainer extends React.Component<
       : "Not Confirmed.";
     return (
       <PageContainer title={title} loading={attempting}>
-        <H1 textAlign={"center"}>Your account was {title}!</H1>
+        <H1 textAlign={"center"}>Your account was {title}</H1>
         <H2 textAlign={"center"}>You will be redirected shortly...</H2>
         {!attempting && (
           <DelayedRedirect
