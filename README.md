@@ -77,6 +77,18 @@ Once they've asked a new question, they will be placed in the queue. Information
 
 ![Student waiting](/assets/images/student_waiting.png "Student waiting")
 
-### Desktop Notifications
+## Staff Features
+
+### Stats View
+
+View stats on the stats page. There is a lot of information available:
+![Stats page](/assets/images/staff_stats.png "Staff page")
+
+### Invite Users
+
+Staff members can invite users via the invite page. Upload by csv, with the format: `email,accountType`. Otherwise, add invites manually.
+![Invite page](/assets/images/staff_invite.png "Invite page")
+
+## Desktop Notifications
 
 If the user allows desktop notifications, they will be notified via the desktop notification. Otherwise, there are in-browser notifications.
