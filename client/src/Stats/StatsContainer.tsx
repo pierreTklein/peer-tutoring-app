@@ -11,7 +11,7 @@ import GraphView from "./GraphView";
 import FilterComponent from "./FilterComponent";
 import { ITicketQuery } from "../config/ITicketQuery";
 import { PieChartContainer } from "./PieChartContainer";
-import { dictToArray } from "../util";
+import { dictToArray, getValueFromQuery } from "../util";
 
 export interface ILoginState {
   loadingData: boolean;
@@ -25,12 +25,6 @@ export interface ILoginState {
 export class StatsContainer extends React.Component<{}, ILoginState> {
   constructor(props: {}) {
     super(props);
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-    oneWeekAgo.setHours(0, 0, 0, 0);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
     this.state = {
       loadingData: true,
       data: {
@@ -53,11 +47,10 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
       isModalOpen: false,
       modalTitle: "",
       modalData: {},
-      query: {
-        createBefore: tomorrow,
-        createAfter: oneWeekAgo
-      }
+      query: this.getQuery()
     };
+    this.updateQueryURL = this.updateQueryURL.bind(this);
+    this.getQuery = this.getQuery.bind(this);
     this.onFetchStats = this.onFetchStats.bind(this);
   }
   public async componentDidMount() {
@@ -65,6 +58,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
   }
 
   public async onFetchStats(query: ITicketQuery) {
+    this.updateQueryURL(query);
     this.setState({ query });
     try {
       const data = (await Ticket.stats(query)).data.data;
@@ -107,7 +101,10 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
         </StyledModal>
         <H1 textAlign={"center"}>{title}</H1>
         <Box width={1}>
-          <FilterComponent onSubmit={this.onFetchStats} />
+          <FilterComponent
+            onSubmit={this.onFetchStats}
+            query={this.state.query}
+          />
         </Box>
         <Box width={1}>
           <OverviewView
@@ -128,6 +125,46 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
           <GraphView data={data} view={FootTrafficView.CATEGORY} />
         </Box>
       </PageContainer>
+    );
+  }
+
+  private getQuery(): ITicketQuery {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    oneWeekAgo.setHours(0, 0, 0, 0);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const cbString = getValueFromQuery("createBefore") || tomorrow;
+    const caString = getValueFromQuery("createAfter") || oneWeekAgo;
+    const endedStr = getValueFromQuery("ended");
+    const assignStr = getValueFromQuery("assigned");
+    const query = {
+      createBefore: new Date(cbString),
+      createAfter: new Date(caString),
+      ended: endedStr ? endedStr === "true" : undefined,
+      assigned: assignStr ? assignStr === "true" : undefined,
+      tutorId: getValueFromQuery("tutorId"),
+      studentId: getValueFromQuery("studentId"),
+      courseId: getValueFromQuery("courseId")
+    };
+    return query;
+  }
+  private updateQueryURL(query: ITicketQuery) {
+    let qParams = "?";
+    dictToArray(query).forEach((q, i) => {
+      if (q.value instanceof Date) {
+        q.value = q.value.toJSON();
+      }
+      if (q.value !== undefined) {
+        qParams += `${i > 0 ? "&" : ""}${q.key}=${q.value}`;
+      }
+    });
+    window.history.replaceState(
+      null,
+      "",
+      window.location.href.split("?")[0] + qParams
     );
   }
 }

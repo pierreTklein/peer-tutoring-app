@@ -13,6 +13,7 @@ import { date2input, input2date } from "../util";
 
 interface IFilterComponentProps {
   onSubmit: (query: ITicketQuery) => Promise<void> | void;
+  query: ITicketQuery;
 }
 
 export class FilterComponent extends React.Component<
@@ -27,23 +28,19 @@ export class FilterComponent extends React.Component<
     this.onKeyDown = this.onKeyDown.bind(this);
   }
   public render() {
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-    oneWeekAgo.setHours(0, 0, 0, 0);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
+    const { createBefore, createAfter, ...rest } = this.props.query;
     return (
       <Formik
         enableReinitialize={true}
         initialValues={{
-          startDate: date2input(oneWeekAgo),
-          endDate: date2input(tomorrow)
+          createBefore: date2input(createBefore || new Date()),
+          createAfter: date2input(createAfter || new Date()),
+          ...rest
         }}
         onSubmit={this.onSubmit}
         validationSchema={object().shape({
-          startDate: date(),
-          endDate: date()
+          createAfter: date(),
+          createBefore: date()
         })}
         render={this.renderFormik}
       />
@@ -57,32 +54,35 @@ export class FilterComponent extends React.Component<
             <Flex flexWrap={"wrap"} width={1} justifyContent={"center"}>
               <MaxWidthBox width={[1, 0.25, 0.2, 0.125]}>
                 <FastField
-                  name={"startDate"}
+                  name={"createAfter"}
                   component={FormikElements.FormattedNumber}
                   label={"Start Date"}
                   placeholder="MM/DD/YYYY"
                   format="##/##/####"
                   location={matches ? InputLocation.LEFT : InputLocation.FULL}
-                  value={fp.values.startDate}
+                  value={fp.values.createAfter}
                   keyDownUpdate={this.onKeyDown}
                 />
                 <ErrorMessage
                   component={FormikElements.Error}
-                  name="startDate"
+                  name="createAfter"
                 />
               </MaxWidthBox>
               <MaxWidthBox width={[1, 0.25, 0.2, 0.125]}>
                 <FastField
-                  name={"endDate"}
+                  name={"createBefore"}
                   component={FormikElements.FormattedNumber}
                   label={"End Date"}
                   placeholder="MM/DD/YYYY"
                   format="##/##/####"
                   location={matches ? InputLocation.RIGHT : InputLocation.FULL}
-                  value={fp.values.endDate}
+                  value={fp.values.createBefore}
                   keyDownUpdate={this.onKeyDown}
                 />
-                <ErrorMessage component={FormikElements.Error} name="endDate" />
+                <ErrorMessage
+                  component={FormikElements.Error}
+                  name="createBefore"
+                />
               </MaxWidthBox>
               <Box alignSelf={"center"} mt={"10px"}>
                 <SubmitBtn
@@ -100,8 +100,15 @@ export class FilterComponent extends React.Component<
   }
   private onSubmit(values: any) {
     this.props.onSubmit({
-      createBefore: new Date(input2date(values.endDate)),
-      createAfter: new Date(input2date(values.startDate))
+      createBefore: new Date(input2date(values.createBefore)),
+      createAfter: new Date(input2date(values.createAfter)),
+      ended: values.ended,
+      endBefore: values.endBefore,
+      endAfter: values.endAfter,
+      assigned: values.assigned,
+      tutorId: values.tutorId,
+      studentId: values.studentId,
+      courseId: values.courseId
     });
   }
   private onKeyDown(
