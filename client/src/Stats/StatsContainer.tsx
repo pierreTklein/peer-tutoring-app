@@ -1,7 +1,7 @@
 import { Box } from "@rebass/grid";
 import * as React from "react";
 
-import { ITicketStats, ITicket } from "../config";
+import { ITicketStats } from "../config";
 import { H1, PageContainer, StyledModal } from "../shared/Elements";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { Ticket } from "../api";
@@ -59,7 +59,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
 
   public async onFetchStats(query: ITicketQuery) {
     this.updateQueryURL(query);
-    this.setState({ query });
+    this.setState({ query, loadingData: true });
     try {
       const data = (await Ticket.stats(query)).data.data;
       this.setState({ data });
@@ -73,19 +73,12 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
   }
 
   public render() {
-    const {
-      data,
-      loadingData,
-      isModalOpen,
-      modalTitle,
-      modalData
-    } = this.state;
+    const { data, isModalOpen, modalTitle, modalData } = this.state;
     const title = "Service Statistics";
     return (
       <PageContainer
         title={title}
         maxWidth={"1200px"}
-        loading={loadingData}
         backgroundColor={"aliceblue"}
       >
         <StyledModal
@@ -104,6 +97,7 @@ export class StatsContainer extends React.Component<{}, ILoginState> {
           <FilterComponent
             onSubmit={this.onFetchStats}
             query={this.state.query}
+            isLoading={this.state.loadingData}
           />
         </Box>
         <Box width={1}>

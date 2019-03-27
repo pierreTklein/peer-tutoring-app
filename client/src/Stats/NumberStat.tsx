@@ -8,13 +8,15 @@ interface INumberStatProps {
   data: number;
   dataUnit?: string;
   onClick?: () => void;
+  backgroundColor?: ((data: number) => string) | string;
 }
 
 export const NumberStat: React.FunctionComponent<INumberStatProps> = ({
   data,
   title,
   dataUnit,
-  onClick
+  onClick,
+  backgroundColor
 }) => {
   return (
     <Panel
@@ -24,6 +26,12 @@ export const NumberStat: React.FunctionComponent<INumberStatProps> = ({
       onClick={onClick}
       cursor={onClick ? "pointer" : ""}
       style={{ minWidth: "100px" }}
+      backgroundColor={
+        backgroundColor &&
+        (typeof backgroundColor === "string"
+          ? backgroundColor
+          : backgroundColor(data))
+      }
     >
       <Box alignSelf={"center"}>
         <H2 color={theme.colors.greyDark}>

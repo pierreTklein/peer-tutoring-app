@@ -14,6 +14,7 @@ import { date2input, input2date } from "../util";
 interface IFilterComponentProps {
   onSubmit: (query: ITicketQuery) => Promise<void> | void;
   query: ITicketQuery;
+  isLoading?: boolean;
 }
 
 export class FilterComponent extends React.Component<
@@ -88,6 +89,8 @@ export class FilterComponent extends React.Component<
                 <SubmitBtn
                   marginBottom={matches ? "0px" : undefined}
                   buttonType={ButtonType.PRIMARY}
+                  isLoading={this.props.isLoading}
+                  disabled={this.props.isLoading}
                 >
                   Get Stats
                 </SubmitBtn>
