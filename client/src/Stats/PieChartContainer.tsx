@@ -39,7 +39,7 @@ export const PieChartContainer: React.FunctionComponent<
               nameKey="key"
               cx={"50%"}
               cy={"50%"}
-              outerRadius={"90%"}
+              outerRadius={"80%"}
               label={renderCustomizedLabel}
               labelLine={false}
             >
@@ -66,25 +66,27 @@ const renderCustomizedLabel: ContentRenderer<PieLabelRenderProps> = ({
   percent = 0,
   name
 }: PieLabelRenderProps) => {
-  console.log(cx, cy, midAngle, innerRadius, outerRadius, percent, name);
   cx = Number(cx);
   cy = Number(cy);
   innerRadius = Number(innerRadius);
   outerRadius = Number(outerRadius);
-
+  percent = percent * 100;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
+  if (percent > 10) {
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={"start"}
+        dominantBaseline={"middle"}
+      >
+        {`${percent.toFixed(0)}%`}
+      </text>
+    );
+  } else {
+    return <div />;
+  }
 };

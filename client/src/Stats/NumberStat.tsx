@@ -23,10 +23,12 @@ export const NumberStat: React.FunctionComponent<INumberStatProps> = ({
       flexDirection={"column"}
       onClick={onClick}
       cursor={onClick ? "pointer" : ""}
+      style={{ minWidth: "100px" }}
     >
       <Box alignSelf={"center"}>
         <H2 color={theme.colors.greyDark}>
-          {data.toFixed(0)} {dataUnit}
+          {data.toFixed(0)}
+          {dataUnit ? ` ${dataUnit}` : ""}
         </H2>
       </Box>
       <Box alignSelf={"center"}>{title}</Box>

@@ -185,18 +185,23 @@ function addToObj(obj, k) {
  * @param {Ticket[]} tickets 
  */
 function calculateStats(tickets) {
+    const midnight = new Date();
+    midnight.setHours(0, 0, 0, 0); // last midnight  
+
     let totalWait = 0;
-    let totalAbandon = 0;
     let totalSessionTime = 0;
 
     const stats = {
         total: 0,
+        minWait: Infinity,
+        maxWait: 0,
         avgWait: 0,
-        avgAbandon: 0,
+        totalAbandon: 0,
         avgSessionTime: 0,
         totalComplete: 0,
         totalNoTutor: 0,
         totalNotEnded: 0,
+        totalCurWaiting: 0,
         freqHour: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
         freqDay: [0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
         freqStudents: {},
@@ -208,16 +213,23 @@ function calculateStats(tickets) {
     tickets.forEach((ticket) => {
         const createdAt = new Date(ticket.createdAt);
         const courseName = `${ticket.courseId.dept} ${ticket.courseId.code}`;
+        let wait = 0;
         if (ticket.startedAt) {
             const startedAt = new Date(ticket.startedAt);
-            totalWait += (startedAt.getTime() - createdAt.getTime());
+            wait = (startedAt.getTime() - createdAt.getTime());
         } else if (ticket.assignedAt) {
             const assignedAt = new Date(ticket.assignedAt);
-            totalWait += (assignedAt.getTime() - createdAt.getTime());
+            wait = (assignedAt.getTime() - createdAt.getTime());
         } else if (ticket.endedAt) {
             const endedAt = new Date(ticket.endedAt);
-            totalWait += (endedAt.getTime() - createdAt.getTime());
+            wait = (endedAt.getTime() - createdAt.getTime());
+        } else if (createdAt.getTime() > midnight.getTime()) {
+            stats.totalCurWaiting += 1;
+            wait = (new Date().getTime() - createdAt.getTime());
         }
+        totalWait += wait;
+        stats.minWait = Math.min(stats.minWait, wait);
+        stats.maxWait = Math.max(stats.maxWait, wait);
 
         if (ticket.tutorId) {
             addToObj(stats.freqTutors, ticket.tutorId.toString());
@@ -240,7 +252,8 @@ function calculateStats(tickets) {
         addToObj(stats.freqStudents, ticket.studentId.toString());
         addToObj(stats.freqCourses, courseName);
 
-        totalAbandon += ticket.blacklist ? ticket.blacklist.length : 0;
+        const blacklists = ticket.blacklist ? ticket.blacklist.map((b) => b.toString()) : [];
+        stats.totalAbandon += new Set(blacklists).size;
 
         stats.total += 1;
         stats.freqHour[createdAt.getHours()].total += 1;
@@ -253,10 +266,9 @@ function calculateStats(tickets) {
         addToObj(stats.freqDay[createdAt.getDay()].category, ticket.category);
 
     });
+    stats.minWait = stats.minWait === Infinity ? 0 : stats.minWait;
     stats.avgWait = totalWait / Math.max(tickets.length, 1); // ms
-    stats.avgAbandon = totalAbandon / Math.max(tickets.length, 1);
     stats.avgSessionTime = totalSessionTime / Math.max(tickets.length, 1); // ms
-
     return stats;
 }
 

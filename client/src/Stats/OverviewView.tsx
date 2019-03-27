@@ -19,30 +19,47 @@ export const OverviewView: React.FunctionComponent<IOverviewViewProps> = ({
       <H2>Overview:</H2>
       <Flex justifyContent={"center"} flexWrap={"wrap"}>
         <Box p={"10px"}>
-          <NumberStat title={"Total Questions"} data={data.total} />
+          <NumberStat title={"Total"} data={data.total} />
         </Box>
         <Box p={"10px"}>
           <NumberStat
-            title={"Avg. Wait Time"}
+            title={"Max. Wait"}
+            data={data.maxWait / 1000 / 60}
+            dataUnit={"min"}
+          />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat
+            title={"Min. Wait"}
+            data={data.minWait / 1000 / 60}
+            dataUnit={"min"}
+          />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat
+            title={"Avg. Wait"}
             data={data.avgWait / 1000 / 60}
             dataUnit={"min"}
           />
         </Box>
         <Box p={"10px"}>
           <NumberStat
-            title={"Avg. Session Time"}
+            title={"Avg. Session"}
             data={data.avgSessionTime / 1000 / 60}
             dataUnit={"min"}
           />
         </Box>
         <Box p={"10px"}>
-          <NumberStat title={"Avg. Abandons"} data={data.avgAbandon} />
+          <NumberStat title={"Waiting"} data={data.totalCurWaiting} />
         </Box>
         <Box p={"10px"}>
-          <NumberStat title={"Total Ended"} data={data.totalComplete} />
+          <NumberStat title={"Yielded"} data={data.totalAbandon} />
         </Box>
         <Box p={"10px"}>
-          <NumberStat title={"Total No Tutor"} data={data.totalNoTutor} />
+          <NumberStat title={"Ended"} data={data.totalComplete} />
+        </Box>
+        <Box p={"10px"}>
+          <NumberStat title={"Not Helped"} data={data.totalNoTutor} />
         </Box>
         <Box p={"10px"}>
           <NumberStat

@@ -97,7 +97,7 @@ function dictToArray(dict: { [key: string]: any }) {
       list.push({ key, value: dict[key] });
     }
   }
-  return list;
+  return list.sort((a, b) => b.value - a.value);
 }
 
 export {
