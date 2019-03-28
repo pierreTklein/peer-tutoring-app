@@ -19,7 +19,7 @@ export const GraphView: React.FunctionComponent<IGraphViewProps> = ({
     <Panel width={1} flexDirection={"column"} mt={"20px"} p={"15px"}>
       <H2>{view}:</H2>
       <Flex width={1} alignItems={"center"} flexWrap={"wrap"}>
-        <Box width={[1, "50%"]} p={"10px"}>
+        <Box width={[1, 1, 1 / 2]} p={"10px"}>
           <FootTraffic
             data={data.freqDay}
             title={"Foot traffic per week"}
@@ -29,7 +29,7 @@ export const GraphView: React.FunctionComponent<IGraphViewProps> = ({
             indexToName={dayOfWeekAsString}
           />
         </Box>
-        <Box width={[1, "50%"]} p={"10px"}>
+        <Box width={[1, 1, 1 / 2]} p={"10px"}>
           <FootTraffic
             data={data.freqHour}
             title={"Foot traffic per hour"}
