@@ -55,7 +55,15 @@ const FAQContainer: React.FunctionComponent<IFAQProps> = ({}) => {
       </Question>
       <Question title={"How can I join the CSUS Helpdesk?"}>
         The CSUS Helpdesk holds interviews before each term. Please be on the
-        look out for the applications on our facebook page, or in the listserv.
+        look out for the applications on our{" "}
+        <LinkDuo to={"https://www.facebook.com/pg/myCSUS/events"}>
+          facebook page
+        </LinkDuo>
+        , in the listserv, or{" "}
+        <LinkDuo to={"https://mcgill-csus.ca/helpdesk-apply"}>
+          on this webpage
+        </LinkDuo>
+        .
       </Question>
     </PageContainer>
   );

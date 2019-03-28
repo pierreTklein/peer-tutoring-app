@@ -1,4 +1,4 @@
-import styled from "../shared/Styles/styled-components";
+import styled from "../Styles/styled-components";
 
 interface INavProps {
   borderThickness: string;

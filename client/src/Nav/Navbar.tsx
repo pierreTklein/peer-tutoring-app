@@ -5,7 +5,7 @@ import Logo from "../assets/images/logo/logo_full_color.svg";
 import { FrontendRoute } from "../config/frontendRoutes";
 import { Image, Button, ButtonType } from "../shared/Elements";
 import { isLoggedIn } from "../util/UserInfoHelperFunctions";
-import Nav from "./Nav";
+import Nav from "../shared/Elements/Nav";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import { Auth } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";
