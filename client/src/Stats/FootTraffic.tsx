@@ -122,7 +122,11 @@ export const FootTraffic: React.FunctionComponent<IFootTrafficProps> = ({
             {lines}
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip />
+            <Tooltip
+              itemSorter={(a, b) => {
+                return Number(b.value) - Number(a.value);
+              }}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </Box>

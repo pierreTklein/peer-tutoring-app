@@ -5,7 +5,8 @@ import {
   Pie,
   Cell,
   PieLabelRenderProps,
-  ContentRenderer
+  ContentRenderer,
+  Tooltip
 } from "recharts";
 import { H2, Panel } from "../shared";
 import { Box } from "@rebass/grid";
@@ -50,6 +51,7 @@ export const PieChartContainer: React.FunctionComponent<
                 />
               ))}
             </Pie>
+            <Tooltip />
           </PieChart>
         </ResponsiveContainer>
       </Box>

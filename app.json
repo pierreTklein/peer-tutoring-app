@@ -2,17 +2,13 @@
     "name": "Peer-tutoring",
     "description": "Application for managing peer-tutoring services",
     "env": {
-        "SERVICE_NAME": {
-            "description": "What is the name of your service?",
-            "value": "CSUS Helpdesk"
-        },
         "PORT": {
             "description": "The port on which to run the server",
             "value": "3000"
         },
-        "ADDRESS": {
-            "description": "The address on which the server is being run",
-            "value": "localhost"
+        "SERVICE_NAME": {
+            "description": "What is the name of your service?",
+            "value": "CSUS Helpdesk"
         },
         "FRONTEND_ADDRESS_DEV": {
             "description": "The development frontend address",
@@ -20,7 +16,7 @@
         },
         "FRONTEND_ADDRESS_DEPLOY": {
             "description": "The deployment frontend address",
-            "value": "app.mchacks.ca"
+            "value": "helpdesk.mcgill-csus.ca"
         },
         "COOKIE_SECRET": {
             "description": "The cookie secret for your application",

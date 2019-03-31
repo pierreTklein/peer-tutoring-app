@@ -247,7 +247,8 @@ async function abandonTicket(req, res, next) {
     const updatedValue = {
         $unset: {
             tutorId: 1,
-            startedAt: 1
+            startedAt: 1,
+            assignedAt: 1,
         },
         $push: {
             blacklist: req.body.ticket.tutorId
@@ -297,7 +298,8 @@ async function assignNewTicketMutexSafe(req, res, next) {
 
 async function assignTicket(req, res, next) {
     req.body.ticket = await Services.Ticket.updateOne(req.body.ticket.id, {
-        tutorId: req.user.id
+        tutorId: req.user.id,
+        assignedAt: Date.now()
     });
     next();
 }
