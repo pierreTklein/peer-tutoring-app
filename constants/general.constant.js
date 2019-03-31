@@ -15,6 +15,14 @@ const STUDENT = "Student";
 
 const USER_TYPES = [STAFF, TUTOR, STUDENT];
 
+const UPDATE = {
+    ASSIGNED: "Question Assigned",
+    STARTED: "Question Started",
+    ENDED: "Question Ended",
+    ABANDONED: "Question Yielded",
+    RATED: "Question Rated"
+};
+
 module.exports = {
     EMAIL_REGEX: EMAIL_REGEX,
     ANY_REGEX: ANY_REGEX,
@@ -22,5 +30,6 @@ module.exports = {
     URL_REGEX: URL_REGEX,
     STAFF: STAFF,
     TUTOR: TUTOR,
-    STUDENT: STUDENT
+    STUDENT: STUDENT,
+    UPDATE: UPDATE
 };

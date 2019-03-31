@@ -282,7 +282,7 @@ async function getNewTicketOptimized(req, res, next) {
 async function assignNewTicketMutexSafe(req, res, next) {
     const tutor = req.user.tutor;
     await lock.acquire("assignTicket", async () => {
-        const ticket = await Services.Ticket.getNewTicketFIFO(tutor.courses, req.user.id);
+        const ticket = await Services.Ticket.getNewTicketOptimized(tutor.courses, req.user.id);
         if (!ticket) {
             return next({
                 status: 400,
@@ -354,31 +354,34 @@ function broadcastTicketUpdateEvent(eventType) {
         const fullTicket = await Services.Ticket.findById(ticket.id, true, true);
         const tutorName = fullTicket.tutorId ? fullTicket.tutorId.firstName : "a tutor";
         const studentName = fullTicket.studentId ? `${fullTicket.studentId.firstName} ${fullTicket.studentId.lastName.substr(0, 1)}.` : "a student";
+        const EVENT_TYPE = Constants.General.UPDATE;
         const MESSAGES = {
             STUDENT: {
-                assigned: `Your question was assigned to ${tutorName}. Make sure they can find you!`,
-                started: `${tutorName} has started the session.`,
-                ended: `Your question has been fulfilled. Still puzzled? Ask a new question!`,
-                abandoned: `${tutorName} has put you back at the front of the queue.`,
-                rated: `Thank you for rating this session!`,
-                default: `Your question was ${eventType}`
+                default: "Question updated"
             },
             TUTOR: {
-                assigned: `You have been assigned to ${studentName}. Make sure they can find you!`,
-                started: `You have started the session.`,
-                ended: `Another one done.`,
-                abandoned: `You yielded the question.`,
-                rated: `Someone has rated your help.`,
-                default: `Your student's question was ${eventType}`
+                default: "Question updated"
             }
         };
+        MESSAGES.STUDENT[EVENT_TYPE.ASSIGNED] = `Your question was assigned to ${tutorName}. Make sure they can find you!`;
+        MESSAGES.STUDENT[EVENT_TYPE.STARTED] = `${tutorName} has started the session.`;
+        MESSAGES.STUDENT[EVENT_TYPE.ENDED] = `Your question has been fulfilled. Still puzzled? Ask a new question!`;
+        MESSAGES.STUDENT[EVENT_TYPE.ABANDONED] = `${tutorName} has put you back at the front of the queue.`;
+        MESSAGES.STUDENT[EVENT_TYPE.RATED] = `Thank you for rating this session!`;
+
+        MESSAGES.TUTOR[EVENT_TYPE.ASSIGNED] = `You have been assigned to ${studentName}. Make sure they can find you!`;
+        MESSAGES.TUTOR[EVENT_TYPE.STARTED] = `You have started the session.`;
+        MESSAGES.TUTOR[EVENT_TYPE.ENDED] = `Another one done.`;
+        MESSAGES.TUTOR[EVENT_TYPE.ABANDONED] = `You yielded the question.`;
+        MESSAGES.TUTOR[EVENT_TYPE.RATED] = `Someone has rated your help.`;
+
         const data = {
             eventType,
             fullTicket
         };
         Services.Socket.broadcast(ticket.id, eventName, {
             ...data,
-            message: `The question was ${eventType}`
+            message: `${eventType}`
         });
         if (ticket.studentId) {
             Services.Socket.broadcast(ticket.studentId, eventName, {

@@ -11,13 +11,21 @@ const logger = require("./logger.service");
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds a ticket by mongoID.
  */
-function findById(id, expandTutor = false, expandStudent = false, expandCourse = false) {
+function findById(
+    id,
+    expandTutor = false,
+    expandStudent = false,
+    expandCourse = false
+) {
     const TAG = `[Ticket Service # findById]:`;
     const query = {
         _id: id
     };
 
-    const ticket = Ticket.findById(query, logger.queryCallbackFactory(TAG, "Ticket", query));
+    const ticket = Ticket.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "Ticket", query)
+    );
     return handleExpansion(ticket, expandTutor, expandStudent, expandCourse);
 }
 
@@ -30,10 +38,18 @@ function findById(id, expandTutor = false, expandStudent = false, expandCourse =
  * @return {DocumentQuery} The document query will resolve to either Ticket or null.
  * @description Finds an Ticket by some query.
  */
-function findOne(query, expandTutor = false, expandStudent = false, expandCourse = false) {
+function findOne(
+    query,
+    expandTutor = false,
+    expandStudent = false,
+    expandCourse = false
+) {
     const TAG = `[Ticket Service # findOne ]:`;
 
-    const ticket = Ticket.findOne(query, logger.queryCallbackFactory(TAG, "Ticket", query));
+    const ticket = Ticket.findOne(
+        query,
+        logger.queryCallbackFactory(TAG, "Ticket", query)
+    );
     return handleExpansion(ticket, expandTutor, expandStudent, expandCourse);
 }
 
@@ -46,19 +62,28 @@ function findOne(query, expandTutor = false, expandStudent = false, expandCourse
  * @return {DocumentQuery[]} The document query will resolve to either Ticket[] or null.
  * @description Finds an Ticket by some query.
  */
-function find(query, expandTutor = false, expandStudent = false, expandCourse = false) {
+function find(
+    query,
+    expandTutor = false,
+    expandStudent = false,
+    expandCourse = false
+) {
     const TAG = `[Ticket Service # find ]:`;
 
-    const tickets = Ticket.find(query, logger.queryCallbackFactory(TAG, "Ticket", query));
+    const tickets = Ticket.find(
+        query,
+        logger.queryCallbackFactory(TAG, "Ticket", query)
+    );
     return handleExpansion(tickets, expandTutor, expandStudent, expandCourse);
 }
 
 /**
- * 
- * @param {DocumentQuery} docQuery 
- * @param {boolean} expandTutor 
- * @param {boolean} expandStudent 
- * @param {boolean} expandCourse 
+ *
+ * @param {DocumentQuery<any[], any, {}>} docQuery
+ * @param {boolean} expandTutor
+ * @param {boolean} expandStudent
+ * @param {boolean} expandCourse
+ * @returns {Promise<Array>}
  */
 function handleExpansion(docQuery, expandTutor, expandStudent, expandCourse) {
     if (expandTutor) {
@@ -87,7 +112,7 @@ function addOne(ticketDetails) {
 /**
  * @function updateOne
  * @param {ObjectId} id
- * @param {Ticket} ticketDetails 
+ * @param {Ticket} ticketDetails
  * @return {DocumentQuery} The document query will resolve to either Ticket or null.
  * @description Changes account information to the specified information in ticketDetails.
  */
@@ -98,10 +123,29 @@ function updateOne(id, ticketDetails) {
         _id: id
     };
 
-    return Ticket.findOneAndUpdate(query, ticketDetails, logger.updateCallbackFactory(TAG, "Ticket"));
+    return Ticket.findOneAndUpdate(
+        query,
+        ticketDetails,
+        logger.updateCallbackFactory(TAG, "Ticket")
+    );
 }
 
-function getQueue(courseIds, tutorId = undefined, expandTutor = false, expandStudent = false, expandCourse = false) {
+/**
+ *
+ * @param {string[]} courseIds
+ * @param {string} tutorId
+ * @param {boolean} expandTutor
+ * @param {boolean} expandStudent
+ * @param {boolean} expandCourse
+ * @returns {Promise<Array>}
+ */
+function getQueue(
+    courseIds,
+    tutorId = undefined,
+    expandTutor = false,
+    expandStudent = false,
+    expandCourse = false
+) {
     const midnight = new Date();
     midnight.setHours(0, 0, 0, 0); // last midnight
     const tickets = Ticket.find({
@@ -147,22 +191,27 @@ async function getNewTicketOptimized(courseIds, tutorId) {
      */
     const midnight = new Date();
     midnight.setHours(0, 0, 0, 0); // last midnight
-    const mostRecent = await Ticket.findOne({
+    const mostRecent = await Ticket.find({
         createdAt: {
             $gte: midnight
         },
-        tutorId: tutorId,
-
+        tutorId: tutorId
     }).sort({
         createdAt: -1
-    });
-    if (!mostRecent) {
+    }).limit(1);
+    if (mostRecent.length === 0) {
         return getNewTicketFIFO(courseIds, tutorId);
     }
-
-    const tickets = await getQueue([mostRecent.courseId], tutorId);
-    if (tickets.length === 0) {
-        return getNewTicketFIFO(courseIds, tutorId);
+    // sorted tickets
+    const tickets = await getQueue(courseIds, tutorId);
+    const now = new Date();
+    const FOURTY_FIVE_MIN = 1000 * 60 * 45;
+    for (const ticket of tickets) {
+        if (now.getTime() - new Date(ticket.createdAt).getTime() > FOURTY_FIVE_MIN) {
+            return ticket;
+        } else if (ticket.courseId.toString() === mostRecent[0].courseId.toString()) {
+            return ticket;
+        }
     }
     return tickets.length > 0 ? tickets[0] : null;
 }
@@ -181,12 +230,12 @@ function addToObj(obj, k) {
 }
 
 /**
- * 
- * @param {Ticket[]} tickets 
+ *
+ * @param {Ticket[]} tickets
  */
 function calculateStats(tickets) {
     const midnight = new Date();
-    midnight.setHours(0, 0, 0, 0); // last midnight  
+    midnight.setHours(0, 0, 0, 0); // last midnight
 
     let totalWait = 0;
     let totalSessionTime = 0;
@@ -202,7 +251,32 @@ function calculateStats(tickets) {
         totalNoTutor: 0,
         totalNotEnded: 0,
         totalCurWaiting: 0,
-        freqHour: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
+        freqHour: [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ].map(() => new statObject()),
         freqDay: [0, 0, 0, 0, 0, 0, 0].map(() => new statObject()),
         freqStudents: {},
         freqTutors: {},
@@ -210,22 +284,22 @@ function calculateStats(tickets) {
         freqCourse: {},
         freqCategory: {}
     };
-    tickets.forEach((ticket) => {
+    tickets.forEach(ticket => {
         const createdAt = new Date(ticket.createdAt);
         const courseName = `${ticket.courseId.dept} ${ticket.courseId.code}`;
         let wait = 0;
         if (ticket.startedAt) {
             const startedAt = new Date(ticket.startedAt);
-            wait = (startedAt.getTime() - createdAt.getTime());
+            wait = startedAt.getTime() - createdAt.getTime();
         } else if (ticket.assignedAt) {
             const assignedAt = new Date(ticket.assignedAt);
-            wait = (assignedAt.getTime() - createdAt.getTime());
+            wait = assignedAt.getTime() - createdAt.getTime();
         } else if (ticket.endedAt) {
             const endedAt = new Date(ticket.endedAt);
-            wait = (endedAt.getTime() - createdAt.getTime());
+            wait = endedAt.getTime() - createdAt.getTime();
         } else if (createdAt.getTime() > midnight.getTime()) {
             stats.totalCurWaiting += 1;
-            wait = (new Date().getTime() - createdAt.getTime());
+            wait = new Date().getTime() - createdAt.getTime();
         }
         totalWait += wait;
         stats.minWait = Math.min(stats.minWait, wait);
@@ -246,13 +320,14 @@ function calculateStats(tickets) {
         if (ticket.endedAt && ticket.startedAt) {
             const startedAt = new Date(ticket.startedAt);
             const endedAt = new Date(ticket.endedAt);
-            totalSessionTime += (endedAt.getTime() - startedAt.getTime());
+            totalSessionTime += endedAt.getTime() - startedAt.getTime();
         }
 
         addToObj(stats.freqStudents, ticket.studentId.toString());
         addToObj(stats.freqCourses, courseName);
 
-        const blacklists = ticket.blacklist ? ticket.blacklist.map((b) => b.toString()) : [];
+        const blacklists = ticket.blacklist ?
+            ticket.blacklist.map(b => b.toString()) : [];
         stats.totalAbandon += new Set(blacklists).size;
 
         stats.total += 1;
@@ -264,7 +339,6 @@ function calculateStats(tickets) {
 
         addToObj(stats.freqHour[createdAt.getHours()].category, ticket.category);
         addToObj(stats.freqDay[createdAt.getDay()].category, ticket.category);
-
     });
     stats.minWait = stats.minWait === Infinity ? 0 : stats.minWait;
     stats.avgWait = totalWait / Math.max(tickets.length, 1); // ms
