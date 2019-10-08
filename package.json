@@ -64,5 +64,8 @@
   "bugs": {
     "url": "https://github.com/pierreTklein/peer-tutoring-app/issues"
   },
+  "engines": {
+    "node": "v9.3.0"
+  },
   "homepage": "https://github.com/pierreTklein/peer-tutoring-app#readme"
 }
