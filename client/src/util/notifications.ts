@@ -1,8 +1,8 @@
-const notification = require("../assets/audio/notification.mp3");
-
 import icon from "../assets/images/logo/logo_icon_color.png";
 import badge from "../assets/images/logo/logo_icon_grey.png";
 import { URL } from "../config";
+
+const notification = require("../assets/audio/notification.mp3");
 
 export async function playNotification() {
   try {

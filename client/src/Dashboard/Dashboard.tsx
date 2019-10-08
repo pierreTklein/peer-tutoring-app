@@ -49,7 +49,11 @@ class Dashboard extends React.Component<{}, IDashboardState> {
       return <PageContainer title={"No account found"} loading={loading} />;
     } else if (isUserType(account, UserType.STAFF)) {
       return (
-        <PageContainer title={"Admin Dashboard"} loading={loading}>
+        <PageContainer
+          title={"Admin Dashboard"}
+          loading={loading}
+          maxWidth={"60%"}
+        >
           <H1 marginLeft={"0px"} textAlign={"center"}>
             Admin Dashboard
           </H1>
@@ -80,6 +84,10 @@ class Dashboard extends React.Component<{}, IDashboardState> {
       {
         title: "Course Stats",
         route: "/stats"
+      },
+      {
+        title: "Course List",
+        route: "/course"
       }
     ];
   }

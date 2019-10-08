@@ -64,7 +64,7 @@ function date2string(date: Date) {
 }
 
 function getValueFromQuery(key: string): string | undefined {
-  const queries: any = QueryString.parse(location.search);
+  const queries: any = QueryString.parse(window.location.search);
   return queries[key];
 }
 

@@ -9,7 +9,7 @@ import Question from "./Question";
 
 interface IFAQProps {}
 
-const FAQContainer: React.FunctionComponent<IFAQProps> = ({}) => {
+const FAQContainer: React.FunctionComponent<IFAQProps> = (props: {}) => {
   return (
     <PageContainer title={"FAQ"}>
       <H1 textAlign={"center"}>{SERVICE_NAME} FAQ</H1>
