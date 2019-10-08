@@ -113,4 +113,4 @@ class Navbar extends React.Component<INavbarProps, INavbarState> {
   }
 }
 
-export default withRouter<INavbarProps>(Navbar);
+export default withRouter(Navbar);

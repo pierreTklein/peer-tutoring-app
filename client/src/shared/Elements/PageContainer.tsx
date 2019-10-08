@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Flex, Box } from "@rebass/grid";
 import { MaxWidthBox, Panel, H1 } from "./";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 import { SocketConn, ITicketUpdateEvent, EventType } from "../../api";
 import { toast } from "react-toastify";
 import {
