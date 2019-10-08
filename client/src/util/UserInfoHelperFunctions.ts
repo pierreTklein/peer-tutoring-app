@@ -1,7 +1,7 @@
 import { Account } from "../api";
 import _ from "lodash";
 
-import { FrontendRoute, IAccount, UserType } from "../config";
+import { IAccount, UserType } from "../config";
 
 export async function isLoggedIn(): Promise<boolean> {
   try {

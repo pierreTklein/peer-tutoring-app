@@ -1,14 +1,7 @@
 import { Flex } from "@rebass/grid";
 import * as React from "react";
 
-import {
-  Card,
-  H1,
-  H2,
-  Image,
-  LinkDuo,
-  PageContainer
-} from "../shared/Elements";
+import { Card, H2, Image, LinkDuo } from "../shared/Elements";
 
 interface IDashboardView {
   cards: IDashboardCard[];

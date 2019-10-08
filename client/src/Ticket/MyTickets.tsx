@@ -18,7 +18,6 @@ import { isUserType } from "../util";
 import { TicketActions as ReceiveNewTicketActions } from "./ReceiveNewTicketActions";
 import ToastError from "../shared/Form/validationErrorGenerator";
 import { TicketList } from "./TicketList";
-import _ from "lodash";
 import { Link } from "react-router-dom";
 
 interface ITicketsContainerState {

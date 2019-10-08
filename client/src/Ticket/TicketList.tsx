@@ -2,7 +2,7 @@ import * as React from "react";
 import { ITicket, UserType } from "../config";
 import { Ticket } from "./Ticket";
 import { Panel } from "../shared";
-import { Flex, Box } from "@rebass/grid";
+import { Box } from "@rebass/grid";
 import { Collapsible, MaxHeightFlex } from "../shared/Elements";
 
 interface ITicketListProps {

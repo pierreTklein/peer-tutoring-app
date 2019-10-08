@@ -2,7 +2,7 @@ import * as React from "react";
 import { Label, LabelText } from "..";
 import { InputLocation } from "../../Styles";
 import { DatePicker } from "../DayPicker";
-import { Modifier, DateUtils } from "react-day-picker";
+import { DateUtils } from "react-day-picker";
 import { FieldProps } from "formik";
 
 interface IDateRangeProps extends FieldProps {

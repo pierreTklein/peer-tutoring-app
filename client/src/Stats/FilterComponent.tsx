@@ -1,6 +1,6 @@
 import { ErrorMessage, FastField, Formik, FormikProps } from "formik";
 import * as React from "react";
-import { object, string, date } from "yup";
+import { object, date } from "yup";
 
 import { ButtonType, MaxWidthBox } from "../shared/Elements";
 import { Form, SubmitBtn } from "../shared/Form";

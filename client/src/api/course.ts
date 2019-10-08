@@ -1,4 +1,3 @@
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
 import { APIRoute } from "../config";
 import API from "./api";
 

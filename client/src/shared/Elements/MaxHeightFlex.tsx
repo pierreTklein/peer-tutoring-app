@@ -1,6 +1,5 @@
 import { Flex } from "@rebass/grid";
 import styled from "../Styles/styled-components";
-import theme from "../Styles/theme";
 
 interface IMaxHeightFlexProps {
   height?: string | number;

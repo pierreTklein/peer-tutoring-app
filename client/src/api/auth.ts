@@ -1,9 +1,8 @@
 import { AxiosPromise, AxiosResponse } from "axios";
-import { APIRoute, CACHE_USER_KEY, IAccount } from "../config";
+import { APIRoute, IAccount } from "../config";
 import LocalCache from "../util/LocalCache";
 import API from "./api";
 import APIResponse from "./APIResponse";
-import SocketConn from "./socket";
 
 class AuthAPI {
   constructor() {

@@ -1,8 +1,7 @@
 import React from "react";
-import { Image, Footer } from "../shared/Elements";
+import { Footer } from "../shared/Elements";
 import { Flex, Box } from "@rebass/grid";
 import { LinkDuo } from "../shared";
-import github from "../assets/images/GitHub-Mark-32px.png";
 
 export const FooterContainer: React.FunctionComponent<{}> = () => (
   <Footer>
@@ -10,7 +9,10 @@ export const FooterContainer: React.FunctionComponent<{}> = () => (
       <Box flex={1}>
         <Flex justifyContent={"flex-end"} alignItems={"baseline"}>
           <Box m={"5px"}>
-            🚀<LinkDuo to={"https://pierretheoklein.com"}>About</LinkDuo>
+            <span role="img" aria-label="Rocket">
+              🚀
+            </span>
+            <LinkDuo to={"https://pierretheoklein.com"}>About</LinkDuo>
           </Box>
           <Box m={"5px"}>
             <LinkDuo

@@ -1,4 +1,4 @@
-import { Box, Flex, FlexProps } from "@rebass/grid";
+import { Box, Flex } from "@rebass/grid";
 import * as React from "react";
 
 import { Button, IButtonProps } from "../Elements";

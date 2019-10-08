@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ITicket, UserType, createdToday } from "../config";
-import { Button, ButtonType, StyledModal } from "../shared";
+import { Button, ButtonType } from "../shared";
 import { Flex, Box } from "@rebass/grid";
 import { Ticket } from "../api";
 import ToastError from "../shared/Form/validationErrorGenerator";

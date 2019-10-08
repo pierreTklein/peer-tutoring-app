@@ -1,5 +1,5 @@
 import * as React from "react";
-import { H2, Panel, Badge, Button, ButtonType } from "../shared";
+import { H2, Panel } from "../shared";
 import { Box } from "@rebass/grid";
 import theme from "../shared/Styles/theme";
 

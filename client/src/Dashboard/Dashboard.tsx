@@ -1,15 +1,12 @@
-import { Box, Flex } from "@rebass/grid";
-import { AxiosResponse } from "axios";
 import * as React from "react";
-import { toast } from "react-toastify";
 
 import { IAccount, UserType } from "../config";
 
-import { APIResponse, Auth, Account } from "../api";
+import { Account } from "../api";
 import ValidationErrorGenerator from "../shared/Form/validationErrorGenerator";
 import WithToasterContainer from "../shared/HOC/withToaster";
 import View, { IDashboardCard } from "./View";
-import { PageContainer, H1, H2 } from "../shared";
+import { PageContainer, H1 } from "../shared";
 import { isUserType } from "../util";
 import MyTicketsContainer from "../Ticket/MyTickets";
 

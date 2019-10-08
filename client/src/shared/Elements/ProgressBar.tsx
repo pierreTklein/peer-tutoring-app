@@ -7,7 +7,7 @@ interface IProgressBarProps {
   percentage: number | string;
 }
 
-const _progress = styled(Box)<IProgressBarProps>`
+const Progress = styled(Box)<IProgressBarProps>`
   position: relative;
   height: 10px;
   width: 100%;
@@ -30,9 +30,9 @@ export const ProgressBar: React.FunctionComponent<
   IProgressBarProps
 > = props => {
   return (
-    <_progress {...props}>
+    <Progress {...props}>
       <div />
-    </_progress>
+    </Progress>
   );
 };
 
