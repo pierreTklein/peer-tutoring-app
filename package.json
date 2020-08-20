@@ -22,7 +22,7 @@
     "@sendgrid/mail": "^6.4.0",
     "@types/lodash": "^4.14.142",
     "async-lock": "^1.2.2",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "concurrently": "^4.1.2",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-beta.3",
